@@ -31,4 +31,17 @@ enum Rotation {
         return R180;
     }
   }
+
+  double degrees() {
+    switch (this) {
+      case Rotation.R0:
+        return 0.0;
+      case Rotation.R90:
+        return 90.0;
+      case Rotation.R180:
+        return 180.0;
+      case Rotation.R270:
+        return 270.0;
+    }
+  }
 }

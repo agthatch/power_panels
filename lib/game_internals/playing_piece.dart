@@ -44,5 +44,11 @@ class PlayingPiece {
     for (XYCoordinate node in nodes) {
       node.rotatePositive90();
     }
+
+    rotation = rotation.rotatePositive90();
+  }
+
+  void mirror() {
+    mirrored = !mirrored;
   }
 }

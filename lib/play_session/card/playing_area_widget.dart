@@ -68,7 +68,7 @@ class _PlayingAreaWidgetState extends State<PlayingAreaWidget> {
 
   void _onDragAccept(DragTargetDetails<PlayingPieceDragData> details) {
     widget.area.acceptPiece(details.data.piece);
-    details.data.holder.removePiece(details.data.piece);
+    details.data.holder?.removePiece(details.data.piece);
     setState(() => isHighlighted = false);
   }
 
