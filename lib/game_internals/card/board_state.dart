@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:card/game_internals/panel/panel.dart';
 import 'package:flutter/foundation.dart';
 
 import 'player.dart';
@@ -13,6 +14,10 @@ class BoardState {
   final PlayingArea areaOne = PlayingArea();
 
   final PlayingArea areaTwo = PlayingArea();
+
+  final Panel panelOne = Panel(dimX: 5, dimY: 2);
+
+  final Panel panelTwo = Panel(dimX: 6, dimY: 6);
 
   final Player player = Player();
 

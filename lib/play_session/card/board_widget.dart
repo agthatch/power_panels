@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:card/game_internals/card/board_state.dart';
+import 'package:card/play_session/panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +35,8 @@ class _BoardWidgetState extends State<BoardWidget> {
             spacing: 20,
             runSpacing: 20,
             children: [
+              PanelWidget(panel: boardState.panelOne),
+              PanelWidget(panel: boardState.panelTwo),
               PlayingAreaWidget(boardState.areaOne),
               PlayingAreaWidget(boardState.areaTwo),
             ],

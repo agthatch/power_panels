@@ -27,7 +27,7 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
       transform: Matrix4.identity()
         ..scale(widget.piece.mirrored ? -1.0 : 1.0, 1.0, 1.0)
         ..rotateZ(widget.piece.rotation.degrees() * (3.141592653589793 / 180)),
-      child: Container(
+      child: SizedBox(
           height: widget.piece.maxY * PlayingPieceWidget.width,
           width: widget.piece.maxX * PlayingPieceWidget.width,
           child: _createPieceWidget(widget.piece)),
