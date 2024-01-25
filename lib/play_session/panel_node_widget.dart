@@ -28,19 +28,31 @@ class _PanelNodeWidgetState extends State<PanelNodeWidget> {
         height: PlayingPieceWidget.width,
         width: PlayingPieceWidget.width,
         child: Material(
-          color: node.highlighted ? palette.accept : palette.trueWhite,
-          clipBehavior: Clip.hardEdge,
-          child: StreamBuilder(
-              // Rebuild the card stack whenever the area changes
-              // (either by a player action, or remotely).
-              stream: widget.panel.allChanges,
-              builder: (context, child) => Container()),
-        ),
+            clipBehavior: Clip.hardEdge,
+            child: StreamBuilder(
+                // Rebuild the card stack whenever the area changes
+                // (either by a player action, or remotely).
+                stream: widget.panel.allChanges,
+                builder: (context, child) => Container(
+                        decoration: BoxDecoration(
+                      color: determineColor(node, palette),
+                      border: Border.all(color: Color.fromRGBO(0, 0, 0, 0.288)),
+                    )))),
       ),
       onWillAcceptWithDetails: _onDragWillAccept,
       onLeave: _onDragLeave,
       onAcceptWithDetails: _onDragAccept,
     );
+  }
+
+  Color determineColor(PanelNode node, Palette palette) {
+    if (!node.highlighted) {
+      return palette.trueWhite;
+    } else if (node.obstructed) {
+      return palette.redPen;
+    } else {
+      return palette.accept;
+    }
   }
 
   void _onAreaTap() {}
@@ -51,14 +63,13 @@ class _PanelNodeWidgetState extends State<PanelNodeWidget> {
   }
 
   void _onDragLeave(PlayingPieceDragData? data) {
+    widget.panel.clearAllHighlights();
     var node = widget.panel.nodes[widget.x][widget.y];
     setState(() => node.highlighted = false);
   }
 
   bool _onDragWillAccept(DragTargetDetails<PlayingPieceDragData> details) {
-    var node = widget.panel.nodes[widget.x][widget.y];
-    setState(() => node.highlighted = true);
-    //AGT: need to sleep, we need to now go through the nodes and determine if the piece can fit and highlight accordingly
-    return true;
+    widget.panel.handlePieceHovering(details.data.piece, widget.x, widget.y);
+    return widget.panel.canAcceptHoveringPiece ?? false;
   }
 }

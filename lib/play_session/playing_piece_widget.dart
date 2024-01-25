@@ -77,6 +77,7 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
     return GestureDetector(
       onLongPressDown: (details) {
         print('Draggable longPress down at ($row, $col)');
+        widget.piece.setHandledNodeCoordinate(row, col);
       },
       child: !isNode
           ? Container(

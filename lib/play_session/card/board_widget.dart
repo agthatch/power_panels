@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'player_hand_widget.dart';
-import 'playing_area_widget.dart';
 
 /// This widget defines the game UI itself, without things like the settings
 /// button or the back button.
@@ -37,8 +36,6 @@ class _BoardWidgetState extends State<BoardWidget> {
             children: [
               PanelWidget(panel: boardState.panelOne),
               PanelWidget(panel: boardState.panelTwo),
-              PlayingAreaWidget(boardState.areaOne),
-              PlayingAreaWidget(boardState.areaTwo),
             ],
           ),
         ),

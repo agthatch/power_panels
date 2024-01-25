@@ -6,14 +6,9 @@ import 'package:card/game_internals/panel/panel.dart';
 import 'package:flutter/foundation.dart';
 
 import 'player.dart';
-import 'playing_area.dart';
 
 class BoardState {
   final VoidCallback onWin;
-
-  final PlayingArea areaOne = PlayingArea();
-
-  final PlayingArea areaTwo = PlayingArea();
 
   final Panel panelOne = Panel(dimX: 5, dimY: 2);
 
@@ -25,12 +20,12 @@ class BoardState {
     player.addListener(_handlePlayerChange);
   }
 
-  List<PlayingArea> get areas => [areaOne, areaTwo];
+  // List<PlayingArea> get areas => [areaOne, areaTwo];
 
   void dispose() {
     player.removeListener(_handlePlayerChange);
-    areaOne.dispose();
-    areaTwo.dispose();
+    // areaOne.dispose();
+    // areaTwo.dispose();
   }
 
   void _handlePlayerChange() {

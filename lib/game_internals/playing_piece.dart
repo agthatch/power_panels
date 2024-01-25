@@ -9,6 +9,7 @@ class PlayingPiece {
   final int maxY;
   bool mirrored = false;
   Rotation rotation = Rotation.R0;
+  XYCoordinate? handledNodeCoordinate;
 
   PlayingPiece(this.shape, this.nodes, this.maxX, this.maxY) {
     mirrored = false;
@@ -18,21 +19,21 @@ class PlayingPiece {
   factory PlayingPiece.fromShape(List<List<int>> input) {
     List<XYCoordinate> nodes = [];
     List<List<bool>> shape = [];
-    int i = 0;
-    int j = 0;
-    for (i = 0; i < input.length; i++) {
+    int y = 0;
+    int x = 0;
+    for (y = 0; y < input.length; y++) {
       List<bool> row = [];
-      for (j = 0; j < input[i].length; j++) {
-        bool isNode = input[i][j] == 1;
+      for (x = 0; x < input[y].length; x++) {
+        bool isNode = input[y][x] == 1;
         row.add(isNode);
         if (isNode) {
-          nodes.add(XYCoordinate(x: i, y: j));
+          nodes.add(XYCoordinate(x: x, y: y));
         }
       }
       shape.add(row);
     }
 
-    return PlayingPiece(shape, nodes, j, i);
+    return PlayingPiece(shape, nodes, x, y);
   }
 
   static PlayingPiece generate(int index) {
@@ -41,14 +42,18 @@ class PlayingPiece {
   }
 
   void rotatePositive90() {
-    for (XYCoordinate node in nodes) {
-      node.rotatePositive90();
-    }
+    // for (XYCoordinate node in nodes) {
+    //   node.rotatePositive90();
+    // }
 
     rotation = rotation.rotatePositive90();
   }
 
   void mirror() {
     mirrored = !mirrored;
+  }
+
+  void setHandledNodeCoordinate(int row, int col) {
+    handledNodeCoordinate = XYCoordinate(x: col, y: row);
   }
 }
