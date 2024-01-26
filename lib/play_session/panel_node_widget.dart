@@ -46,7 +46,9 @@ class _PanelNodeWidgetState extends State<PanelNodeWidget> {
   }
 
   Color determineColor(PanelNode node, Palette palette) {
-    if (!node.highlighted) {
+    if (node.occupied) {
+      return palette.backgroundLevelSelection;
+    } else if (!node.highlighted) {
       return palette.trueWhite;
     } else if (node.obstructed) {
       return palette.redPen;
@@ -59,7 +61,7 @@ class _PanelNodeWidgetState extends State<PanelNodeWidget> {
 
   void _onDragAccept(DragTargetDetails<PlayingPieceDragData> details) {
     details.data.holder?.removePiece(details.data.piece);
-    // setState(() => widget.node.occupied = true);
+    widget.panel.handlePiecePlacement(details.data.piece, widget.x, widget.y);
   }
 
   void _onDragLeave(PlayingPieceDragData? data) {

@@ -36,6 +36,8 @@ class PlayingPiece {
     return PlayingPiece(shape, nodes, x, y);
   }
 
+  int get size => nodes.length;
+
   static PlayingPiece generate(int index) {
     return PlayingPiece.fromShape(
         Shapes.allShapes[index % Shapes.allShapes.length]);

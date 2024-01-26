@@ -39,24 +39,8 @@ class Panel {
     print('handling piece hovering for node $x, $y');
     clearAllHighlights();
 
-    List<XYCoordinate> offsetsToTest = _determineOffsetsToTest(piece);
-
-    XYCoordinate focussedNode = XYCoordinate(x: x, y: y);
-    List<PanelNode> targetNodes = [];
-    bool obstructionFound = false;
-
-    for (XYCoordinate offset in offsetsToTest) {
-      XYCoordinate testCoordinate = focussedNode.offsetBy(offset);
-
-      if (_coordinateIsOutOfRange(testCoordinate)) {
-        obstructionFound = true;
-      } else {
-        PanelNode testNode = nodes[testCoordinate.x][testCoordinate.y];
-        targetNodes.add(testNode);
-
-        obstructionFound = obstructionFound || testNode.occupied;
-      }
-    }
+    List<PanelNode> targetNodes = extractValidTargetNodes(piece, x, y);
+    bool obstructionFound = piece.size > targetNodes.length;
 
     for (PanelNode node in targetNodes) {
       node.highlighted = true;
@@ -64,6 +48,19 @@ class Panel {
     }
 
     canAcceptHoveringPiece = !obstructionFound;
+    _playerChanges.add(null);
+  }
+
+  handlePiecePlacement(PlayingPiece piece, int x, int y) {
+    print('handlePiecePlacement $x, $y');
+    clearAllHighlights();
+
+    List<PanelNode> targetNodes = extractValidTargetNodes(piece, x, y);
+
+    for (PanelNode node in targetNodes) {
+      node.occupied = true;
+    }
+
     _playerChanges.add(null);
   }
 
@@ -83,6 +80,27 @@ class Panel {
         testCoordinate.y < 0 ||
         testCoordinate.x >= dimX ||
         testCoordinate.y >= dimY;
+  }
+
+  List<PanelNode> extractValidTargetNodes(PlayingPiece piece, int x, int y) {
+    List<XYCoordinate> offsetsToTest = _determineOffsetsToTest(piece);
+
+    XYCoordinate focussedNode = XYCoordinate(x: x, y: y);
+    List<PanelNode> targetNodes = [];
+
+    List<XYCoordinate> activeNodesCoordinates = [];
+    for (XYCoordinate offset in offsetsToTest) {
+      XYCoordinate testCoordinate = focussedNode.offsetBy(offset);
+      activeNodesCoordinates.add(testCoordinate);
+
+      if (!_coordinateIsOutOfRange(testCoordinate)) {
+        PanelNode testNode = nodes[testCoordinate.x][testCoordinate.y];
+        if (!testNode.occupied) {
+          targetNodes.add(testNode);
+        }
+      }
+    }
+    return targetNodes;
   }
 }
 
