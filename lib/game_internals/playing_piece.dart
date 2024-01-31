@@ -58,4 +58,45 @@ class PlayingPiece {
   void setHandledNodeCoordinate(int row, int col) {
     handledNodeCoordinate = XYCoordinate(x: col, y: row);
   }
+
+  XYCoordinate getOffsetFromClickedNodeToTopLeftCorner() {
+    //Find the piece node that will be in the top left corner after rotation and mirroring
+    XYCoordinate topLeftWhenTransformed =
+        _getTopLeftCoordinateAfterRotationAndMirroring();
+    print("topLeftWhenTransformed $topLeftWhenTransformed");
+
+    //2- translate the x and y coordinates to the agree with handledNodeCoordinate
+    XYCoordinate? handledCoordinateTranformed =
+        handledNodeCoordinate?.rotateCopy(rotation).mirrorXDirection();
+    print("handledCoordinateTranformed $handledCoordinateTranformed");
+    return topLeftWhenTransformed.negativeOffsetBy(
+        handledCoordinateTranformed ?? XYCoordinate(x: 0, y: 0));
+    //3- save the new x,y coordinates in `location`
+  }
+
+  XYCoordinate _getTopLeftCoordinateAfterRotationAndMirroring() {
+    if (!mirrored) {
+      switch (rotation) {
+        case Rotation.R0:
+          return XYCoordinate(x: 0, y: 0);
+        case Rotation.R90:
+          return XYCoordinate(x: -(maxY - 1), y: 0);
+        case Rotation.R180:
+          return XYCoordinate(x: -(maxX - 1), y: -(maxY - 1));
+        case Rotation.R270:
+          return XYCoordinate(x: 0, y: -(maxX - 1));
+      }
+    } else {
+      switch (rotation) {
+        case Rotation.R0:
+          return XYCoordinate(x: -(maxX - 1), y: 0);
+        case Rotation.R90:
+          return XYCoordinate(x: -(maxY - 1), y: 0);
+        case Rotation.R180:
+          return XYCoordinate(x: 0, y: -(maxY - 1));
+        case Rotation.R270:
+          return XYCoordinate(x: -(maxY - 1), y: -(maxX - 1));
+      }
+    }
+  }
 }

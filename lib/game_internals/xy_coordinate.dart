@@ -6,7 +6,7 @@ class XYCoordinate {
 
   XYCoordinate({required this.x, required this.y});
 
-  void rotate(Rotation degree) {
+  XYCoordinate rotate(Rotation degree) {
     switch (degree) {
       case Rotation.R0:
         break;
@@ -33,18 +33,22 @@ class XYCoordinate {
         y = -prevX;
         break;
     }
+    return this;
   }
 
-  void rotatePositive90() {
+  XYCoordinate rotatePositive90() {
     rotate(Rotation.R90);
+    return this;
   }
 
-  void rotateNegative90() {
+  XYCoordinate rotateNegative90() {
     rotate(Rotation.R270);
+    return this;
   }
 
-  void mirrorXDirection() {
+  XYCoordinate mirrorXDirection() {
     x = -x;
+    return this;
   }
 
   XYCoordinate offsetBy(XYCoordinate offset) {
@@ -58,5 +62,9 @@ class XYCoordinate {
   @override
   String toString() {
     return 'XYCoordinate{x: $x, y: $y}';
+  }
+
+  XYCoordinate rotateCopy(Rotation rotation) {
+    return XYCoordinate(x: x, y: y).rotate(rotation);
   }
 }

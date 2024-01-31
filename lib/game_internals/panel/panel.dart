@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:card/game_internals/panel/panel_node.dart';
+import 'package:card/game_internals/placed_piece.dart';
 import 'package:card/game_internals/playing_piece.dart';
 import 'package:card/game_internals/xy_coordinate.dart';
 
@@ -10,6 +11,7 @@ class Panel {
   final int dimY;
 
   late final List<List<PanelNode>> nodes;
+  List<PlacedPiece> placedPieces = [];
 
   bool? canAcceptHoveringPiece;
 
@@ -52,7 +54,8 @@ class Panel {
   }
 
   handlePiecePlacement(PlayingPiece piece, int x, int y) {
-    print('handlePiecePlacement $x, $y');
+    print("handling PiecePlacement $x, $y");
+    placedPieces.add(PlacedPiece.create(piece: piece, x: x, y: y));
     clearAllHighlights();
 
     List<PanelNode> targetNodes = extractValidTargetNodes(piece, x, y);
