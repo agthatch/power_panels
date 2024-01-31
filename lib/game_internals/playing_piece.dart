@@ -40,7 +40,8 @@ class PlayingPiece {
 
   static PlayingPiece generate(int index) {
     return PlayingPiece.fromShape(
-        Shapes.allShapes[index % Shapes.allShapes.length]);
+        // Shapes.allShapes[index % Shapes.allShapes.length]);
+        Shapes.allShapes[5]);
   }
 
   void rotatePositive90() {
@@ -67,7 +68,8 @@ class PlayingPiece {
 
     //2- translate the x and y coordinates to the agree with handledNodeCoordinate
     XYCoordinate? handledCoordinateTranformed =
-        handledNodeCoordinate?.rotateCopy(rotation).mirrorXDirection();
+        _getHandledCoordinateAfterRotationAndMirroring();
+
     print("handledCoordinateTranformed $handledCoordinateTranformed");
     return topLeftWhenTransformed.negativeOffsetBy(
         handledCoordinateTranformed ?? XYCoordinate(x: 0, y: 0));
@@ -97,6 +99,14 @@ class PlayingPiece {
         case Rotation.R270:
           return XYCoordinate(x: -(maxY - 1), y: -(maxX - 1));
       }
+    }
+  }
+
+  XYCoordinate? _getHandledCoordinateAfterRotationAndMirroring() {
+    if (mirrored) {
+      return handledNodeCoordinate?.rotateCopy(rotation).mirrorXDirection();
+    } else {
+      return handledNodeCoordinate?.rotateCopy(rotation);
     }
   }
 }

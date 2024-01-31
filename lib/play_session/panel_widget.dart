@@ -48,7 +48,12 @@ class FrameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Replace this with your FrameWidget implementation
+    return Stack(alignment: Alignment.topLeft, children: [
+      generateBackground(context),
+    ]);
+  }
+
+  Container generateBackground(BuildContext context) {
     return Container(
       width: 200.0,
       height: 200.0,
