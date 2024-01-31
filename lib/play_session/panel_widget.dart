@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:card/game_internals/panel/panel.dart';
+import 'package:card/game_internals/rotation.dart';
 import 'package:card/play_session/panel_node_widget.dart';
 import 'package:card/play_session/playing_piece_widget.dart';
 import 'package:flutter/material.dart';
@@ -48,23 +49,49 @@ class FrameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(alignment: Alignment.topLeft, children: [
-      generateBackground(context),
-    ]);
-  }
-
-  Container generateBackground(BuildContext context) {
     return Container(
       width: 200.0,
       height: 200.0,
       color: Colors.blue,
       child: Center(
-        child: SizedBox(
-            height: panel.dimY * PlayingPieceWidget.width,
-            width: panel.dimX * PlayingPieceWidget.width,
-            child: _createFrameGrid(panel, context)),
+        child: StreamBuilder(
+            stream: panel.allChanges,
+            builder: (context, child) {
+              return Stack(alignment: Alignment.topLeft, children: [
+                generateBackground(context),
+                ..._generatePlacedPieceWidgets(panel, context),
+              ]);
+            }),
       ),
     );
+  }
+
+  Widget generateBackground(BuildContext context) {
+    return SizedBox(
+        height: panel.dimY * PlayingPieceWidget.width,
+        width: panel.dimX * PlayingPieceWidget.width,
+        child: _createFrameGrid(panel, context));
+  }
+
+  List<Widget> _generatePlacedPieceWidgets(Panel panel, BuildContext context) {
+    return panel.placedPieces.map((placedPiece) {
+      switch (placedPiece.piece.rotation) {
+        case Rotation.R0:
+        case Rotation.R180:
+          return Positioned(
+            top: placedPiece.location.y * PlayingPieceWidget.width,
+            left: placedPiece.location.x * PlayingPieceWidget.width,
+            child: PlayingPieceWidget(placedPiece.piece),
+          );
+        case Rotation.R90:
+        case Rotation.R270:
+          return Positioned(
+            top: placedPiece.location.y * PlayingPieceWidget.width,
+            left: placedPiece.location.x * PlayingPieceWidget.width,
+            child: PlayingPieceWidget(placedPiece.piece),
+          );
+      }
+    }).toList();
   }
 }
 

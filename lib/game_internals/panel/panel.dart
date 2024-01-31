@@ -55,7 +55,8 @@ class Panel {
 
   handlePiecePlacement(PlayingPiece piece, int x, int y) {
     print("handling PiecePlacement $x, $y");
-    placedPieces.add(PlacedPiece.create(piece: piece, x: x, y: y));
+    placedPieces
+        .add(PlacedPiece.create(piece: piece, x: x, y: y, accepted: true));
     clearAllHighlights();
 
     List<PanelNode> targetNodes = extractValidTargetNodes(piece, x, y);

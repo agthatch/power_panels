@@ -13,7 +13,7 @@ class PlayerHandWidget extends StatelessWidget {
     final boardState = context.watch<BoardState>();
 
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(20),
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: PlayingCardWidget.height),
         child: ListenableBuilder(
@@ -23,7 +23,7 @@ class PlayerHandWidget extends StatelessWidget {
           builder: (context, child) {
             return Wrap(
               alignment: WrapAlignment.center,
-              spacing: 10,
+              spacing: 20,
               runSpacing: 10,
               children: [
                 ...boardState.player.hand.map((piece) =>

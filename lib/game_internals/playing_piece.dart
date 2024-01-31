@@ -8,6 +8,7 @@ class PlayingPiece {
   final int maxX;
   final int maxY;
   bool mirrored = false;
+  bool isPlaced = false;
   Rotation rotation = Rotation.R0;
   XYCoordinate? handledNodeCoordinate;
 
@@ -40,8 +41,8 @@ class PlayingPiece {
 
   static PlayingPiece generate(int index) {
     return PlayingPiece.fromShape(
-        // Shapes.allShapes[index % Shapes.allShapes.length]);
-        Shapes.allShapes[5]);
+        Shapes.allShapes[index % Shapes.allShapes.length]);
+    // Shapes.allShapes[5]);
   }
 
   void rotatePositive90() {
@@ -109,4 +110,10 @@ class PlayingPiece {
       return handledNodeCoordinate?.rotateCopy(rotation);
     }
   }
+
+  bool isSquare() {
+    return maxX == maxY;
+  }
+
+  // int rotatedWidth() {}
 }

@@ -20,6 +20,8 @@ class PlacedPiece {
     XYCoordinate offsetFromClickedNodeToTopLeftCorner =
         piece.getOffsetFromClickedNodeToTopLeftCorner();
 
+    piece.isPlaced = accepted;
+
     print(
         "offsetFromClickedNodeToTopLeftCorner $offsetFromClickedNodeToTopLeftCorner");
     XYCoordinate pieceLocation = XYCoordinate(x: x, y: y);

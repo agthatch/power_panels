@@ -1,6 +1,7 @@
 import 'package:card/audio/audio_controller.dart';
 import 'package:card/audio/sounds.dart';
 import 'package:card/game_internals/card/player.dart';
+import 'package:card/game_internals/rotation.dart';
 import '../game_internals/playing_piece.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,17 +22,38 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
   @override
   Widget build(BuildContext context) {
     // final palette = context.watch<Palette>();
-
-    final pieceWidget = Transform(
-      alignment: Alignment.center,
-      transform: Matrix4.identity()
-        ..scale(widget.piece.mirrored ? -1.0 : 1.0, 1.0, 1.0)
-        ..rotateZ(widget.piece.rotation.degrees() * (3.141592653589793 / 180)),
-      child: SizedBox(
-          height: widget.piece.maxY * PlayingPieceWidget.width,
-          width: widget.piece.maxX * PlayingPieceWidget.width,
-          child: _createPieceWidget(widget.piece)),
+    double translateX = _determineNeededXTranslation(widget.piece);
+    double translateY = _determineNeededYTranslation(widget.piece);
+    final pieceWidget = Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+      ),
+      child: IntrinsicWidth(
+        child: IntrinsicHeight(
+          child: Transform(
+            alignment: Alignment.center,
+            // transform: Matrix4.identity()
+            //   ..scale(widget.piece.mirrored ? -1.0 : 1.0, 1.0, 1.0)
+            //   ..rotateZ(
+            //       widget.piece.rotation.degrees() * (3.141592653589793 / 180)),
+            transform: Matrix4.identity()
+              ..rotateY(
+                  widget.piece.mirrored ? 180 * (3.141592653589793 / 180) : 0)
+              ..rotateZ(
+                  widget.piece.rotation.degrees() * (3.141592653589793 / 180))
+              ..translate(translateX, translateY),
+            child: SizedBox(
+                height: widget.piece.maxY * PlayingPieceWidget.width,
+                width: widget.piece.maxX * PlayingPieceWidget.width,
+                child: _createPieceWidget(widget.piece)),
+          ),
+        ),
+      ),
     );
+
+    if (widget.piece.isPlaced) {
+      return pieceWidget;
+    }
 
     return Draggable(
       feedback: Transform.rotate(
@@ -97,6 +119,7 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
   }
 
   void _handleTap() {
+    if (widget.piece.isPlaced) return;
     print('item was tapped we should be rotating');
 
     setState(() {
@@ -105,11 +128,70 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
   }
 
   void _handleDoubleTap() {
+    if (widget.piece.isPlaced) return;
     print('item was double tapped we should be mirroring');
 
     setState(() {
       widget.piece.mirror();
     });
+  }
+
+  double _determineNeededXTranslation(PlayingPiece piece) {
+    if (piece.isSquare()) {
+      return 0.0;
+    }
+
+    double offset = (piece.maxY - piece.maxX) * PlayingPieceWidget.width / 2;
+    if (piece.mirrored) {
+      switch (piece.rotation) {
+        case Rotation.R0:
+        case Rotation.R180:
+          return 0.0;
+        case Rotation.R90:
+          return -offset;
+        case Rotation.R270:
+          return offset;
+      }
+    } else {
+      switch (piece.rotation) {
+        case Rotation.R0:
+        case Rotation.R180:
+          return 0.0;
+        case Rotation.R90:
+          return -offset;
+        case Rotation.R270:
+          return offset;
+      }
+    }
+  }
+
+  double _determineNeededYTranslation(PlayingPiece piece) {
+    if (piece.isSquare()) {
+      return 0.0;
+    }
+
+    double offset = (piece.maxY - piece.maxX) * PlayingPieceWidget.width / 2;
+    if (piece.mirrored) {
+      switch (piece.rotation) {
+        case Rotation.R0:
+        case Rotation.R180:
+          return 0.0;
+        case Rotation.R90:
+          return offset;
+        case Rotation.R270:
+          return -offset;
+      }
+    } else {
+      switch (piece.rotation) {
+        case Rotation.R0:
+        case Rotation.R180:
+          return 0.0;
+        case Rotation.R90:
+          return -offset;
+        case Rotation.R270:
+          return offset;
+      }
+    }
   }
 }
 
