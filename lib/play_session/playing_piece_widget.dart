@@ -99,7 +99,6 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
       onTap: _handleTap,
       onSecondaryTap: _handleDoubleTap,
       onLongPressDown: (details) {
-        print('Draggable longPress down at ($row, $col)');
         widget.piece.setHandledNodeCoordinate(row, col);
       },
       child: !isNode
@@ -123,7 +122,6 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
 
   void _handleTap() {
     if (widget.piece.isPlaced) return;
-    print('item was tapped we should be rotating');
 
     setState(() {
       widget.piece.rotatePositive90();
@@ -132,69 +130,9 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
 
   void _handleDoubleTap() {
     if (widget.piece.isPlaced) return;
-    print('item was double tapped we should be mirroring');
-
     setState(() {
       widget.piece.mirror();
     });
-  }
-
-  double _determineNeededXTranslation(PlayingPiece piece) {
-    if (piece.isSquare()) {
-      return 0.0;
-    }
-
-    double offset = (piece.maxY - piece.maxX) * PlayingPieceWidget.width / 2;
-    if (piece.mirrored) {
-      switch (piece.rotation) {
-        case Rotation.R0:
-        case Rotation.R180:
-          return 0.0;
-        case Rotation.R90:
-          return -offset;
-        case Rotation.R270:
-          return offset;
-      }
-    } else {
-      switch (piece.rotation) {
-        case Rotation.R0:
-        case Rotation.R180:
-          return 0.0;
-        case Rotation.R90:
-          return -offset;
-        case Rotation.R270:
-          return offset;
-      }
-    }
-  }
-
-  double _determineNeededYTranslation(PlayingPiece piece) {
-    if (piece.isSquare()) {
-      return 0.0;
-    }
-
-    double offset = (piece.maxY - piece.maxX) * PlayingPieceWidget.width / 2;
-    if (piece.mirrored) {
-      switch (piece.rotation) {
-        case Rotation.R0:
-        case Rotation.R180:
-          return 0.0;
-        case Rotation.R90:
-          return offset;
-        case Rotation.R270:
-          return -offset;
-      }
-    } else {
-      switch (piece.rotation) {
-        case Rotation.R0:
-        case Rotation.R180:
-          return 0.0;
-        case Rotation.R90:
-          return -offset;
-        case Rotation.R270:
-          return offset;
-      }
-    }
   }
 }
 

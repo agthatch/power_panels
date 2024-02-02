@@ -53,8 +53,6 @@ class _PanelNodeWidgetState extends State<PanelNodeWidget> {
     }
   }
 
-  void _onAreaTap() {}
-
   void _onDragAccept(DragTargetDetails<PlayingPieceDragData> details) {
     details.data.holder?.removePiece(details.data.piece);
     widget.panel.handlePiecePlacement(details.data.piece, widget.x, widget.y);

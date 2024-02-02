@@ -38,7 +38,6 @@ class Panel {
   Stream<void> get remoteChanges => _remoteChanges.stream;
 
   handlePieceHovering(PlayingPiece piece, int x, int y) {
-    print('handling piece hovering for node $x, $y');
     clearAllHighlights();
 
     List<PanelNode> targetNodes = extractValidTargetNodes(piece, x, y);
@@ -54,7 +53,6 @@ class Panel {
   }
 
   handlePiecePlacement(PlayingPiece piece, int x, int y) {
-    print("handling PiecePlacement $x, $y");
     placedPieces
         .add(PlacedPiece.create(piece: piece, x: x, y: y, accepted: true));
     clearAllHighlights();
@@ -106,25 +104,6 @@ class Panel {
     }
     return targetNodes;
   }
-}
-
-List<XYCoordinate> _determineOffsetsToTest(PlayingPiece piece) {
-  List<XYCoordinate> testOffsets = [];
-  if (piece.handledNodeCoordinate != null) {
-    for (XYCoordinate coordinate in piece.nodes) {
-      testOffsets
-          .add(coordinate.negativeOffsetBy(piece.handledNodeCoordinate!));
-    }
-  }
-
-  for (XYCoordinate offset in testOffsets) {
-    offset.rotate(piece.rotation);
-    if (piece.mirrored) {
-      offset.mirrorXDirection();
-    }
-  }
-
-  return testOffsets;
 }
 
 List<XYCoordinate> _determineOffsetsToTestFromShape(PlayingPiece piece) {

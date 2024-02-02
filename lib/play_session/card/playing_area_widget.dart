@@ -46,7 +46,7 @@ class _PlayingAreaWidgetState extends State<PlayingAreaWidget> {
                   // (either by a player action, or remotely).
                   stream: widget.area.allChanges,
                   builder: (context, child) =>
-                      _CardStack._PieceStack(widget.area.pieces),
+                      _CardStack._pieceStack(widget.area.pieces),
                 ),
               ),
             ),
@@ -96,7 +96,7 @@ class _CardStack extends StatelessWidget {
 
   final List<PlayingPiece> pieces;
 
-  const _CardStack._PieceStack(this.pieces);
+  const _CardStack._pieceStack(this.pieces);
 
   @override
   Widget build(BuildContext context) {

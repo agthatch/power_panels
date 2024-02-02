@@ -22,12 +22,10 @@ class PlacedPiece {
 
     piece.isPlaced = accepted;
 
-    print(
-        "offsetFromClickedNodeToTopLeftCorner $offsetFromClickedNodeToTopLeftCorner");
     XYCoordinate pieceLocation = XYCoordinate(x: x, y: y);
     pieceLocation =
         pieceLocation.offsetBy(offsetFromClickedNodeToTopLeftCorner);
-    print("AGT: top Left Piece Location: $pieceLocation");
+
     return PlacedPiece(
         piece: piece, location: pieceLocation, accepted: accepted);
   }

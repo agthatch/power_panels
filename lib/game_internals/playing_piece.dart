@@ -89,44 +89,6 @@ class PlayingPiece {
         .negativeOffsetBy(handledNodeCoordinate ?? XYCoordinate(x: 0, y: 0));
   }
 
-  XYCoordinate _getTopLeftCoordinateAfterRotationAndMirroring() {
-    if (!mirrored) {
-      switch (rotation) {
-        case Rotation.R0:
-          return XYCoordinate(x: 0, y: 0);
-        case Rotation.R90:
-          return XYCoordinate(x: -(maxY - 1), y: 0);
-        case Rotation.R180:
-          return XYCoordinate(x: -(maxX - 1), y: -(maxY - 1));
-        case Rotation.R270:
-          return XYCoordinate(x: 0, y: -(maxX - 1));
-      }
-    } else {
-      switch (rotation) {
-        case Rotation.R0:
-          return XYCoordinate(x: -(maxX - 1), y: 0);
-        case Rotation.R90:
-          return XYCoordinate(x: -(maxY - 1), y: 0);
-        case Rotation.R180:
-          return XYCoordinate(x: 0, y: -(maxY - 1));
-        case Rotation.R270:
-          return XYCoordinate(x: -(maxY - 1), y: -(maxX - 1));
-      }
-    }
-  }
-
-  XYCoordinate? _getHandledCoordinateAfterRotationAndMirroring() {
-    if (mirrored) {
-      return handledNodeCoordinate?.rotateCopy(rotation).mirrorXDirection();
-    } else {
-      return handledNodeCoordinate?.rotateCopy(rotation);
-    }
-  }
-
-  bool isSquare() {
-    return maxX == maxY;
-  }
-
   int currentMaxX() {
     return currentShape[0].length;
   }
