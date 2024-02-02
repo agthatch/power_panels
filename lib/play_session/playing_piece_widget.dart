@@ -22,34 +22,14 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
   @override
   Widget build(BuildContext context) {
     // final palette = context.watch<Palette>();
-    double translateX = _determineNeededXTranslation(widget.piece);
-    double translateY = _determineNeededYTranslation(widget.piece);
-    final pieceWidget = Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-      ),
-      child: IntrinsicWidth(
-        child: IntrinsicHeight(
-          child: Transform(
-            alignment: Alignment.center,
-            // transform: Matrix4.identity()
-            //   ..scale(widget.piece.mirrored ? -1.0 : 1.0, 1.0, 1.0)
-            //   ..rotateZ(
-            //       widget.piece.rotation.degrees() * (3.141592653589793 / 180)),
-            transform: Matrix4.identity()
-              ..rotateY(
-                  widget.piece.mirrored ? 180 * (3.141592653589793 / 180) : 0)
-              ..rotateZ(
-                  widget.piece.rotation.degrees() * (3.141592653589793 / 180))
-              ..translate(translateX, translateY),
-            child: SizedBox(
-                height: widget.piece.maxY * PlayingPieceWidget.width,
-                width: widget.piece.maxX * PlayingPieceWidget.width,
-                child: _createPieceWidget(widget.piece)),
-          ),
-        ),
-      ),
-    );
+    final pieceWidget = StreamBuilder(
+        stream: widget.piece.playerChanges,
+        builder: (context, child) {
+          return SizedBox(
+              height: determineSizedBoxHeight(widget.piece),
+              width: determineSizedBoxWidth(widget.piece),
+              child: _createPieceWidget(widget.piece));
+        });
 
     if (widget.piece.isPlaced) {
       return pieceWidget;
@@ -77,32 +57,55 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
     );
   }
 
-  Widget _createPieceWidget(PlayingPiece piece) {
-    return GestureDetector(
-      onTap: _handleTap,
-      onSecondaryTap: _handleDoubleTap,
-      child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: piece.maxX),
-          itemCount: piece.maxX * piece.maxY,
-          itemBuilder: (BuildContext context, int index) {
-            int row = (index / piece.maxX).floor();
-            int col = index % piece.maxX;
+  double determineSizedBoxHeight(PlayingPiece piece) {
+    switch (piece.rotation) {
+      case Rotation.R0:
+      case Rotation.R180:
+        return piece.maxY * PlayingPieceWidget.width;
+      case Rotation.R90:
+      case Rotation.R270:
+        return piece.maxX * PlayingPieceWidget.width;
+    }
+  }
 
-            bool isNode = piece.shape[row][col];
-            return _createNodeWidget(row, col, isNode);
-          }),
-    );
+  double determineSizedBoxWidth(PlayingPiece piece) {
+    switch (piece.rotation) {
+      case Rotation.R0:
+      case Rotation.R180:
+        return piece.maxX * PlayingPieceWidget.width;
+      case Rotation.R90:
+      case Rotation.R270:
+        return piece.maxY * PlayingPieceWidget.width;
+    }
+  }
+
+  Widget _createPieceWidget(PlayingPiece piece) {
+    return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: piece.currentMaxX()),
+        itemCount: piece.maxX * piece.maxY,
+        itemBuilder: (BuildContext context, int index) {
+          int maxX = piece.currentMaxX();
+          int row = (index / maxX).floor();
+          int col = index % maxX;
+
+          bool isNode = piece.currentShape[row][col];
+          return _createNodeWidget(row, col, isNode);
+        });
   }
 
   Widget _createNodeWidget(int row, int col, bool isNode) {
     return GestureDetector(
+      onTap: _handleTap,
+      onSecondaryTap: _handleDoubleTap,
       onLongPressDown: (details) {
         print('Draggable longPress down at ($row, $col)');
         widget.piece.setHandledNodeCoordinate(row, col);
       },
       child: !isNode
           ? Container(
+              height: PlayingPieceWidget.width,
+              width: PlayingPieceWidget.width,
               color: Color.fromRGBO(0, 0, 0, 0),
             )
           : SizedBox(

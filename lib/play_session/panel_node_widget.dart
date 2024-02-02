@@ -29,15 +29,11 @@ class _PanelNodeWidgetState extends State<PanelNodeWidget> {
         width: PlayingPieceWidget.width,
         child: Material(
             clipBehavior: Clip.hardEdge,
-            child: StreamBuilder(
-                // Rebuild the card stack whenever the area changes
-                // (either by a player action, or remotely).
-                stream: widget.panel.allChanges,
-                builder: (context, child) => Container(
-                        decoration: BoxDecoration(
-                      color: determineColor(node, palette),
-                      border: Border.all(color: Color.fromRGBO(0, 0, 0, 0.288)),
-                    )))),
+            child: Container(
+                decoration: BoxDecoration(
+              color: determineColor(node, palette),
+              border: Border.all(color: Color.fromRGBO(0, 0, 0, 0.288)),
+            ))),
       ),
       onWillAcceptWithDetails: _onDragWillAccept,
       onLeave: _onDragLeave,

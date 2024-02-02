@@ -87,7 +87,7 @@ class Panel {
   }
 
   List<PanelNode> extractValidTargetNodes(PlayingPiece piece, int x, int y) {
-    List<XYCoordinate> offsetsToTest = _determineOffsetsToTest(piece);
+    List<XYCoordinate> offsetsToTest = _determineOffsetsToTestFromShape(piece);
 
     XYCoordinate focussedNode = XYCoordinate(x: x, y: y);
     List<PanelNode> targetNodes = [];
@@ -121,6 +121,18 @@ List<XYCoordinate> _determineOffsetsToTest(PlayingPiece piece) {
     offset.rotate(piece.rotation);
     if (piece.mirrored) {
       offset.mirrorXDirection();
+    }
+  }
+
+  return testOffsets;
+}
+
+List<XYCoordinate> _determineOffsetsToTestFromShape(PlayingPiece piece) {
+  List<XYCoordinate> testOffsets = [];
+  if (piece.handledNodeCoordinate != null) {
+    for (XYCoordinate coordinate in piece.nodes) {
+      testOffsets
+          .add(coordinate.negativeOffsetBy(piece.handledNodeCoordinate!));
     }
   }
 

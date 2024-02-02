@@ -75,22 +75,11 @@ class FrameWidget extends StatelessWidget {
 
   List<Widget> _generatePlacedPieceWidgets(Panel panel, BuildContext context) {
     return panel.placedPieces.map((placedPiece) {
-      switch (placedPiece.piece.rotation) {
-        case Rotation.R0:
-        case Rotation.R180:
-          return Positioned(
-            top: placedPiece.location.y * PlayingPieceWidget.width,
-            left: placedPiece.location.x * PlayingPieceWidget.width,
-            child: PlayingPieceWidget(placedPiece.piece),
-          );
-        case Rotation.R90:
-        case Rotation.R270:
-          return Positioned(
-            top: placedPiece.location.y * PlayingPieceWidget.width,
-            left: placedPiece.location.x * PlayingPieceWidget.width,
-            child: PlayingPieceWidget(placedPiece.piece),
-          );
-      }
+      return Positioned(
+        top: placedPiece.location.y * PlayingPieceWidget.width,
+        left: placedPiece.location.x * PlayingPieceWidget.width,
+        child: IgnorePointer(child: PlayingPieceWidget(placedPiece.piece)),
+      );
     }).toList();
   }
 }

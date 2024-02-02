@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:card/game_internals/piece_shapes.dart';
+import 'package:card/game_internals/array_transformer.dart';
 import 'package:card/game_internals/rotation.dart';
 import 'package:card/game_internals/xy_coordinate.dart';
 
 class PlayingPiece {
-  final List<List<bool>> shape;
-  final List<XYCoordinate> nodes;
+  final List<List<bool>> originalShape;
+  late List<List<bool>> currentShape;
+  List<XYCoordinate> nodes;
   final int maxX;
   final int maxY;
   bool mirrored = false;
@@ -12,9 +16,15 @@ class PlayingPiece {
   Rotation rotation = Rotation.R0;
   XYCoordinate? handledNodeCoordinate;
 
-  PlayingPiece(this.shape, this.nodes, this.maxX, this.maxY) {
+  final StreamController<void> _playerChanges =
+      StreamController<void>.broadcast();
+
+  Stream<void> get playerChanges => _playerChanges.stream;
+
+  PlayingPiece(this.originalShape, this.nodes, this.maxX, this.maxY) {
     mirrored = false;
     rotation = Rotation.R0;
+    currentShape = originalShape;
   }
 
   factory PlayingPiece.fromShape(List<List<int>> input) {
@@ -46,15 +56,28 @@ class PlayingPiece {
   }
 
   void rotatePositive90() {
-    // for (XYCoordinate node in nodes) {
-    //   node.rotatePositive90();
-    // }
-
+    currentShape = ArrayTransformer.rotateShapeClockwise(currentShape);
+    updateNodesBasedOnShape(currentShape);
     rotation = rotation.rotatePositive90();
+    _playerChanges.add(null);
   }
 
   void mirror() {
+    currentShape = ArrayTransformer.mirrorAboutX(currentShape);
+    updateNodesBasedOnShape(currentShape);
     mirrored = !mirrored;
+    _playerChanges.add(null);
+  }
+
+  void updateNodesBasedOnShape(List<List<bool>> shape) {
+    nodes = [];
+    for (int i = 0; i < shape.length; i++) {
+      for (int j = 0; j < shape[0].length; j++) {
+        if (shape[i][j]) {
+          nodes.add(XYCoordinate(x: j, y: i));
+        }
+      }
+    }
   }
 
   void setHandledNodeCoordinate(int row, int col) {
@@ -62,19 +85,8 @@ class PlayingPiece {
   }
 
   XYCoordinate getOffsetFromClickedNodeToTopLeftCorner() {
-    //Find the piece node that will be in the top left corner after rotation and mirroring
-    XYCoordinate topLeftWhenTransformed =
-        _getTopLeftCoordinateAfterRotationAndMirroring();
-    print("topLeftWhenTransformed $topLeftWhenTransformed");
-
-    //2- translate the x and y coordinates to the agree with handledNodeCoordinate
-    XYCoordinate? handledCoordinateTranformed =
-        _getHandledCoordinateAfterRotationAndMirroring();
-
-    print("handledCoordinateTranformed $handledCoordinateTranformed");
-    return topLeftWhenTransformed.negativeOffsetBy(
-        handledCoordinateTranformed ?? XYCoordinate(x: 0, y: 0));
-    //3- save the new x,y coordinates in `location`
+    return XYCoordinate(x: 0, y: 0)
+        .negativeOffsetBy(handledNodeCoordinate ?? XYCoordinate(x: 0, y: 0));
   }
 
   XYCoordinate _getTopLeftCoordinateAfterRotationAndMirroring() {
@@ -115,5 +127,7 @@ class PlayingPiece {
     return maxX == maxY;
   }
 
-  // int rotatedWidth() {}
+  int currentMaxX() {
+    return currentShape[0].length;
+  }
 }
