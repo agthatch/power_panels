@@ -1,16 +1,16 @@
 import 'dart:async';
 
-import 'package:card/game_internals/piece_shapes.dart';
 import 'package:card/game_internals/array_transformer.dart';
+import 'package:card/game_internals/piece_data.dart';
 import 'package:card/game_internals/rotation.dart';
 import 'package:card/game_internals/xy_coordinate.dart';
 
 class PlayingPiece {
-  final List<List<bool>> originalShape;
+  final Shape shape;
   late List<List<bool>> currentShape;
-  List<XYCoordinate> nodes;
-  final int maxX;
-  final int maxY;
+  late List<XYCoordinate> nodes;
+  late final int maxX;
+  late final int maxY;
   bool mirrored = false;
   bool isPlaced = false;
   Rotation rotation = Rotation.R0;
@@ -21,37 +21,24 @@ class PlayingPiece {
 
   Stream<void> get playerChanges => _playerChanges.stream;
 
-  PlayingPiece(this.originalShape, this.nodes, this.maxX, this.maxY) {
+  PlayingPiece(this.shape) {
     mirrored = false;
     rotation = Rotation.R0;
-    currentShape = originalShape;
+    maxX = shape.maxX();
+    maxY = shape.maxY();
+    currentShape = shape.asBools();
+    nodes = shape.getNodes();
   }
 
-  factory PlayingPiece.fromShape(List<List<int>> input) {
-    List<XYCoordinate> nodes = [];
-    List<List<bool>> shape = [];
-    int y = 0;
-    int x = 0;
-    for (y = 0; y < input.length; y++) {
-      List<bool> row = [];
-      for (x = 0; x < input[y].length; x++) {
-        bool isNode = input[y][x] == 1;
-        row.add(isNode);
-        if (isNode) {
-          nodes.add(XYCoordinate(x: x, y: y));
-        }
-      }
-      shape.add(row);
-    }
-
-    return PlayingPiece(shape, nodes, x, y);
+  factory PlayingPiece.fromShape(Shape shape) {
+    return PlayingPiece(shape);
   }
 
   int get size => nodes.length;
 
   static PlayingPiece generate(int index) {
     return PlayingPiece.fromShape(
-        Shapes.allShapes[index % Shapes.allShapes.length]);
+        Shape.allShapes[index % Shape.allShapes.length]);
     // Shapes.allShapes[5]);
   }
 

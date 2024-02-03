@@ -2,6 +2,7 @@ import 'package:card/audio/audio_controller.dart';
 import 'package:card/audio/sounds.dart';
 import 'package:card/game_internals/card/player.dart';
 import 'package:card/game_internals/rotation.dart';
+import 'package:card/play_session/piece_color_getter.dart';
 import '../game_internals/playing_piece.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -112,7 +113,7 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
               width: PlayingPieceWidget.width,
               child: Container(
                   decoration: BoxDecoration(
-                color: Color.fromRGBO(51, 255, 0, 1),
+                color: PieceColorGetter.get(widget.piece.shape, context),
                 border: Border.all(color: Color.fromRGBO(0, 0, 0, 1)),
                 borderRadius: BorderRadius.circular(3),
               )),

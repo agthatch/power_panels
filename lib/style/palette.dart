@@ -35,4 +35,14 @@ class Palette {
   Color get background4 => const Color(0xffffffd1);
   Color get backgroundSettings => const Color(0xffbfc8e3);
   Color get trueWhite => const Color(0xffffffff);
+
+  Color get pieceSingle => Color.fromRGBO(255, 0, 0, 1);
+  Color get pieceLine2 => Color.fromRGBO(255, 255, 0, 1);
+  Color get pieceLine3 => Color.fromRGBO(255, 0, 255, 1);
+  Color get pieceCorner => Color.fromRGBO(0, 255, 0, 1);
+  Color get pieceSquare => Color.fromRGBO(81, 90, 90, 1);
+  Color get pieceT => Color.fromRGBO(0, 0, 255, 1);
+  Color get pieceZ => Color.fromRGBO(208, 0, 255, 1);
+  Color get pieceL => Color.fromRGBO(255, 119, 0, 1);
+  Color get pieceLine4 => Color.fromRGBO(0, 204, 255, 1);
 }
