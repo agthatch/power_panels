@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:card/game_internals/panel/panel_node.dart';
-import 'package:card/game_internals/placed_piece.dart';
-import 'package:card/game_internals/playing_piece.dart';
+import 'package:card/game_internals/piece/placed_piece.dart';
+import 'package:card/game_internals/piece/playing_piece.dart';
 import 'package:card/game_internals/xy_coordinate.dart';
 
 class Panel {

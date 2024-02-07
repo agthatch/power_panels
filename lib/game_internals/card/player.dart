@@ -1,4 +1,4 @@
-import 'package:card/game_internals/playing_piece.dart';
+import 'package:card/game_internals/piece/playing_piece.dart';
 import 'package:flutter/foundation.dart';
 
 class Player extends ChangeNotifier {

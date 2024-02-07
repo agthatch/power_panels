@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:async/async.dart';
-import 'package:card/game_internals/playing_piece.dart';
+import 'package:card/game_internals/piece/playing_piece.dart';
 
 class PlayingArea {
   /// The maximum number of cards in this playing area.

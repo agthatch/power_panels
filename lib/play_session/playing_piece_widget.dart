@@ -3,7 +3,7 @@ import 'package:card/audio/sounds.dart';
 import 'package:card/game_internals/card/player.dart';
 import 'package:card/game_internals/rotation.dart';
 import 'package:card/play_session/piece_color_getter.dart';
-import '../game_internals/playing_piece.dart';
+import '../game_internals/piece/playing_piece.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

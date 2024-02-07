@@ -1,4 +1,4 @@
-import 'package:card/game_internals/piece_data.dart';
+import 'package:card/game_internals/piece/piece_data.dart';
 import 'package:card/style/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

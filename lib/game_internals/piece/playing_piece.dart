@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:card/game_internals/array_transformer.dart';
-import 'package:card/game_internals/piece_data.dart';
+import 'package:card/game_internals/piece/array_transformer.dart';
+import 'package:card/game_internals/piece/piece_data.dart';
 import 'package:card/game_internals/rotation.dart';
 import 'package:card/game_internals/xy_coordinate.dart';
 

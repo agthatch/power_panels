@@ -10,6 +10,15 @@ import 'player.dart';
 class BoardState {
   final VoidCallback onWin;
 
+  /// *What do we need in the boardState?
+  /// We need the blueprint piles
+  /// We need active panels
+  /// We need active puzzles
+  /// We need the toolbox (player hand, avaialble pieces)
+  /// We also need the currently generated number
+  /// We need the target numbers
+  /// We need day number (round)
+
   final Panel panelOne = Panel(dimX: 5, dimY: 2);
 
   final Panel panelTwo = Panel(dimX: 6, dimY: 6);

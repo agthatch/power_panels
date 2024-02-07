@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:card/game_internals/playing_piece.dart';
+import 'package:card/game_internals/piece/playing_piece.dart';
 import 'package:card/play_session/playing_piece_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
