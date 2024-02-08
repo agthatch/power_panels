@@ -2,7 +2,12 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:card/game_internals/blueprint/blueprint.dart';
+import 'package:card/game_internals/blueprint/blueprint_builder.dart';
 import 'package:card/game_internals/panel/panel.dart';
+import 'package:card/game_internals/piece/piece_data.dart';
+import 'package:card/game_internals/piece/placed_piece_builder.dart';
+import 'package:card/game_internals/rotation.dart';
 import 'package:flutter/foundation.dart';
 
 import 'player.dart';
@@ -19,6 +24,19 @@ class BoardState {
   /// We need the target numbers
   /// We need day number (round)
 
+  final Blueprint blueprintOne = BlueprintBuilder()
+      .withGenerationValue(3)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.L)
+          .withLocation(x: 2, y: 1)
+          .withRotation(Rotation.R270)
+          .withMirrored(true)
+          .build())
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.square)
+          .withLocation(x: 0, y: 0)
+          .build())
+      .build();
   final Panel panelOne = Panel(dimX: 5, dimY: 2);
 
   final Panel panelTwo = Panel(dimX: 6, dimY: 6);

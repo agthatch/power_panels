@@ -79,4 +79,22 @@ class PlayingPiece {
   int currentMaxX() {
     return currentShape[0].length;
   }
+
+  void rotate(Rotation rotation) {
+    int timesToRotatePositive90 = 0;
+    switch (rotation) {
+      case Rotation.R0:
+        timesToRotatePositive90 = 0;
+      case Rotation.R90:
+        timesToRotatePositive90 = 1;
+      case Rotation.R180:
+        timesToRotatePositive90 = 2;
+      case Rotation.R270:
+        timesToRotatePositive90 = 3;
+    }
+
+    for (int i = 0; i < timesToRotatePositive90; i++) {
+      rotatePositive90();
+    }
+  }
 }

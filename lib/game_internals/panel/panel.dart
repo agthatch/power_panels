@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:async/async.dart';
+import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/panel/panel_node.dart';
 import 'package:card/game_internals/piece/placed_piece.dart';
 import 'package:card/game_internals/piece/playing_piece.dart';
@@ -17,6 +18,13 @@ class Panel {
 
   Panel({required this.dimX, required this.dimY}) {
     nodes = List.generate(dimX, (i) => List.generate(dimY, (j) => PanelNode()));
+  }
+
+  static Panel fromBlueprint(Blueprint blueprint) {
+    Panel res = Panel(dimX: blueprint.xDim, dimY: blueprint.yDim);
+    res.placedPieces = blueprint.preFitPieces;
+
+    return res;
   }
 
   final StreamController<void> _playerChanges =

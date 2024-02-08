@@ -15,9 +15,15 @@ class PlacedPieceBuilder {
 
   PlacedPiece build() {
     PlayingPiece piece = PlayingPiece.fromShape(shape);
+    piece.rotate(rotation);
     piece.mirrored = mirrored;
+    if (mirrored) {
+      piece.mirror();
+    }
+
     piece.isPlaced = isPlaced;
-    piece.rotation = rotation;
+
+    ///We need to transform the piece based on these settings here in the build
     return PlacedPiece(piece: piece, location: location, accepted: accepted);
   }
 

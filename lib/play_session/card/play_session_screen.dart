@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:card/game_internals/card/board_state.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
@@ -11,12 +12,11 @@ import 'package:provider/provider.dart';
 
 import '../../audio/audio_controller.dart';
 import '../../audio/sounds.dart';
-import '../../game_internals/card/board_state.dart';
 import '../../game_internals/card/score.dart';
 import '../../style/confetti.dart';
 import '../../style/my_button.dart';
 import '../../style/palette.dart';
-import 'board_widget.dart';
+import '../board_widget.dart';
 
 /// This widget defines the entirety of the screen that the player sees when
 /// they are playing a level.
