@@ -17,7 +17,7 @@ class _BlueprintWidgetState extends State<BlueprintWidget> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 10.0,
-      child: Container(
+      child: SizedBox(
         width: 200,
         height: 200,
         child: Column(
