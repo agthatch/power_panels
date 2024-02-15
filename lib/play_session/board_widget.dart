@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/play_session/blueprint/blueprint_widget.dart';
 import 'package:card/play_session/panel_widget.dart';
@@ -34,10 +35,8 @@ class _BoardWidgetState extends State<BoardWidget> {
             alignment: WrapAlignment.center,
             spacing: 20,
             runSpacing: 20,
-            children: [
-              BlueprintWidget(blueprint: boardState.blueprintOne),
-              Text("temp"),
-            ],
+            children: _blueprintWidgets(
+                boardState.easyBlueprints.getNextBlueprints(4)),
           ),
         ),
         Padding(
@@ -55,5 +54,9 @@ class _BoardWidgetState extends State<BoardWidget> {
         PlayerHandWidget(),
       ],
     );
+  }
+
+  List<Widget> _blueprintWidgets(List<Blueprint> nextBlueprints) {
+    return nextBlueprints.map((e) => BlueprintWidget(blueprint: e)).toList();
   }
 }

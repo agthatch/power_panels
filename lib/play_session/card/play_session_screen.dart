@@ -4,7 +4,13 @@
 
 import 'dart:async';
 
+import 'package:card/game_internals/blueprint/blueprint_builder.dart';
+import 'package:card/game_internals/blueprint/blueprint_provider.dart';
+import 'package:card/game_internals/blueprint/prefab_blueprint_provider.dart';
 import 'package:card/game_internals/card/board_state.dart';
+import 'package:card/game_internals/piece/piece_data.dart';
+import 'package:card/game_internals/piece/placed_piece_builder.dart';
+import 'package:card/game_internals/rotation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
@@ -80,7 +86,6 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                   const Spacer(),
                   // The actual UI of the game.
                   BoardWidget(),
-                  Text("Drag cards to the two areas above."),
                   const Spacer(),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -118,7 +123,10 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
   void initState() {
     super.initState();
     _startOfPlay = DateTime.now();
-    _boardState = BoardState(onWin: _playerWon);
+    _boardState = BoardState(
+        onWin: _playerWon,
+        easyBlueprints: _easyBlueprints(),
+        hardBlueprints: _hardBlueprints());
   }
 
   Future<void> _playerWon() async {
@@ -147,4 +155,86 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
 
     GoRouter.of(context).go('/play/won', extra: {'score': score});
   }
+}
+
+BlueprintProvider _hardBlueprints() {
+  PrefabBlueprintProvider provider = PrefabBlueprintProvider();
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(4)
+      .withYDim(5)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.T)
+          .withRotation(Rotation.R270)
+          .withLocation(x: 1, y: 0)
+          .build()));
+
+  return provider;
+}
+
+BlueprintProvider _easyBlueprints() {
+  PrefabBlueprintProvider provider = PrefabBlueprintProvider();
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(4)
+      .withYDim(5)
+      .withGenerationValue(3)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.L)
+          .withRotation(Rotation.R90)
+          .withMirrored(false)
+          .withLocation(x: 0, y: 0)
+          .build())
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.square)
+          .withRotation(Rotation.R0)
+          .withMirrored(false)
+          .withLocation(x: 2, y: 3)
+          .build()));
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(3)
+      .withYDim(3)
+      .withGenerationValue(1)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.corner)
+          .withRotation(Rotation.R0)
+          .withMirrored(false)
+          .withLocation(x: 1, y: 1)
+          .build()));
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(3)
+      .withYDim(3)
+      .withGenerationValue(1)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.lineTwo)
+          .withRotation(Rotation.R0)
+          .withMirrored(false)
+          .withLocation(x: 1, y: 1)
+          .build()));
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(3)
+      .withYDim(3)
+      .withGenerationValue(1)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.single)
+          .withRotation(Rotation.R0)
+          .withMirrored(false)
+          .withLocation(x: 2, y: 2)
+          .build()));
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(3)
+      .withYDim(3)
+      .withGenerationValue(1)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.square)
+          .withRotation(Rotation.R0)
+          .withMirrored(false)
+          .withLocation(x: 1, y: 1)
+          .build()));
+
+  return provider;
 }
