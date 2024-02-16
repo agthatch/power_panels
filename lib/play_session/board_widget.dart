@@ -30,13 +30,17 @@ class _BoardWidgetState extends State<BoardWidget> {
       children: [
         Padding(
           padding: const EdgeInsets.all(10),
-          child: Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 20,
-            runSpacing: 20,
-            children: _blueprintWidgets(
-                boardState.easyBlueprints.getNextBlueprints(4)),
-          ),
+          child: StreamBuilder(
+              stream: boardState.easyBlueprints.getChangeStream(),
+              builder: (context, child) {
+                return Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 20,
+                  runSpacing: 20,
+                  children: _blueprintWidgets(
+                      boardState.easyBlueprints.getNextBlueprints(4)),
+                );
+              }),
         ),
         Padding(
           padding: const EdgeInsets.all(10),
