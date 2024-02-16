@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/blueprint/blueprint_provider.dart';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/play_session/assembly/assembly_bay.dart';
@@ -51,5 +52,16 @@ class BoardState {
     if (player.hand.isEmpty) {
       onWin();
     }
+  }
+
+  bool canAddPuzzle() {
+    return assemblyBay.hasOpenBay();
+  }
+
+  void purchaseBlueprint(Blueprint blueprint) {
+    easyBlueprints.removeBlueprint(blueprint);
+    hardBlueprints.removeBlueprint(blueprint);
+
+    assemblyBay.addPuzzle(blueprint);
   }
 }

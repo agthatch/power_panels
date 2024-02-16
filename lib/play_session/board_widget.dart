@@ -5,7 +5,6 @@
 import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/play_session/blueprint/blueprint_widget.dart';
-import 'package:card/play_session/panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,12 +40,16 @@ class _BoardWidgetState extends State<BoardWidget> {
         ),
         Padding(
           padding: const EdgeInsets.all(10),
-          child: Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 20,
-            runSpacing: 20,
-            children: [...boardState.assemblyBay.getWidgets()],
-          ),
+          child: StreamBuilder(
+              stream: boardState.assemblyBay.playerChanges,
+              builder: (context, child) {
+                return Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 20,
+                  runSpacing: 20,
+                  children: [...boardState.assemblyBay.getWidgets()],
+                );
+              }),
         ),
         PlayerHandWidget(),
       ],

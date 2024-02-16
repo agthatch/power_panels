@@ -1,7 +1,9 @@
 import 'package:card/game_internals/blueprint/blueprint.dart';
+import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/play_session/panel_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BlueprintWidget extends StatefulWidget {
   final Blueprint blueprint;
@@ -15,6 +17,8 @@ class BlueprintWidget extends StatefulWidget {
 class _BlueprintWidgetState extends State<BlueprintWidget> {
   @override
   Widget build(BuildContext context) {
+    final boardState = context.watch<BoardState>();
+
     return Card(
       elevation: 10.0,
       child: SizedBox(
@@ -24,14 +28,7 @@ class _BlueprintWidgetState extends State<BlueprintWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Top section with text
-            Container(
-              color: Colors.grey,
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                'Blueprint',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
+            _createTopSection(boardState),
             // Middle section with blue container
             Expanded(
               child: Stack(
@@ -58,5 +55,27 @@ class _BlueprintWidgetState extends State<BlueprintWidget> {
         ),
       ),
     );
+  }
+
+  Widget _createTopSection(BoardState boardState) {
+    return Row(children: [
+      Text(
+        'Blueprint',
+        style: TextStyle(fontSize: 20.0),
+      ),
+      Expanded(
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: boardState.canAddPuzzle()
+                ? () {
+                    boardState.purchaseBlueprint(widget.blueprint);
+                  }
+                : null,
+            child: Text('Purchase'), // Button text
+          ),
+        ),
+      ),
+    ]);
   }
 }
