@@ -45,10 +45,7 @@ class _BoardWidgetState extends State<BoardWidget> {
             alignment: WrapAlignment.center,
             spacing: 20,
             runSpacing: 20,
-            children: [
-              PanelWidget(panel: boardState.panelOne),
-              PanelWidget(panel: boardState.panelTwo),
-            ],
+            children: [...boardState.assemblyBay.getWidgets()],
           ),
         ),
         PlayerHandWidget(),

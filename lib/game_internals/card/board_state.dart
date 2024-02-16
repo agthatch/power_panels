@@ -4,6 +4,7 @@
 
 import 'package:card/game_internals/blueprint/blueprint_provider.dart';
 import 'package:card/game_internals/panel/panel.dart';
+import 'package:card/play_session/assembly/assembly_bay.dart';
 import 'package:flutter/foundation.dart';
 
 import 'player.dart';
@@ -18,6 +19,8 @@ class BoardState {
 
   /// We need active panels
   /// We need active puzzles
+  AssemblyBay assemblyBay = AssemblyBay(bayCount: 4);
+
   /// We need the toolbox (player hand, avaialble pieces)
   /// We also need the currently generated number
   /// We need the target numbers
