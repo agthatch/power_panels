@@ -31,20 +31,6 @@ class _BoardWidgetState extends State<BoardWidget> {
         Padding(
           padding: const EdgeInsets.all(10),
           child: StreamBuilder(
-              stream: boardState.easyBlueprints.getChangeStream(),
-              builder: (context, child) {
-                return Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 20,
-                  runSpacing: 20,
-                  children: _blueprintWidgets(
-                      boardState.easyBlueprints.getNextBlueprints(4)),
-                );
-              }),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: StreamBuilder(
               stream: boardState.assemblyBay.playerChanges,
               builder: (context, child) {
                 return Wrap(
@@ -58,9 +44,5 @@ class _BoardWidgetState extends State<BoardWidget> {
         PlayerHandWidget(),
       ],
     );
-  }
-
-  List<Widget> _blueprintWidgets(List<Blueprint> nextBlueprints) {
-    return nextBlueprints.map((e) => BlueprintWidget(blueprint: e)).toList();
   }
 }

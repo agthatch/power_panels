@@ -1,4 +1,4 @@
-import 'package:card/play_session/assembly/assembly_bay.dart';
+import 'package:card/game_internals/assembly/assembly_bay.dart';
 import 'package:flutter/material.dart';
 
 class AssemblyBayWidget extends StatefulWidget {

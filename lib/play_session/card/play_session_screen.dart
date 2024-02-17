@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/blueprint/blueprint_builder.dart';
 import 'package:card/game_internals/blueprint/blueprint_provider.dart';
 import 'package:card/game_internals/blueprint/prefab_blueprint_provider.dart';
@@ -11,6 +12,7 @@ import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/piece/piece_data.dart';
 import 'package:card/game_internals/piece/placed_piece_builder.dart';
 import 'package:card/game_internals/rotation.dart';
+import 'package:card/play_session/blueprint/blueprint_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
@@ -61,10 +63,18 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
         // Ignore all input during the celebration animation.
         ignoring: _duringCelebration,
         child: Scaffold(
+          appBar: AppBar(),
           backgroundColor: palette.backgroundPlaySession,
-          // The stack is how you layer widgets on top of each other.
-          // Here, it is used to overlay the winning confetti animation on top
-          // of the game.
+          drawer: Drawer(
+            child: ListView(
+              children: [
+                const DrawerHeader(child: Text("Available Blueprints")),
+                ..._blueprintWidgets(
+                    _boardState.easyBlueprints.getNextBlueprints(4))
+              ],
+            ),
+          ),
+          endDrawer: Drawer(),
           body: Stack(
             children: [
               // This is the main layout of the play session screen,
@@ -155,6 +165,10 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
 
     GoRouter.of(context).go('/play/won', extra: {'score': score});
   }
+}
+
+List<Widget> _blueprintWidgets(List<Blueprint> nextBlueprints) {
+  return nextBlueprints.map((e) => BlueprintWidget(blueprint: e)).toList();
 }
 
 BlueprintProvider _hardBlueprints() {
