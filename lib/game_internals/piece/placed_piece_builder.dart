@@ -13,6 +13,8 @@ class PlacedPieceBuilder {
   bool isPlaced = false;
   Rotation rotation = Rotation.R0;
 
+  XYCoordinate handledNodeCoordinate = XYCoordinate(x: 0, y: 0);
+
   PlacedPiece build() {
     PlayingPiece piece = PlayingPiece.fromShape(shape);
     piece.rotate(rotation);
@@ -22,6 +24,7 @@ class PlacedPieceBuilder {
     }
 
     piece.isPlaced = isPlaced;
+    piece.handledNodeCoordinate = handledNodeCoordinate;
 
     ///We need to transform the piece based on these settings here in the build
     return PlacedPiece(piece: piece, location: location, accepted: accepted);
@@ -54,6 +57,12 @@ class PlacedPieceBuilder {
 
   PlacedPieceBuilder withRotation(Rotation rotation) {
     this.rotation = rotation;
+    return this;
+  }
+
+  PlacedPieceBuilder withHandledNodeCoordinate(
+      XYCoordinate handledNodeCoordinate) {
+    this.handledNodeCoordinate = handledNodeCoordinate;
     return this;
   }
 }

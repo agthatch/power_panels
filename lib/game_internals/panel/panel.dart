@@ -22,7 +22,9 @@ class Panel {
 
   static Panel fromBlueprint(Blueprint blueprint) {
     Panel res = Panel(dimX: blueprint.xDim, dimY: blueprint.yDim);
-    res.placedPieces = blueprint.preFitPieces;
+    for (PlacedPiece piece in blueprint.preFitPieces) {
+      res.handlePiecePlacement(piece.piece, piece.location.x, piece.location.y);
+    }
 
     return res;
   }
