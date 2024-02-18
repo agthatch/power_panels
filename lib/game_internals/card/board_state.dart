@@ -6,6 +6,9 @@ import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/blueprint/blueprint_provider.dart';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/game_internals/assembly/assembly_bay.dart';
+import 'package:card/game_internals/rounds/actions/action.dart';
+import 'package:card/game_internals/rounds/actions/action_type.dart';
+import 'package:card/game_internals/rounds/round_manager.dart';
 import 'package:flutter/foundation.dart';
 
 import 'player.dart';
@@ -14,6 +17,9 @@ class BoardState {
   final VoidCallback onWin;
 
   /// *What do we need in the boardState?
+  /// We need the round manager
+  RoundManager roundManager;
+
   /// We need the blueprint piles
   BlueprintProvider easyBlueprints;
   BlueprintProvider hardBlueprints;
@@ -36,6 +42,7 @@ class BoardState {
 
   BoardState(
       {required this.onWin,
+      required this.roundManager,
       required this.easyBlueprints,
       required this.hardBlueprints}) {
     player.addListener(_handlePlayerChange);
@@ -56,13 +63,21 @@ class BoardState {
   }
 
   bool canAddPuzzle() {
-    return assemblyBay.hasOpenBay();
+    return assemblyBay.hasOpenBay() && !roundManager.currentRoundComplete();
   }
 
   void purchaseBlueprint(Blueprint blueprint) {
-    easyBlueprints.removeBlueprint(blueprint);
-    hardBlueprints.removeBlueprint(blueprint);
+    if (roundManager
+        .currentRoundCanAcceptActionType(ActionType.boughtBlueprint)) {
+      Panel? resultingPanel = assemblyBay.addPuzzle(blueprint);
 
-    assemblyBay.addPuzzle(blueprint);
+      if (resultingPanel != null) {
+        easyBlueprints.removeBlueprint(blueprint);
+        hardBlueprints.removeBlueprint(blueprint);
+
+        roundManager.handleAction(BoughtBlueprintAction(
+            originalBlueprint: blueprint, resultingPanel: resultingPanel));
+      }
+    }
   }
 }

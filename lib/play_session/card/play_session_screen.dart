@@ -12,6 +12,7 @@ import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/piece/piece_data.dart';
 import 'package:card/game_internals/piece/placed_piece_builder.dart';
 import 'package:card/game_internals/rotation.dart';
+import 'package:card/game_internals/rounds/round_manager.dart';
 import 'package:card/play_session/blueprint/blueprint_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -134,6 +135,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     super.initState();
     _startOfPlay = DateTime.now();
     _boardState = BoardState(
+        roundManager: RoundManager(actionsPerRound: 4),
         onWin: _playerWon,
         easyBlueprints: _easyBlueprints(),
         hardBlueprints: _hardBlueprints());

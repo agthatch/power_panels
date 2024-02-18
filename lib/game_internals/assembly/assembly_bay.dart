@@ -19,13 +19,14 @@ class AssemblyBay {
     required this.bayCount,
   });
 
-  bool addPuzzle(Blueprint blueprint) {
-    if (activePuzzles.length < bayCount) {
-      activePuzzles.add(Panel.fromBlueprint(blueprint));
+  Panel? addPuzzle(Blueprint blueprint) {
+    if (hasOpenBay()) {
+      var resultingPanel = Panel.fromBlueprint(blueprint);
+      activePuzzles.add(resultingPanel);
       _playerChanges.add(null);
-      return true;
+      return resultingPanel;
     }
-    return false;
+    return null;
   }
 
   void removePuzzle(Panel panel) {

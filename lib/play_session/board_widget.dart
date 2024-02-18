@@ -1,17 +1,11 @@
-// Copyright 2023, the Flutter project authors. Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
+// Copyright 2024, Andrew Thatcher
 
-import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/card/board_state.dart';
-import 'package:card/play_session/blueprint/blueprint_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'card/player_hand_widget.dart';
 
-/// This widget defines the game UI itself, without things like the settings
-/// button or the back button.
 class BoardWidget extends StatefulWidget {
   const BoardWidget({super.key});
 
