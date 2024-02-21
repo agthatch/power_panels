@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class AssemblyBay {
   final int bayCount;
-  final List<Panel> activePuzzles = [Panel(dimX: 5, dimY: 2)];
+  final List<Panel> activePuzzles = [];
 
   final StreamController<void> _playerChanges =
       StreamController<void>.broadcast();

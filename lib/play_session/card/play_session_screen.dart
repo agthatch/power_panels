@@ -64,16 +64,26 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
         // Ignore all input during the celebration animation.
         ignoring: _duringCelebration,
         child: Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            title: RoundInfoWidget(roundManager: _boardState.roundManager),
+            leading: LeadingButton(),
+            actions: const [
+              TrailingWidget(),
+            ],
+          ),
           backgroundColor: palette.backgroundPlaySession,
           drawer: Drawer(
-            child: ListView(
-              children: [
-                const DrawerHeader(child: Text("Available Blueprints")),
-                ..._blueprintWidgets(
-                    _boardState.easyBlueprints.getNextBlueprints(4))
-              ],
-            ),
+            child: StreamBuilder(
+                stream: _boardState.easyBlueprints.getChangeStream(),
+                builder: (context, child) {
+                  return ListView(
+                    children: [
+                      const DrawerHeader(child: Text("Available Blueprints")),
+                      ..._blueprintWidgets(
+                          _boardState.easyBlueprints.getNextBlueprints(4))
+                    ],
+                  );
+                }),
           ),
           endDrawer: Drawer(),
           body: Stack(
@@ -135,7 +145,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     super.initState();
     _startOfPlay = DateTime.now();
     _boardState = BoardState(
-        roundManager: RoundManager(actionsPerRound: 4),
+        roundManager: RoundManager(actionsPerRound: 3),
         onWin: _playerWon,
         easyBlueprints: _easyBlueprints(),
         hardBlueprints: _hardBlueprints());
@@ -166,6 +176,57 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     if (!mounted) return;
 
     GoRouter.of(context).go('/play/won', extra: {'score': score});
+  }
+}
+
+class RoundInfoWidget extends StatelessWidget {
+  const RoundInfoWidget({
+    super.key,
+    required RoundManager roundManager,
+  }) : _roundManager = roundManager;
+
+  final RoundManager _roundManager;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: StreamBuilder(
+            stream: _roundManager.getChangeStream(),
+            builder: (context, child) {
+              return Text(_roundManager.getRoundInfo());
+            }));
+  }
+}
+
+class TrailingWidget extends StatelessWidget {
+  const TrailingWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.solar_power),
+      onPressed: () {
+        Scaffold.of(context).openEndDrawer();
+      },
+    );
+  }
+}
+
+class LeadingButton extends StatelessWidget {
+  const LeadingButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.solar_power_outlined),
+      onPressed: () {
+        Scaffold.of(context).openDrawer();
+      },
+    );
   }
 }
 

@@ -41,4 +41,8 @@ class Round {
   bool isComplete() {
     return _roundComplete;
   }
+
+  int getActionCount() {
+    return actionHistory.length;
+  }
 }

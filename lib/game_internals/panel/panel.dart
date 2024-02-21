@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:card/game_internals/blueprint/blueprint.dart';
+import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/panel/panel_node.dart';
 import 'package:card/game_internals/piece/placed_piece.dart';
 import 'package:card/game_internals/piece/playing_piece.dart';
+import 'package:card/game_internals/rounds/actions/action.dart';
 import 'package:card/game_internals/xy_coordinate.dart';
 
 class Panel {
@@ -74,6 +76,13 @@ class Panel {
     }
 
     _playerChanges.add(null);
+  }
+
+  handlePiecePlacementAndNotifyBoard(
+      PlayingPiece piece, int x, int y, BoardState boardState) {
+    handlePiecePlacement(piece, x, y);
+    boardState.roundManager
+        .handleAction(PlacedPieceAction(piece, this, XYCoordinate(x: x, y: y)));
   }
 
   void clearAllHighlights() {

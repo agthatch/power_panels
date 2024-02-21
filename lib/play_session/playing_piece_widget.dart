@@ -1,5 +1,6 @@
 import 'package:card/audio/audio_controller.dart';
 import 'package:card/audio/sounds.dart';
+import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/card/player.dart';
 import 'package:card/game_internals/rotation.dart';
 import 'package:card/play_session/piece_color_getter.dart';
@@ -36,12 +37,14 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
       return pieceWidget;
     }
 
+    final BoardState boardState = context.watch<BoardState>();
+
     return Draggable(
       feedback: Transform.rotate(
         angle: 0.1,
         child: pieceWidget,
       ),
-      data: PlayingPieceDragData(widget.piece, widget.player),
+      data: PlayingPieceDragData(widget.piece, widget.player, boardState),
       childWhenDragging: Opacity(
         opacity: 0.5,
         child: pieceWidget,
@@ -140,8 +143,9 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
 @immutable
 class PlayingPieceDragData {
   final PlayingPiece piece;
+  final BoardState boardState;
 
   final Player? holder;
 
-  const PlayingPieceDragData(this.piece, this.holder);
+  const PlayingPieceDragData(this.piece, this.holder, this.boardState);
 }
