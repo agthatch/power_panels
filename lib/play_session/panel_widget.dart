@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/play_session/panel_node_widget.dart';
 import 'package:card/play_session/playing_piece_widget.dart';
+import 'package:card/playground/pulsing_piece.dart';
 import 'package:flutter/material.dart';
 
 class PanelWidget extends StatefulWidget {
@@ -73,11 +74,12 @@ class FrameWidget extends StatelessWidget {
   }
 
   List<Widget> _generatePlacedPieceWidgets(Panel panel, BuildContext context) {
-    return panel.placedPieces.map((placedPiece) {
+    return panel.placedAndStagedPieces().map((placedPiece) {
       return Positioned(
         top: placedPiece.location.y * PlayingPieceWidget.width,
         left: placedPiece.location.x * PlayingPieceWidget.width,
-        child: IgnorePointer(child: PlayingPieceWidget(placedPiece.piece)),
+        child:
+            IgnorePointer(child: PulsingPieceWidget(piece: placedPiece.piece)),
       );
     }).toList();
   }

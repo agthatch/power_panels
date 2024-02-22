@@ -4,10 +4,10 @@ import 'package:card/game_internals/xy_coordinate.dart';
 class PlacedPiece {
   final PlayingPiece piece;
   final XYCoordinate location;
-  bool accepted;
+  bool isStaged;
 
   PlacedPiece(
-      {required this.piece, required this.location, this.accepted = false}) {
+      {required this.piece, required this.location, this.isStaged = false}) {
     //we need to determine the upper left corner node, and translate the coordinate
     //to coorespond with that node
   }
@@ -16,17 +16,17 @@ class PlacedPiece {
       {required PlayingPiece piece,
       required int x,
       required int y,
-      bool accepted = false}) {
+      bool isStaged = false}) {
     XYCoordinate offsetFromClickedNodeToTopLeftCorner =
         piece.getOffsetFromClickedNodeToTopLeftCorner();
 
-    piece.isPlaced = accepted;
+    piece.isStaged = isStaged;
 
     XYCoordinate pieceLocation = XYCoordinate(x: x, y: y);
     pieceLocation =
         pieceLocation.offsetBy(offsetFromClickedNodeToTopLeftCorner);
 
     return PlacedPiece(
-        piece: piece, location: pieceLocation, accepted: accepted);
+        piece: piece, location: pieceLocation, isStaged: isStaged);
   }
 }

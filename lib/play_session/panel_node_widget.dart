@@ -1,4 +1,3 @@
-import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/game_internals/panel/panel_node.dart';
 import 'package:card/play_session/playing_piece_widget.dart';
@@ -10,9 +9,8 @@ class PanelNodeWidget extends StatefulWidget {
   final Panel panel;
   final int x;
   final int y;
-  late BoardState boardState;
 
-  PanelNodeWidget(
+  const PanelNodeWidget(
       {super.key, required this.panel, required this.x, required this.y});
 
   @override
@@ -24,7 +22,6 @@ class _PanelNodeWidgetState extends State<PanelNodeWidget> {
   Widget build(BuildContext context) {
     PanelNode node = widget.panel.nodes[widget.x][widget.y];
     final palette = context.watch<Palette>();
-    widget.boardState = context.watch<BoardState>();
 
     return DragTarget<PlayingPieceDragData>(
       builder: (context, candidateData, rejectedData) => SizedBox(
@@ -58,6 +55,7 @@ class _PanelNodeWidgetState extends State<PanelNodeWidget> {
 
   void _onDragAccept(DragTargetDetails<PlayingPieceDragData> details) {
     details.data.holder?.removePiece(details.data.piece);
+    details.data.piece.isStaged = true;
     widget.panel.handlePiecePlacementAndNotifyBoard(
         details.data.piece, widget.x, widget.y, details.data.boardState);
   }

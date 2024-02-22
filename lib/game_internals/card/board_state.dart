@@ -8,6 +8,8 @@ import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/game_internals/assembly/assembly_bay.dart';
 import 'package:card/game_internals/rounds/actions/action.dart';
 import 'package:card/game_internals/rounds/actions/action_type.dart';
+import 'package:card/game_internals/rounds/actions/piece_staging.dart';
+import 'package:card/game_internals/rounds/actions/staged_piece.dart';
 import 'package:card/game_internals/rounds/round_manager.dart';
 import 'package:flutter/foundation.dart';
 
@@ -28,6 +30,9 @@ class BoardState {
 
   /// We need active puzzles
   AssemblyBay assemblyBay = AssemblyBay(bayCount: 4);
+
+  /// We need staged Pieces
+  PieceStaging pieceStaging = PieceStaging();
 
   /// We need the toolbox (player hand, avaialble pieces)
   /// We also need the currently generated number
@@ -79,5 +84,9 @@ class BoardState {
             originalBlueprint: blueprint, resultingPanel: resultingPanel));
       }
     }
+  }
+
+  void handleStagedPiece(StagedPiece stagedPiece) {
+    pieceStaging.handleStagedPiece(stagedPiece);
   }
 }

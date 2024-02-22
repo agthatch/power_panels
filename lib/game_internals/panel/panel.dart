@@ -6,7 +6,7 @@ import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/panel/panel_node.dart';
 import 'package:card/game_internals/piece/placed_piece.dart';
 import 'package:card/game_internals/piece/playing_piece.dart';
-import 'package:card/game_internals/rounds/actions/action.dart';
+import 'package:card/game_internals/rounds/actions/staged_piece.dart';
 import 'package:card/game_internals/xy_coordinate.dart';
 
 class Panel {
@@ -15,6 +15,7 @@ class Panel {
 
   late final List<List<PanelNode>> nodes;
   List<PlacedPiece> placedPieces = [];
+  List<PlacedPiece> stagedPieces = [];
 
   bool? canAcceptHoveringPiece;
 
@@ -52,6 +53,12 @@ class Panel {
   handlePieceHovering(PlayingPiece piece, int x, int y) {
     clearAllHighlights();
 
+    if (stagedPieces.isNotEmpty) {
+      _playerChanges.add(null);
+      canAcceptHoveringPiece = false;
+      return;
+    }
+
     List<PanelNode> targetNodes = extractValidTargetNodes(piece, x, y);
     bool obstructionFound = piece.size > targetNodes.length;
 
@@ -65,8 +72,8 @@ class Panel {
   }
 
   handlePiecePlacement(PlayingPiece piece, int x, int y) {
-    placedPieces
-        .add(PlacedPiece.create(piece: piece, x: x, y: y, accepted: true));
+    placedPieces.add(
+        PlacedPiece.create(piece: piece, x: x, y: y, isStaged: piece.isStaged));
     clearAllHighlights();
 
     List<PanelNode> targetNodes = extractValidTargetNodes(piece, x, y);
@@ -80,9 +87,12 @@ class Panel {
 
   handlePiecePlacementAndNotifyBoard(
       PlayingPiece piece, int x, int y, BoardState boardState) {
-    handlePiecePlacement(piece, x, y);
-    boardState.roundManager
-        .handleAction(PlacedPieceAction(piece, this, XYCoordinate(x: x, y: y)));
+    PlacedPiece placedPiece =
+        PlacedPiece.create(piece: piece, x: x, y: y, isStaged: piece.isStaged);
+    stagedPieces.add(placedPiece);
+    clearAllHighlights();
+    _playerChanges.add(null);
+    boardState.handleStagedPiece(StagedPiece(piece: placedPiece, panel: this));
   }
 
   void clearAllHighlights() {
@@ -122,6 +132,10 @@ class Panel {
       }
     }
     return targetNodes;
+  }
+
+  List<PlacedPiece> placedAndStagedPieces() {
+    return [...placedPieces, ...stagedPieces];
   }
 }
 

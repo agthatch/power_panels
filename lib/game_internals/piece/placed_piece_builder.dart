@@ -6,11 +6,10 @@ import 'package:card/game_internals/xy_coordinate.dart';
 
 class PlacedPieceBuilder {
   XYCoordinate location = XYCoordinate(x: 0, y: 0);
-  bool accepted = true;
 
   Shape shape = Shape.L;
   bool mirrored = false;
-  bool isPlaced = false;
+  bool isStaged = false;
   Rotation rotation = Rotation.R0;
 
   XYCoordinate handledNodeCoordinate = XYCoordinate(x: 0, y: 0);
@@ -23,20 +22,15 @@ class PlacedPieceBuilder {
       piece.mirror();
     }
 
-    piece.isPlaced = isPlaced;
+    piece.isStaged = isStaged;
     piece.handledNodeCoordinate = handledNodeCoordinate;
 
     ///We need to transform the piece based on these settings here in the build
-    return PlacedPiece(piece: piece, location: location, accepted: accepted);
+    return PlacedPiece(piece: piece, location: location, isStaged: isStaged);
   }
 
   PlacedPieceBuilder withLocation({required int x, required int y}) {
     location = XYCoordinate(x: x, y: y);
-    return this;
-  }
-
-  PlacedPieceBuilder withAccepted(bool accepted) {
-    this.accepted = accepted;
     return this;
   }
 
@@ -50,8 +44,8 @@ class PlacedPieceBuilder {
     return this;
   }
 
-  PlacedPieceBuilder withIsPlaced(bool isPlaced) {
-    this.isPlaced = isPlaced;
+  PlacedPieceBuilder withIsStaged(bool isStaged) {
+    this.isStaged = isStaged;
     return this;
   }
 

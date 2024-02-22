@@ -33,7 +33,7 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
               child: _createPieceWidget(widget.piece));
         });
 
-    if (widget.piece.isPlaced) {
+    if (widget.piece.isStaged) {
       return pieceWidget;
     }
 
@@ -125,7 +125,7 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
   }
 
   void _handleTap() {
-    if (widget.piece.isPlaced) return;
+    if (widget.piece.isStaged) return;
 
     setState(() {
       widget.piece.rotatePositive90();
@@ -133,7 +133,7 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
   }
 
   void _handleDoubleTap() {
-    if (widget.piece.isPlaced) return;
+    if (widget.piece.isStaged) return;
     setState(() {
       widget.piece.mirror();
     });

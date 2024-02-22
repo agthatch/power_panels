@@ -12,7 +12,7 @@ class PlayingPiece {
   late final int maxX;
   late final int maxY;
   bool mirrored = false;
-  bool isPlaced = false;
+  bool isStaged = false;
   Rotation rotation = Rotation.R0;
   XYCoordinate? handledNodeCoordinate;
 
