@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:async/async.dart';
 import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/card/board_state.dart';
+import 'package:card/game_internals/card/player.dart';
 import 'package:card/game_internals/panel/panel_node.dart';
 import 'package:card/game_internals/piece/placed_piece.dart';
 import 'package:card/game_internals/piece/playing_piece.dart';
@@ -71,6 +72,11 @@ class Panel {
     _playerChanges.add(null);
   }
 
+  unstagePieces() {
+    stagedPieces.clear();
+    _playerChanges.add(null);
+  }
+
   handlePiecePlacement(PlayingPiece piece, int x, int y) {
     placedPieces.add(
         PlacedPiece.create(piece: piece, x: x, y: y, isStaged: piece.isStaged));
@@ -86,13 +92,14 @@ class Panel {
   }
 
   handlePiecePlacementAndNotifyBoard(
-      PlayingPiece piece, int x, int y, BoardState boardState) {
+      PlayingPiece piece, Player player, int x, int y, BoardState boardState) {
     PlacedPiece placedPiece =
         PlacedPiece.create(piece: piece, x: x, y: y, isStaged: piece.isStaged);
     stagedPieces.add(placedPiece);
     clearAllHighlights();
     _playerChanges.add(null);
-    boardState.handleStagedPiece(StagedPiece(piece: placedPiece, panel: this));
+    boardState.handleStagedPiece(
+        StagedPiece(piece: placedPiece, panel: this, player: player));
   }
 
   void clearAllHighlights() {

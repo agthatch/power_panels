@@ -11,4 +11,9 @@ class Player extends ChangeNotifier {
     hand.remove(piece);
     notifyListeners();
   }
+
+  void addPiece(PlayingPiece piece) {
+    hand.add(piece);
+    notifyListeners();
+  }
 }

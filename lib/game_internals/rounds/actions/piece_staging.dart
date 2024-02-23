@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:card/game_internals/piece/playing_piece.dart';
 import 'package:card/game_internals/rounds/actions/staged_piece.dart';
 
 class PieceStaging {
@@ -35,7 +36,14 @@ class PieceStaging {
   }
 
   void unstagePieces() {
-    //TODO: implement Unstage Action
+    for (StagedPiece staged in _stagedPieces) {
+      staged.panel.unstagePieces();
+      PlayingPiece piece = staged.piece.piece;
+      piece.isStaged = false;
+      staged.player.addPiece(piece);
+    }
+
+    _stagedPieces.clear();
     _playerChanges.add(null);
   }
 

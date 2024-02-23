@@ -54,10 +54,16 @@ class _PanelNodeWidgetState extends State<PanelNodeWidget> {
   }
 
   void _onDragAccept(DragTargetDetails<PlayingPieceDragData> details) {
-    details.data.holder?.removePiece(details.data.piece);
+    var holder = details.data.holder;
+    holder?.removePiece(details.data.piece);
     details.data.piece.isStaged = true;
-    widget.panel.handlePiecePlacementAndNotifyBoard(
-        details.data.piece, widget.x, widget.y, details.data.boardState);
+
+    if (holder != null) {
+      widget.panel.handlePiecePlacementAndNotifyBoard(details.data.piece,
+          holder, widget.x, widget.y, details.data.boardState);
+    } else {
+      throw Exception('holder can not be null!');
+    }
   }
 
   void _onDragLeave(PlayingPieceDragData? data) {
