@@ -15,8 +15,11 @@ class PlacedPieceAction extends Action {
   final Panel receiveingPanel;
   final XYCoordinate placedLocation;
 
-  PlacedPieceAction(this.piece, this.receiveingPanel, this.placedLocation,
-      {super.actionType = ActionType.placedPiece});
+  PlacedPieceAction(
+      {required this.piece,
+      required this.receiveingPanel,
+      required this.placedLocation,
+      super.actionType = ActionType.placedPiece});
 }
 
 class BoughtBlueprintAction extends Action {

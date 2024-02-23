@@ -27,7 +27,7 @@ class Panel {
   static Panel fromBlueprint(Blueprint blueprint) {
     Panel res = Panel(dimX: blueprint.xDim, dimY: blueprint.yDim);
     for (PlacedPiece piece in blueprint.preFitPieces) {
-      res.handlePiecePlacement(piece.piece, piece.location.x, piece.location.y);
+      res.handlePiecePlacement(piece);
     }
 
     return res;
@@ -77,12 +77,12 @@ class Panel {
     _playerChanges.add(null);
   }
 
-  handlePiecePlacement(PlayingPiece piece, int x, int y) {
-    placedPieces.add(
-        PlacedPiece.create(piece: piece, x: x, y: y, isStaged: piece.isStaged));
+  handlePiecePlacement(PlacedPiece piece) {
+    placedPieces.add(piece);
     clearAllHighlights();
 
-    List<PanelNode> targetNodes = extractValidTargetNodes(piece, x, y);
+    List<PanelNode> targetNodes = extractValidTargetNodes(
+        piece.piece, piece.location.x, piece.location.y);
 
     for (PanelNode node in targetNodes) {
       node.occupied = true;
@@ -91,7 +91,7 @@ class Panel {
     _playerChanges.add(null);
   }
 
-  handlePiecePlacementAndNotifyBoard(
+  handlePieceStagingAndNotifyBoard(
       PlayingPiece piece, Player player, int x, int y, BoardState boardState) {
     PlacedPiece placedPiece =
         PlacedPiece.create(piece: piece, x: x, y: y, isStaged: piece.isStaged);

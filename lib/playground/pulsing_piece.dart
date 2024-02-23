@@ -46,7 +46,7 @@ class PulsingPieceWidgetState extends State<PulsingPieceWidget>
     if (widget.piece.isStaged) {
       _controller.repeat(reverse: true);
     } else {
-      _controller.stop();
+      _controller.reset();
     }
   }
 

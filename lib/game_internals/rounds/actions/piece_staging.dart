@@ -1,10 +1,15 @@
 import 'dart:async';
 
+import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/piece/playing_piece.dart';
+import 'package:card/game_internals/rounds/actions/action.dart';
 import 'package:card/game_internals/rounds/actions/staged_piece.dart';
 
 class PieceStaging {
   final List<StagedPiece> _stagedPieces = [];
+  final BoardState boardState;
+
+  PieceStaging({required this.boardState});
 
   int get countOfStagedPieces => _stagedPieces.length;
 
@@ -48,7 +53,20 @@ class PieceStaging {
   }
 
   void processPlacePieceAction() {
-    //TODO: implement Place Piece Action
+    assert(placePieceActionIsAvailable());
+    StagedPiece staged = _stagedPieces[0];
+    _placeStagedPiece(staged);
+    boardState.roundManager.handleAction(PlacedPieceAction(
+        piece: staged.piece.piece,
+        placedLocation: staged.piece.location,
+        receiveingPanel: staged.panel));
     _playerChanges.add(null);
+  }
+
+  void _placeStagedPiece(StagedPiece staged) {
+    staged.piece.piece.isStaged = false;
+    staged.panel.handlePiecePlacement(staged.piece);
+    staged.panel.unstagePieces();
+    _stagedPieces.clear();
   }
 }

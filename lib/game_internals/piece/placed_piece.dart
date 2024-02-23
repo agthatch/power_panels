@@ -26,6 +26,8 @@ class PlacedPiece {
     pieceLocation =
         pieceLocation.offsetBy(offsetFromClickedNodeToTopLeftCorner);
 
+    piece.handledNodeCoordinate = XYCoordinate(x: 0, y: 0);
+
     return PlacedPiece(
         piece: piece, location: pieceLocation, isStaged: isStaged);
   }

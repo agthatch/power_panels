@@ -32,16 +32,12 @@ class BoardState {
   AssemblyBay assemblyBay = AssemblyBay(bayCount: 4);
 
   /// We need staged Pieces
-  PieceStaging pieceStaging = PieceStaging();
+  late PieceStaging pieceStaging;
 
   /// We need the toolbox (player hand, avaialble pieces)
   /// We also need the currently generated number
   /// We need the target numbers
   /// We need day number (round)
-
-  final Panel panelOne = Panel(dimX: 5, dimY: 2);
-
-  final Panel panelTwo = Panel(dimX: 6, dimY: 6);
 
   final Player player = Player();
 
@@ -51,6 +47,7 @@ class BoardState {
       required this.easyBlueprints,
       required this.hardBlueprints}) {
     player.addListener(_handlePlayerChange);
+    pieceStaging = PieceStaging(boardState: this);
   }
 
   // List<PlayingArea> get areas => [areaOne, areaTwo];

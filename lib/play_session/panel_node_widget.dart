@@ -59,8 +59,8 @@ class _PanelNodeWidgetState extends State<PanelNodeWidget> {
     details.data.piece.isStaged = true;
 
     if (holder != null) {
-      widget.panel.handlePiecePlacementAndNotifyBoard(details.data.piece,
-          holder, widget.x, widget.y, details.data.boardState);
+      widget.panel.handlePieceStagingAndNotifyBoard(details.data.piece, holder,
+          widget.x, widget.y, details.data.boardState);
     } else {
       throw Exception('holder can not be null!');
     }
