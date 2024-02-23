@@ -22,6 +22,13 @@ class PlacedPieceAction extends Action {
       super.actionType = ActionType.placedPiece});
 }
 
+class EfficientAction extends Action {
+  final List<PlacedPieceAction> actions;
+
+  EfficientAction(
+      {required this.actions, super.actionType = ActionType.efficientAction});
+}
+
 class BoughtBlueprintAction extends Action {
   final Blueprint originalBlueprint;
   final Panel resultingPanel;

@@ -35,11 +35,6 @@ class PieceStaging {
     return _stagedPieces.isNotEmpty;
   }
 
-  void processEfficientAction() {
-    //TODO: implement Efficient Action
-    _playerChanges.add(null);
-  }
-
   void unstagePieces() {
     for (StagedPiece staged in _stagedPieces) {
       staged.panel.unstagePieces();
@@ -56,10 +51,8 @@ class PieceStaging {
     assert(placePieceActionIsAvailable());
     StagedPiece staged = _stagedPieces[0];
     _placeStagedPiece(staged);
-    boardState.roundManager.handleAction(PlacedPieceAction(
-        piece: staged.piece.piece,
-        placedLocation: staged.piece.location,
-        receiveingPanel: staged.panel));
+    _stagedPieces.clear();
+    boardState.roundManager.handleAction(placedActionFromStaged(staged));
     _playerChanges.add(null);
   }
 
@@ -67,6 +60,25 @@ class PieceStaging {
     staged.piece.piece.isStaged = false;
     staged.panel.handlePiecePlacement(staged.piece);
     staged.panel.unstagePieces();
+  }
+
+  void processEfficientAction() {
+    assert(efficientActionIsAvailable());
+    List<PlacedPieceAction> actions = [];
+    for (StagedPiece staged in _stagedPieces) {
+      _placeStagedPiece(staged);
+      actions.add(placedActionFromStaged(staged));
+    }
+
     _stagedPieces.clear();
+    boardState.roundManager.handleAction(EfficientAction(actions: actions));
+    _playerChanges.add(null);
+  }
+
+  PlacedPieceAction placedActionFromStaged(StagedPiece staged) {
+    return PlacedPieceAction(
+        piece: staged.piece.piece,
+        placedLocation: staged.piece.location,
+        receiveingPanel: staged.panel);
   }
 }
