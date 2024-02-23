@@ -42,7 +42,7 @@ class MainMenuScreen extends StatelessWidget {
         rectangularMenuArea: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            MyButton(
+            WiggleButton(
               onPressed: () {
                 audioController.playSfx(SfxType.buttonTap);
                 GoRouter.of(context).go('/play');
@@ -50,7 +50,7 @@ class MainMenuScreen extends StatelessWidget {
               child: const Text('Play'),
             ),
             _gap,
-            MyButton(
+            WiggleButton(
               onPressed: () => GoRouter.of(context).push('/settings'),
               child: const Text('Settings'),
             ),

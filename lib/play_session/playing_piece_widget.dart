@@ -101,6 +101,7 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
   Widget _createNodeWidget(int row, int col, bool isNode) {
     return GestureDetector(
       onTap: _handleTap,
+      onDoubleTap: _handleDoubleTap,
       onSecondaryTap: _handleDoubleTap,
       onLongPressDown: (details) {
         widget.piece.setHandledNodeCoordinate(row, col);

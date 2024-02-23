@@ -49,7 +49,7 @@ class WinGameScreen extends StatelessWidget {
             ),
           ],
         ),
-        rectangularMenuArea: MyButton(
+        rectangularMenuArea: WiggleButton(
           onPressed: () {
             GoRouter.of(context).go('/');
           },

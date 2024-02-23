@@ -6,18 +6,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class MyButton extends StatefulWidget {
+class WiggleButton extends StatefulWidget {
   final Widget child;
 
   final VoidCallback? onPressed;
 
-  const MyButton({super.key, required this.child, this.onPressed});
+  const WiggleButton({super.key, required this.child, this.onPressed});
 
   @override
-  State<MyButton> createState() => _MyButtonState();
+  State<WiggleButton> createState() => _WiggleButtonState();
 }
 
-class _MyButtonState extends State<MyButton>
+class _WiggleButtonState extends State<WiggleButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     duration: const Duration(milliseconds: 300),
@@ -37,7 +37,7 @@ class _MyButtonState extends State<MyButton>
         _controller.repeat();
       },
       onExit: (event) {
-        _controller.stop(canceled: false);
+        _controller.reset();
       },
       child: RotationTransition(
         turns: _controller.drive(const _MySineTween(0.005)),

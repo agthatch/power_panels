@@ -110,7 +110,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                           child: BoardWidget())),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: MyButton(
+                    child: WiggleButton(
                       onPressed: () => GoRouter.of(context).go('/'),
                       child: const Text('Back'),
                     ),

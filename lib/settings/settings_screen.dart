@@ -74,7 +74,7 @@ class SettingsScreen extends StatelessWidget {
             _gap,
           ],
         ),
-        rectangularMenuArea: MyButton(
+        rectangularMenuArea: WiggleButton(
           onPressed: () {
             GoRouter.of(context).pop();
           },
