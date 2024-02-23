@@ -104,10 +104,10 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                       ),
                     ),
                   ),
-                  const Spacer(),
-                  // The actual UI of the game.
-                  BoardWidget(),
-                  const Spacer(),
+                  Expanded(
+                      child: Container(
+                          color: Color.fromRGBO(240, 76, 0, 0.749),
+                          child: BoardWidget())),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: MyButton(

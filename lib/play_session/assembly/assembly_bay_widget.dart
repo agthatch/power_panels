@@ -13,14 +13,20 @@ class AssemblyBayWidget extends StatefulWidget {
 class _AssemblyBayWidgetState extends State<AssemblyBayWidget> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: _buildChildren(),
+    return Center(
+      child: StreamBuilder(
+          stream: widget.assemblyBay.playerChanges,
+          builder: (context, child) {
+            return SingleChildScrollView(
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 20,
+                runSpacing: 20,
+                children: [...widget.assemblyBay.getWidgets()],
+              ),
+            );
+          }),
     );
-  }
-
-  List<Widget> _buildChildren() {
-    List<Widget> widgets = widget.assemblyBay.getWidgets();
-    return widgets;
   }
 
   @override
