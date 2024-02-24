@@ -4,6 +4,7 @@
 
 import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/blueprint/blueprint_provider.dart';
+import 'package:card/game_internals/farm/solar_farm.dart';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/game_internals/assembly/assembly_bay.dart';
 import 'package:card/game_internals/rounds/actions/action.dart';
@@ -27,6 +28,7 @@ class BoardState {
   BlueprintProvider hardBlueprints;
 
   /// We need active panels
+  late SolarFarm solarFarm;
 
   /// We need active puzzles
   AssemblyBay assemblyBay = AssemblyBay(bayCount: 4);
@@ -48,6 +50,7 @@ class BoardState {
       required this.hardBlueprints}) {
     player.addListener(_handlePlayerChange);
     pieceStaging = PieceStaging(boardState: this);
+    solarFarm = SolarFarm(boardState: this, bayCount: 6);
   }
 
   // List<PlayingArea> get areas => [areaOne, areaTwo];
@@ -85,5 +88,9 @@ class BoardState {
 
   void handleStagedPiece(StagedPiece stagedPiece) {
     pieceStaging.handleStagedPiece(stagedPiece);
+  }
+
+  void recycleSolarPanel(Panel panel) {
+    print('Should be recycling panel');
   }
 }

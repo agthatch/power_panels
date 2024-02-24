@@ -85,7 +85,25 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                   );
                 }),
           ),
-          endDrawer: Drawer(),
+          endDrawer: Drawer(
+              child: StreamBuilder(
+                  stream: _boardState.solarFarm.playerChanges,
+                  builder: (context, child) {
+                    return ListView(
+                      children: [
+                        SizedBox(
+                          height: 100,
+                          child: DrawerHeader(
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                              ),
+                              child: Text(
+                                  "Total Daily Production: ${_boardState.solarFarm.dailyGeneration()}")),
+                        ),
+                        ..._boardState.solarFarm.getWidgets()
+                      ],
+                    );
+                  })),
           body: Stack(
             children: [
               // This is the main layout of the play session screen,
