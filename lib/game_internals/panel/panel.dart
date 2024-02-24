@@ -14,6 +14,8 @@ class Panel {
   final int dimX;
   final int dimY;
   final int generationValue;
+  late int nodeCount;
+  int _occupiedCount = 0;
 
   late final List<List<PanelNode>> nodes;
   List<PlacedPiece> placedPieces = [];
@@ -24,6 +26,7 @@ class Panel {
   Panel(
       {required this.generationValue, required this.dimX, required this.dimY}) {
     nodes = List.generate(dimX, (i) => List.generate(dimY, (j) => PanelNode()));
+    nodeCount = dimX * -dimY;
   }
 
   static Panel fromBlueprint(Blueprint blueprint) {
@@ -32,7 +35,7 @@ class Panel {
         dimX: blueprint.xDim,
         dimY: blueprint.yDim);
     for (PlacedPiece piece in blueprint.preFitPieces) {
-      res.handlePiecePlacement(piece);
+      res._placePiece(piece);
     }
 
     return res;
@@ -83,6 +86,10 @@ class Panel {
   }
 
   handlePiecePlacement(PlacedPiece piece) {
+    _placePiece(piece);
+  }
+
+  _placePiece(PlacedPiece piece) {
     placedPieces.add(piece);
     clearAllHighlights();
 
@@ -93,7 +100,19 @@ class Panel {
       node.occupied = true;
     }
 
+    _updateOccupiedCount();
     _playerChanges.add(null);
+  }
+
+  _updateOccupiedCount() {
+    _occupiedCount = 0;
+    for (List<PanelNode> row in nodes) {
+      for (PanelNode node in row) {
+        if (node.occupied) {
+          _occupiedCount++;
+        }
+      }
+    }
   }
 
   handlePieceStagingAndNotifyBoard(

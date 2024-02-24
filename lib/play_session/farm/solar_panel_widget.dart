@@ -1,7 +1,7 @@
 import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/play_session/panel_widget.dart';
-import 'package:card/style/my_button.dart';
+import 'package:card/style/wiggle_button.dart';
 import 'package:flutter/material.dart';
 
 class SolarPanelWidget extends StatelessWidget {

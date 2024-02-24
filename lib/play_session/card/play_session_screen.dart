@@ -23,7 +23,7 @@ import '../../audio/audio_controller.dart';
 import '../../audio/sounds.dart';
 import '../../game_internals/card/score.dart';
 import '../../style/confetti.dart';
-import '../../style/my_button.dart';
+import '../../style/wiggle_button.dart';
 import '../../style/palette.dart';
 import '../board_widget.dart';
 

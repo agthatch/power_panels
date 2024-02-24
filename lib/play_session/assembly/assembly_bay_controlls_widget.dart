@@ -1,5 +1,5 @@
 import 'package:card/game_internals/rounds/actions/piece_staging.dart';
-import 'package:card/style/my_button.dart';
+import 'package:card/style/wiggle_button.dart';
 import 'package:flutter/material.dart';
 
 class AssemblyBayControlsWidget extends StatelessWidget {
