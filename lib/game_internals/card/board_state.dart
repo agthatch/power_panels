@@ -39,7 +39,6 @@ class BoardState {
   /// We need the toolbox (player hand, avaialble pieces)
   /// We also need the currently generated number
   /// We need the target numbers
-  /// We need day number (round)
 
   final Player player = Player();
 
@@ -50,7 +49,7 @@ class BoardState {
       required this.hardBlueprints}) {
     player.addListener(_handlePlayerChange);
     pieceStaging = PieceStaging(boardState: this);
-    solarFarm = SolarFarm(boardState: this, bayCount: 6);
+    solarFarm = SolarFarm(boardState: this, bayCount: 2);
   }
 
   // List<PlayingArea> get areas => [areaOne, areaTwo];
@@ -92,5 +91,12 @@ class BoardState {
 
   void recycleSolarPanel(Panel panel) {
     print('Should be recycling panel');
+  }
+
+  void handleCompletedPuzzle(Panel panel) {
+    print('boardState sees puzzle complete');
+    if (solarFarm.addPanel(panel)) {
+      assemblyBay.removePuzzle(panel);
+    }
   }
 }

@@ -15,7 +15,8 @@ class Panel {
   final int dimY;
   final int generationValue;
   late int nodeCount;
-  int _occupiedCount = 0;
+
+  bool puzzleComplete = false;
 
   late final List<List<PanelNode>> nodes;
   List<PlacedPiece> placedPieces = [];
@@ -26,7 +27,7 @@ class Panel {
   Panel(
       {required this.generationValue, required this.dimX, required this.dimY}) {
     nodes = List.generate(dimX, (i) => List.generate(dimY, (j) => PanelNode()));
-    nodeCount = dimX * -dimY;
+    nodeCount = dimX * dimY;
   }
 
   static Panel fromBlueprint(Blueprint blueprint) {
@@ -105,14 +106,16 @@ class Panel {
   }
 
   _updateOccupiedCount() {
-    _occupiedCount = 0;
+    int occupiedCount = 0;
     for (List<PanelNode> row in nodes) {
       for (PanelNode node in row) {
         if (node.occupied) {
-          _occupiedCount++;
+          occupiedCount++;
         }
       }
     }
+
+    puzzleComplete = occupiedCount >= nodeCount;
   }
 
   handlePieceStagingAndNotifyBoard(

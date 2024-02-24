@@ -60,6 +60,10 @@ class PieceStaging {
     staged.piece.piece.isStaged = false;
     staged.panel.handlePiecePlacement(staged.piece);
     staged.panel.unstagePieces();
+
+    if (staged.panel.puzzleComplete) {
+      boardState.handleCompletedPuzzle(staged.panel);
+    }
   }
 
   void processEfficientAction() {

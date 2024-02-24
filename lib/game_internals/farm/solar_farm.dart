@@ -4,15 +4,12 @@ import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/play_session/assembly/empty_station_widget.dart';
 import 'package:card/play_session/farm/solar_panel_widget.dart';
-import 'package:card/play_session/panel_widget.dart';
 import 'package:flutter/material.dart';
 
 class SolarFarm {
   final int bayCount;
   final BoardState boardState;
-  final List<Panel> _activePanels = [
-    Panel(generationValue: 7, dimX: 5, dimY: 3)
-  ];
+  final List<Panel> _activePanels = [];
 
   final StreamController<void> _playerChanges =
       StreamController<void>.broadcast();
@@ -33,7 +30,7 @@ class SolarFarm {
       };
 
   bool addPanel(Panel panel) {
-    if (_activePanels.length < bayCount) {
+    if (hasOpenBay()) {
       _activePanels.add(panel);
       _playerChanges.add(null);
       return true;

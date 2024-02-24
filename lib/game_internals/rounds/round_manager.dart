@@ -18,6 +18,8 @@ class RoundManager {
     _rounds.add(Round(roundNumber: 0, actionsPerRound: actionsPerRound));
   }
 
+  get roundDisplayString => _currentRoundNumber + 1;
+
   bool currentRoundComplete() {
     Round currentRound = _getCurrentRound();
     return currentRound.isComplete();
@@ -54,7 +56,7 @@ class RoundManager {
   }
 
   String getRoundInfo() {
-    return 'Round: $_currentRoundNumber Actions: ${_getCurrentRound().getActionCount()}/$actionsPerRound';
+    return 'Round: $roundDisplayString Actions: ${_getCurrentRound().getActionCount()}/$actionsPerRound';
   }
 
   Stream getChangeStream() {
