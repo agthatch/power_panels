@@ -99,9 +99,13 @@ class BoardState {
   }
 
   void handleCompletedPuzzle(Panel panel) {
-    print('boardState sees puzzle complete');
     if (solarFarm.addPanel(panel)) {
       assemblyBay.removePuzzle(panel);
     }
+  }
+
+  bool shouldBlockPieceForEfficientAction() {
+    return pieceStaging.awaitingPlacePieceAction() &&
+        roundManager.currentRoundHasUsedEfficientAction();
   }
 }

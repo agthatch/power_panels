@@ -23,11 +23,11 @@ class PieceStaging {
     _playerChanges.add(null);
   }
 
-  bool placePieceActionIsAvailable() {
+  bool awaitingPlacePieceAction() {
     return countOfStagedPieces == 1;
   }
 
-  bool efficientActionIsAvailable() {
+  bool awaitingEfficientAction() {
     return countOfStagedPieces > 1;
   }
 
@@ -48,7 +48,7 @@ class PieceStaging {
   }
 
   void processPlacePieceAction() {
-    assert(placePieceActionIsAvailable());
+    assert(awaitingPlacePieceAction());
     StagedPiece staged = _stagedPieces[0];
     _placeStagedPiece(staged);
     _stagedPieces.clear();
@@ -67,7 +67,7 @@ class PieceStaging {
   }
 
   void processEfficientAction() {
-    assert(efficientActionIsAvailable());
+    assert(awaitingEfficientAction());
     List<PlacedPieceAction> actions = [];
     for (StagedPiece staged in _stagedPieces) {
       _placeStagedPiece(staged);

@@ -20,13 +20,13 @@ class AssemblyBayControlsWidget extends StatelessWidget {
   List<Widget> _getButtons(PieceStaging pieceStaging) {
     List<Widget> buttons = [];
 
-    if (pieceStaging.placePieceActionIsAvailable()) {
+    if (pieceStaging.awaitingPlacePieceAction()) {
       buttons.add(WiggleButton(
           onPressed: pieceStaging.processPlacePieceAction,
           child: Text('Place Piece')));
     }
 
-    if (pieceStaging.efficientActionIsAvailable()) {
+    if (pieceStaging.awaitingEfficientAction()) {
       buttons.add(WiggleButton(
           onPressed: pieceStaging.processEfficientAction,
           child:

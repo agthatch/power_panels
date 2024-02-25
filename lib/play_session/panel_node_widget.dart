@@ -73,6 +73,10 @@ class _PanelNodeWidgetState extends State<PanelNodeWidget> {
   }
 
   bool _onDragWillAccept(DragTargetDetails<PlayingPieceDragData> details) {
+    if (details.data.boardState.shouldBlockPieceForEfficientAction()) {
+      return false;
+    }
+
     widget.panel.handlePieceHovering(details.data.piece, widget.x, widget.y);
     return widget.panel.canAcceptHoveringPiece ?? false;
   }

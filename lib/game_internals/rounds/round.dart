@@ -11,6 +11,8 @@ class Round {
 
   Round({required this.roundNumber, required this.actionsPerRound});
 
+  bool get efficientActionHasBeenUsed => _efficientActionHasBeenUsed;
+
   bool canAcceptActionType(ActionType type) {
     if (_roundComplete) {
       return false;

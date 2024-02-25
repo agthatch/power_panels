@@ -62,4 +62,8 @@ class RoundManager {
   Stream getChangeStream() {
     return playerChanges;
   }
+
+  bool currentRoundHasUsedEfficientAction() {
+    return _getCurrentRound().efficientActionHasBeenUsed;
+  }
 }
