@@ -38,3 +38,10 @@ class BoughtBlueprintAction extends Action {
       required this.originalBlueprint,
       required this.resultingPanel});
 }
+
+class RecycledPanelAction extends Action {
+  final Panel panel;
+
+  RecycledPanelAction(
+      {super.actionType = ActionType.recycledPanel, required this.panel});
+}

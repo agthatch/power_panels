@@ -95,6 +95,7 @@ class BoardState {
       for (PlacedPiece piece in panel.placedPieces) {
         player.addPiece(piece.piece);
       }
+      roundManager.handleAction(RecycledPanelAction(panel: panel));
     }
   }
 
