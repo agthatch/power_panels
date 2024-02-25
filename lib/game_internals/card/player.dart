@@ -2,10 +2,13 @@ import 'package:card/game_internals/piece/playing_piece.dart';
 import 'package:flutter/foundation.dart';
 
 class Player extends ChangeNotifier {
-  static const maxCards = 20;
+  static const startingPieceCount = 20;
+  bool _expandHand = false;
 
-  final List<PlayingPiece> hand =
-      List.generate(maxCards, (index) => PlayingPiece.generate(index));
+  final List<PlayingPiece> hand = List.generate(
+      startingPieceCount, (index) => PlayingPiece.generate(index));
+
+  bool get handIsExpanded => _expandHand;
 
   void removePiece(PlayingPiece piece) {
     hand.remove(piece);
@@ -14,6 +17,11 @@ class Player extends ChangeNotifier {
 
   void addPiece(PlayingPiece piece) {
     hand.add(piece);
+    notifyListeners();
+  }
+
+  void toggleHandExpand() {
+    _expandHand = !_expandHand;
     notifyListeners();
   }
 }

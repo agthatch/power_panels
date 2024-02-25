@@ -37,7 +37,7 @@ class _BoardWidgetState extends State<BoardWidget> {
         )),
         Container(
             color: Color.fromRGBO(125, 125, 125, .75),
-            child: PlayerHandWidget()),
+            child: PlayerHandWidget(player: boardState.player)),
       ],
     );
   }

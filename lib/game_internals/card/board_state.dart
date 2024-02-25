@@ -61,9 +61,9 @@ class BoardState {
   }
 
   void _handlePlayerChange() {
-    if (player.hand.isEmpty) {
-      onWin();
-    }
+    // if (player.hand.isEmpty) {
+    //   onWin();
+    // }
   }
 
   bool canAddPuzzle() {
