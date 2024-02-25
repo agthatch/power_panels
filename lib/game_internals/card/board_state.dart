@@ -7,6 +7,7 @@ import 'package:card/game_internals/blueprint/blueprint_provider.dart';
 import 'package:card/game_internals/farm/solar_farm.dart';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/game_internals/assembly/assembly_bay.dart';
+import 'package:card/game_internals/piece/placed_piece.dart';
 import 'package:card/game_internals/rounds/actions/action.dart';
 import 'package:card/game_internals/rounds/actions/action_type.dart';
 import 'package:card/game_internals/rounds/actions/piece_staging.dart';
@@ -90,7 +91,11 @@ class BoardState {
   }
 
   void recycleSolarPanel(Panel panel) {
-    print('Should be recycling panel');
+    if (solarFarm.removePanel(panel)) {
+      for (PlacedPiece piece in panel.placedPieces) {
+        player.addPiece(piece.piece);
+      }
+    }
   }
 
   void handleCompletedPuzzle(Panel panel) {
