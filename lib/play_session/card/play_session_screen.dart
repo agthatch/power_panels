@@ -76,33 +76,20 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
             child: StreamBuilder(
                 stream: _boardState.easyBlueprints.getChangeStream(),
                 builder: (context, child) {
-                  return ListView(
-                    children: [
-                      const DrawerHeader(child: Text("Available Blueprints")),
-                      ..._blueprintWidgets(
-                          _boardState.easyBlueprints.getNextBlueprints(4))
-                    ],
-                  );
+                  return createDrawerInternals(
+                      header: Text("Available Blueprints"),
+                      content: _blueprintWidgets(
+                          _boardState.easyBlueprints.getNextBlueprints(4)));
                 }),
           ),
           endDrawer: Drawer(
               child: StreamBuilder(
                   stream: _boardState.solarFarm.playerChanges,
                   builder: (context, child) {
-                    return ListView(
-                      children: [
-                        SizedBox(
-                          height: 100,
-                          child: DrawerHeader(
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                              ),
-                              child: Text(
-                                  "Total Daily Production: ${_boardState.solarFarm.dailyGeneration()}")),
-                        ),
-                        ..._boardState.solarFarm.getWidgets()
-                      ],
-                    );
+                    return createDrawerInternals(
+                        header: Text(
+                            "Total Daily Production: ${_boardState.solarFarm.dailyGeneration()}"),
+                        content: _boardState.solarFarm.getWidgets());
                   })),
           body: Stack(
             children: [
@@ -122,10 +109,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                       ),
                     ),
                   ),
-                  Expanded(
-                      child: Container(
-                          color: Color.fromRGBO(240, 76, 0, 0.749),
-                          child: BoardWidget())),
+                  Expanded(child: BoardWidget()),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: WiggleButton(
@@ -250,6 +234,42 @@ class LeadingButton extends StatelessWidget {
 
 List<Widget> _blueprintWidgets(List<Blueprint> nextBlueprints) {
   return nextBlueprints.map((e) => BlueprintWidget(blueprint: e)).toList();
+}
+
+Row _paddedRow(Widget w) {
+  return Row(
+    children: [Spacer(), w, Spacer()],
+  );
+}
+
+Widget createDrawerInternals(
+    {required Widget header, required List<Widget> content}) {
+  return Column(
+    children: <Widget>[
+      // Frozen header
+      Container(
+        height: 100, // Height of the frozen header
+        color: Colors.blue,
+        child: Center(
+          child: header,
+        ),
+      ),
+      // Scrollable list of items
+      Expanded(
+        child: ListView.builder(
+          itemCount: content.length,
+          itemBuilder: (context, index) {
+            // Generate dynamic items based on data
+            final item = content[index];
+            return ListTile(
+              title: _paddedRow(item),
+              // Add any desired properties to the ListTile
+            );
+          },
+        ),
+      ),
+    ],
+  );
 }
 
 BlueprintProvider _hardBlueprints() {
