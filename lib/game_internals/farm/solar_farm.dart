@@ -29,6 +29,8 @@ class SolarFarm {
         return res;
       };
 
+  int get openBayCount => bayCount - _activePanels.length;
+
   bool addPanel(Panel panel) {
     if (hasOpenBay()) {
       _activePanels.add(panel);
@@ -72,6 +74,6 @@ class SolarFarm {
   }
 
   bool hasOpenBay() {
-    return bayCount > _activePanels.length;
+    return openBayCount > 0;
   }
 }

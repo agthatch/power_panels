@@ -22,11 +22,10 @@ class BoardState {
 
   /// *What do we need in the boardState?
   /// We need the round manager
-  RoundManager roundManager;
+  late RoundManager roundManager;
 
   /// We need the blueprint piles
   BlueprintProvider easyBlueprints;
-  BlueprintProvider hardBlueprints;
 
   /// We need active panels
   late SolarFarm solarFarm;
@@ -43,14 +42,11 @@ class BoardState {
 
   final Player player = Player();
 
-  BoardState(
-      {required this.onWin,
-      required this.roundManager,
-      required this.easyBlueprints,
-      required this.hardBlueprints}) {
+  BoardState({required this.onWin, required this.easyBlueprints}) {
     player.addListener(_handlePlayerChange);
     pieceStaging = PieceStaging(boardState: this);
     solarFarm = SolarFarm(boardState: this, bayCount: 2);
+    roundManager = RoundManager(this, actionsPerRound: 3);
   }
 
   // List<PlayingArea> get areas => [areaOne, areaTwo];
@@ -78,7 +74,6 @@ class BoardState {
 
       if (resultingPanel != null) {
         easyBlueprints.removeBlueprint(blueprint);
-        hardBlueprints.removeBlueprint(blueprint);
 
         roundManager.handleAction(BoughtBlueprintAction(
             originalBlueprint: blueprint, resultingPanel: resultingPanel));
@@ -108,5 +103,9 @@ class BoardState {
   bool shouldBlockPieceForEfficientAction() {
     return pieceStaging.awaitingPlacePieceAction() &&
         roundManager.currentRoundHasUsedEfficientAction();
+  }
+
+  void handleRoundIncremented() {
+    easyBlueprints.nextRound();
   }
 }

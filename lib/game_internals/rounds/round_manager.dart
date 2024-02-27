@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/rounds/actions/action.dart';
 import 'package:card/game_internals/rounds/actions/action_type.dart';
 import 'package:card/game_internals/rounds/round.dart';
@@ -7,6 +8,7 @@ import 'package:card/game_internals/rounds/round.dart';
 class RoundManager {
   final int actionsPerRound;
   final List<Round> _rounds = [];
+  final BoardState _boardState;
   int _currentRoundNumber = 0;
 
   final StreamController<void> _playerChanges =
@@ -14,7 +16,7 @@ class RoundManager {
 
   Stream<void> get playerChanges => _playerChanges.stream;
 
-  RoundManager({required this.actionsPerRound}) {
+  RoundManager(this._boardState, {required this.actionsPerRound}) {
     _rounds.add(Round(roundNumber: 0, actionsPerRound: actionsPerRound));
   }
 
@@ -49,7 +51,7 @@ class RoundManager {
     }
 
     if (currentRoundComplete()) {
-      _currentRoundNumber++;
+      _incrementRound();
     }
 
     _playerChanges.add(null);
@@ -65,5 +67,10 @@ class RoundManager {
 
   bool currentRoundHasUsedEfficientAction() {
     return _getCurrentRound().efficientActionHasBeenUsed;
+  }
+
+  void _incrementRound() {
+    _currentRoundNumber++;
+    _boardState.handleRoundIncremented();
   }
 }

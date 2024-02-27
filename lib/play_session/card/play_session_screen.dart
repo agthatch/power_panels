@@ -13,6 +13,7 @@ import 'package:card/game_internals/piece/piece_data.dart';
 import 'package:card/game_internals/piece/placed_piece_builder.dart';
 import 'package:card/game_internals/rotation.dart';
 import 'package:card/game_internals/rounds/round_manager.dart';
+import 'package:card/play_session/assembly/empty_station_widget.dart';
 import 'package:card/play_session/blueprint/blueprint_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -77,9 +78,10 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                 stream: _boardState.easyBlueprints.getChangeStream(),
                 builder: (context, child) {
                   return createDrawerInternals(
-                      header: Text("Available Blueprints"),
+                      header: createBlueprintHeader(_boardState),
+                      headerColor: Colors.blue,
                       content: _blueprintWidgets(
-                          _boardState.easyBlueprints.getNextBlueprints(4)));
+                          _boardState.easyBlueprints.getBlueprintsForRound()));
                 }),
           ),
           endDrawer: Drawer(
@@ -87,8 +89,8 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                   stream: _boardState.solarFarm.playerChanges,
                   builder: (context, child) {
                     return createDrawerInternals(
-                        header: Text(
-                            "Total Daily Production: ${_boardState.solarFarm.dailyGeneration()}"),
+                        header: createSolarFarmHeader(_boardState),
+                        headerColor: Colors.green.shade400,
                         content: _boardState.solarFarm.getWidgets());
                   })),
           body: Stack(
@@ -147,10 +149,9 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     super.initState();
     _startOfPlay = DateTime.now();
     _boardState = BoardState(
-        roundManager: RoundManager(actionsPerRound: 3),
-        onWin: _playerWon,
-        easyBlueprints: _easyBlueprints(),
-        hardBlueprints: _hardBlueprints());
+      onWin: _playerWon,
+      easyBlueprints: _easyBlueprints(),
+    );
   }
 
   Future<void> _playerWon() async {
@@ -232,8 +233,12 @@ class LeadingButton extends StatelessWidget {
   }
 }
 
-List<Widget> _blueprintWidgets(List<Blueprint> nextBlueprints) {
-  return nextBlueprints.map((e) => BlueprintWidget(blueprint: e)).toList();
+List<Widget> _blueprintWidgets(List<Blueprint?> nextBlueprints) {
+  return nextBlueprints
+      .map((e) => e != null
+          ? BlueprintWidget(blueprint: e)
+          : EmptyStation(bayNumber: 0))
+      .toList();
 }
 
 Row _paddedRow(Widget w) {
@@ -242,17 +247,136 @@ Row _paddedRow(Widget w) {
   );
 }
 
+Widget createBlueprintHeader(BoardState boardState) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // First row: Solar Farm
+      const Row(
+        children: [
+          Text(
+            'Available Blueprints',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ],
+      ),
+      SizedBox(height: 8), // Add some space between rows
+      // Second row: Total Daily Production
+      Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 16.0), // Indentation
+            child: Text('Available This Round: ',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                )),
+          ),
+          Text(boardState.easyBlueprints.getCurrentRoundData(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ))
+        ],
+      ),
+
+      // Third row: Open bays
+      Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 16.0), // Indentation
+            child: Text('Total Remaining: ',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                )),
+          ),
+          Text('${boardState.easyBlueprints.getRemainingCount()}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              )),
+        ],
+      ),
+    ],
+  );
+}
+
+Widget createSolarFarmHeader(BoardState boardState) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // First row: Solar Farm
+      const Row(
+        children: [
+          Text(
+            'Solar Farm',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ],
+      ),
+      SizedBox(height: 8), // Add some space between rows
+      // Second row: Total Daily Production
+      Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 16.0), // Indentation
+            child: Text('Total Daily Production: ',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                )),
+          ),
+          Text('${boardState.solarFarm.dailyGeneration()}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ))
+        ],
+      ),
+
+      // Third row: Open bays
+      Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 16.0), // Indentation
+            child: Text('Open bays: ',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                )),
+          ),
+          Text(
+              '${boardState.solarFarm.openBayCount}/${boardState.solarFarm.bayCount}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              )),
+        ],
+      ),
+    ],
+  );
+}
+
 Widget createDrawerInternals(
-    {required Widget header, required List<Widget> content}) {
+    {required Widget header,
+    required Color headerColor,
+    required List<Widget> content}) {
   return Column(
     children: <Widget>[
       // Frozen header
       Container(
-        height: 100, // Height of the frozen header
-        color: Colors.blue,
-        child: Center(
-          child: header,
-        ),
+        height: 120, // Height of the frozen header
+        width: double.infinity,
+        color: headerColor,
+        child: Expanded(
+            child: Padding(padding: EdgeInsets.all(16), child: header)),
       ),
       // Scrollable list of items
       Expanded(
@@ -272,23 +396,9 @@ Widget createDrawerInternals(
   );
 }
 
-BlueprintProvider _hardBlueprints() {
-  PrefabBlueprintProvider provider = PrefabBlueprintProvider();
-
-  provider.addBlueprint(BlueprintBuilder()
-      .withXDim(4)
-      .withYDim(5)
-      .withPrefitPiece(PlacedPieceBuilder()
-          .withShape(Shape.T)
-          .withRotation(Rotation.R270)
-          .withLocation(x: 1, y: 0)
-          .build()));
-
-  return provider;
-}
-
 BlueprintProvider _easyBlueprints() {
-  PrefabBlueprintProvider provider = PrefabBlueprintProvider();
+  PrefabBlueprintProvider provider =
+      PrefabBlueprintProvider(blueprintsPerRound: 4);
 
   provider.addBlueprint(BlueprintBuilder()
       .withXDim(4)
@@ -350,6 +460,8 @@ BlueprintProvider _easyBlueprints() {
           .withMirrored(false)
           .withLocation(x: 1, y: 1)
           .build()));
+
+  provider.nextRound();
 
   return provider;
 }
