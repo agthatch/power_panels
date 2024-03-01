@@ -3,10 +3,9 @@
 import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/play_session/assembly/assembly_bay_controlls_widget.dart';
 import 'package:card/play_session/assembly/assembly_bay_widget.dart';
+import 'package:card/play_session/card/hand_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'card/player_hand_widget.dart';
 
 class BoardWidget extends StatefulWidget {
   const BoardWidget({super.key});
@@ -36,8 +35,9 @@ class _BoardWidgetState extends State<BoardWidget> {
           child: AssemblyBayWidget(assemblyBay: boardState.assemblyBay),
         )),
         Container(
-            color: Color.fromRGBO(125, 125, 125, .75),
-            child: PlayerHandWidget(player: boardState.player)),
+          color: Color.fromRGBO(125, 125, 125, .75),
+          child: HandAnimationWidget(player: boardState.player),
+        ),
       ],
     );
   }

@@ -24,7 +24,6 @@ import '../../audio/audio_controller.dart';
 import '../../audio/sounds.dart';
 import '../../game_internals/card/score.dart';
 import '../../style/confetti.dart';
-import '../../style/wiggle_button.dart';
 import '../../style/palette.dart';
 import '../board_widget.dart';
 
@@ -112,13 +111,13 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                     ),
                   ),
                   Expanded(child: BoardWidget()),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: WiggleButton(
-                      onPressed: () => GoRouter.of(context).go('/'),
-                      child: const Text('Back'),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: WiggleButton(
+                  //     onPressed: () => GoRouter.of(context).go('/'),
+                  //     child: const Text('Back'),
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox.expand(
