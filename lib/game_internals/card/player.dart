@@ -24,4 +24,8 @@ class Player extends ChangeNotifier {
     _expandHand = !_expandHand;
     notifyListeners();
   }
+
+  void externalNotifyListnerCall() {
+    notifyListeners();
+  }
 }

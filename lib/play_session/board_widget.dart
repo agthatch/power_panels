@@ -36,7 +36,10 @@ class _BoardWidgetState extends State<BoardWidget> {
         )),
         Container(
           color: Color.fromRGBO(125, 125, 125, .75),
-          child: HandAnimationWidget(player: boardState.player),
+          child: HandAnimationWidget(
+            player: boardState.player,
+            upcycleController: boardState.upcycleController,
+          ),
         ),
       ],
     );

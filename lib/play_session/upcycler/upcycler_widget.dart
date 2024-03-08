@@ -3,10 +3,10 @@ import 'package:card/game_internals/upcycling/upcycle_controller.dart';
 import 'package:card/play_session/playing_piece_widget.dart';
 import 'package:flutter/material.dart';
 
-class Upcycler extends StatelessWidget {
+class UpcyclerWidget extends StatelessWidget {
   final UpcycleController controller;
 
-  const Upcycler({super.key, required this.controller});
+  const UpcyclerWidget({super.key, required this.controller});
 
   Widget _buildInbox() {
     return Card(

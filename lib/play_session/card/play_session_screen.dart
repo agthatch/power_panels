@@ -208,7 +208,10 @@ class TrailingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.solar_power),
+      icon: Icon(
+        Icons.warehouse,
+        color: Colors.green,
+      ),
       onPressed: () {
         Scaffold.of(context).openEndDrawer();
       },
@@ -224,7 +227,10 @@ class LeadingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.solar_power_outlined),
+      icon: Icon(
+        Icons.document_scanner_outlined,
+        color: Colors.blue,
+      ),
       onPressed: () {
         Scaffold.of(context).openDrawer();
       },

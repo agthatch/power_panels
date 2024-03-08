@@ -9,6 +9,8 @@ class UpcycleController {
   final StreamController<void> _playerChanges =
       StreamController<void>.broadcast();
 
+  bool _visible = false;
+
   UpcycleController({required BoardState boardState})
       : _boardState = boardState;
 
@@ -54,6 +56,8 @@ class UpcycleController {
     return _availablePieces;
   }
 
+  bool get show => _visible;
+
   void addPieceToUpcycle(PlayingPiece piece) {
     _piecesToUpcycle.add(piece);
     _playerChanges.add(null);
@@ -74,5 +78,13 @@ class UpcycleController {
     _resultingPieces.clear();
     _playerChanges.add(null);
     return res;
+  }
+
+  void setVisibility(bool visibility) {
+    _visible = visibility;
+  }
+
+  void toggleView() {
+    _visible = !_visible;
   }
 }

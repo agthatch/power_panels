@@ -1,4 +1,5 @@
 import 'package:card/game_internals/card/player.dart';
+import 'package:card/game_internals/upcycling/upcycle_controller.dart';
 import 'package:card/play_session/playing_piece_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,9 @@ import '../../game_internals/card/board_state.dart';
 
 class PlayerHandWidget extends StatefulWidget {
   final Player player;
-  const PlayerHandWidget({super.key, required this.player});
+  final UpcycleController upcycleController;
+  const PlayerHandWidget(
+      {super.key, required this.player, required this.upcycleController});
 
   @override
   State<PlayerHandWidget> createState() => _PlayerHandWidgetState();
@@ -30,30 +33,49 @@ class _PlayerHandWidgetState extends State<PlayerHandWidget> {
             ),
             child: Row(
               children: [
-                makeToggleButton(boardState),
+                makeToggleButtons(boardState),
                 Expanded(
                   child: getHandWithProperExpansion(boardState),
                 ),
-                makeToggleButton(boardState)
+                makeToggleButtons(boardState)
               ],
             ),
           );
         });
   }
 
-  Widget makeToggleButton(BoardState boardState) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: IconButton(
-          onPressed: _toggleExpanded,
-          icon: boardState.player.handIsExpanded
-              ? Icon(Icons.arrow_downward)
-              : Icon(Icons.arrow_upward)),
+  Widget makeToggleButtons(BoardState boardState) {
+    return SizedBox(
+      height: 120.0,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            IconButton(
+                onPressed: _toggleExpanded,
+                icon: boardState.player.handIsExpanded
+                    ? Icon(Icons.arrow_downward)
+                    : Icon(Icons.arrow_upward)),
+            if (boardState.player.handIsExpanded)
+              IconButton(
+                  onPressed: _toggleUpcycling,
+                  icon: boardState.upcycleController.show
+                      ? Icon(Icons.cancel)
+                      : Icon(Icons.move_up)),
+          ],
+        ),
+      ),
     );
   }
 
   void _toggleExpanded() {
     widget.player.toggleHandExpand();
+    widget.upcycleController.setVisibility(false);
+  }
+
+  void _toggleUpcycling() {
+    widget.upcycleController.toggleView();
+    widget.player.externalNotifyListnerCall();
   }
 
   Widget getHandWithProperExpansion(BoardState boardState) {
