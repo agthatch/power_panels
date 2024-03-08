@@ -13,6 +13,7 @@ import 'package:card/game_internals/rounds/actions/action_type.dart';
 import 'package:card/game_internals/rounds/actions/piece_staging.dart';
 import 'package:card/game_internals/rounds/actions/staged_piece.dart';
 import 'package:card/game_internals/rounds/round_manager.dart';
+import 'package:card/game_internals/upcycling/upcycle_controller.dart';
 import 'package:flutter/foundation.dart';
 
 import 'player.dart';
@@ -36,6 +37,9 @@ class BoardState {
   /// We need staged Pieces
   late PieceStaging pieceStaging;
 
+  /// We need the upcycled Pieces
+  late UpcycleController upcycleController;
+
   /// We need the toolbox (player hand, avaialble pieces)
   /// We also need the currently generated number
   /// We need the target numbers
@@ -47,6 +51,7 @@ class BoardState {
     pieceStaging = PieceStaging(boardState: this);
     solarFarm = SolarFarm(boardState: this, bayCount: 2);
     roundManager = RoundManager(this, actionsPerRound: 3);
+    upcycleController = UpcycleController(boardState: this);
   }
 
   // List<PlayingArea> get areas => [areaOne, areaTwo];
