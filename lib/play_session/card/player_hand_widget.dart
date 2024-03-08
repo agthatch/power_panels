@@ -28,10 +28,12 @@ class _PlayerHandWidgetState extends State<PlayerHandWidget> {
             constraints: BoxConstraints(
               minHeight: PlayingPieceWidget.width * 4,
               maxHeight: widget.player.handIsExpanded
-                  ? (PlayingPieceWidget.width * 5) * 3
+                  ? (PlayingPieceWidget.width * 5) * 2
                   : PlayingPieceWidget.width * 5,
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 makeToggleButtons(boardState),
                 Expanded(
@@ -59,7 +61,7 @@ class _PlayerHandWidgetState extends State<PlayerHandWidget> {
             if (boardState.player.handIsExpanded)
               IconButton(
                   onPressed: _toggleUpcycling,
-                  icon: boardState.upcycleController.show
+                  icon: boardState.upcycleController.shouldShow
                       ? Icon(Icons.cancel)
                       : Icon(Icons.move_up)),
           ],
@@ -69,12 +71,16 @@ class _PlayerHandWidgetState extends State<PlayerHandWidget> {
   }
 
   void _toggleExpanded() {
+    widget.upcycleController.cancel();
     widget.player.toggleHandExpand();
-    widget.upcycleController.setVisibility(false);
   }
 
   void _toggleUpcycling() {
-    widget.upcycleController.toggleView();
+    if (widget.upcycleController.shouldShow) {
+      widget.upcycleController.cancel();
+    } else {
+      widget.upcycleController.show();
+    }
     widget.player.externalNotifyListnerCall();
   }
 
@@ -98,9 +104,7 @@ class _PlayerHandWidgetState extends State<PlayerHandWidget> {
 
     if (boardState.player.handIsExpanded) {
       return SingleChildScrollView(
-        physics: boardState.player.handIsExpanded
-            ? AlwaysScrollableScrollPhysics()
-            : NeverScrollableScrollPhysics(),
+        physics: AlwaysScrollableScrollPhysics(),
         child: child,
       );
     } else {

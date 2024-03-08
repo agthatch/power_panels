@@ -45,3 +45,13 @@ class RecycledPanelAction extends Action {
   RecycledPanelAction(
       {super.actionType = ActionType.recycledPanel, required this.panel});
 }
+
+class UpcycleAction extends Action {
+  final List<PlayingPiece> discardedPieces;
+  final List<PlayingPiece> newPieces;
+
+  UpcycleAction(
+      {required super.actionType,
+      required this.discardedPieces,
+      required this.newPieces});
+}

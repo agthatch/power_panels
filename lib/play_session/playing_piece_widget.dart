@@ -99,6 +99,27 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
   }
 
   Widget _createNodeWidget(int row, int col, bool isNode) {
+    Widget squareWidget = !isNode
+        ? Container(
+            height: PlayingPieceWidget.width,
+            width: PlayingPieceWidget.width,
+            color: Color.fromRGBO(0, 0, 0, 0),
+          )
+        : SizedBox(
+            height: PlayingPieceWidget.width,
+            width: PlayingPieceWidget.width,
+            child: Container(
+                decoration: BoxDecoration(
+              color: PieceColorGetter.get(widget.piece.shape, context),
+              border: Border.all(color: Color.fromRGBO(0, 0, 0, 1)),
+              borderRadius: BorderRadius.circular(3),
+            )),
+          );
+
+    if (widget.piece.isStaged) {
+      return squareWidget;
+    }
+
     return GestureDetector(
       onTap: _handleTap,
       onDoubleTap: _handleDoubleTap,
@@ -106,22 +127,7 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
       onLongPressDown: (details) {
         widget.piece.setHandledNodeCoordinate(row, col);
       },
-      child: !isNode
-          ? Container(
-              height: PlayingPieceWidget.width,
-              width: PlayingPieceWidget.width,
-              color: Color.fromRGBO(0, 0, 0, 0),
-            )
-          : SizedBox(
-              height: PlayingPieceWidget.width,
-              width: PlayingPieceWidget.width,
-              child: Container(
-                  decoration: BoxDecoration(
-                color: PieceColorGetter.get(widget.piece.shape, context),
-                border: Border.all(color: Color.fromRGBO(0, 0, 0, 1)),
-                borderRadius: BorderRadius.circular(3),
-              )),
-            ),
+      child: squareWidget,
     );
   }
 

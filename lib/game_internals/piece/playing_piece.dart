@@ -97,4 +97,16 @@ class PlayingPiece {
       rotatePositive90();
     }
   }
+
+  PlayingPiece clone() {
+    PlayingPiece res = PlayingPiece(shape);
+    res.currentShape = currentShape.map((row) => List<bool>.from(row)).toList();
+    res.nodes = nodes.toList();
+    res.mirrored = mirrored;
+    res.isStaged = isStaged;
+    res.rotation = rotation;
+    res.handledNodeCoordinate = handledNodeCoordinate;
+
+    return res;
+  }
 }

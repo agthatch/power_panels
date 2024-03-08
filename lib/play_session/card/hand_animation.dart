@@ -24,7 +24,7 @@ class HandAnimationWidget extends StatelessWidget {
                 height:
                     determineTrayHeight(), // Update height based on constraints
                 decoration: BoxDecoration(
-                  color: Colors.blue, // Example color
+                  color: Colors.blueGrey, // Example color
                   borderRadius:
                       BorderRadius.circular(8), // Example border radius
                 ),
@@ -34,7 +34,7 @@ class HandAnimationWidget extends StatelessWidget {
                       player: player,
                       upcycleController: upcycleController,
                     ),
-                    if (upcycleController.show)
+                    if (upcycleController.shouldShow)
                       UpcyclerWidget(
                         controller: upcycleController,
                       )
@@ -52,8 +52,8 @@ class HandAnimationWidget extends StatelessWidget {
       return 100.0 + extraHeight;
     }
 
-    if (upcycleController.show) {
-      return 400.0 + extraHeight;
+    if (upcycleController.shouldShow) {
+      return 360.0 + extraHeight;
     }
     return 200.0 + extraHeight;
   }
