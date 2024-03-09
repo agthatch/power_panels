@@ -28,16 +28,13 @@ class _BlueprintWidgetState extends State<BlueprintWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Top section with text
             _createTopSection(boardState),
-            // Middle section with blue container
             Expanded(
               child: Opacity(
                   opacity: 0.5,
                   child: FrameWidget(
                       panel: Panel.fromBlueprint(widget.blueprint))),
             ),
-            // Bottom section with text
             Container(
               alignment: Alignment.centerRight,
               padding: EdgeInsets.all(5.0),

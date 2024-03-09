@@ -8,22 +8,13 @@ class EmptyStation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 1,
+      color: Colors.white60,
       child: SizedBox(
         width: 200,
         height: 200,
-        child: Stack(
-          children: [
-            // Text in upper-left corner
-            Positioned(
-              top: 8,
-              left: 8,
-              child: Text(
-                'Empty Bay #$bayNumber',
-                style: TextStyle(fontSize: 12),
-              ),
-            ),
-            // Other content of the card can be added here
-          ],
+        child: Center(
+          child: Icon(Icons.pending_outlined),
         ),
       ),
     );

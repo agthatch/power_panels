@@ -12,34 +12,49 @@ class PanelWidget extends StatefulWidget {
   const PanelWidget({super.key, required this.panel});
 
   @override
-  State<StatefulWidget> createState() => _PlayingPieceWidgetState();
+  State<StatefulWidget> createState() => _PanelWidgetState();
 }
 
-class _PlayingPieceWidgetState extends State<PanelWidget> {
+class _PanelWidgetState extends State<PanelWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3.0, // Adjust the elevation as needed
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Top Text',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+      elevation: 8.0, // Adjust the elevation as needed
+      child: SizedBox(
+        width: 200,
+        height: 200,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _createTopSection(widget.panel),
+            Expanded(child: FrameWidget(panel: widget.panel)),
+            Container(
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.all(5.0),
+              child: Text(
+                'Capacity: ${widget.panel.storageCapacity} GWh',
+                style: TextStyle(fontSize: 15.0),
+              ),
             ),
-          ),
-          FrameWidget(panel: widget.panel),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Bottom Text',
-              style: TextStyle(fontSize: 16.0),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _createTopSection(Panel panel) {
+    return Row(children: const [
+      Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
+          child: Text(
+            'Assembling',
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    ]);
   }
 }
 
@@ -49,9 +64,9 @@ class FrameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 200.0,
-      height: 200.0,
+      // height: 200.0,
       child: Center(
         child: StreamBuilder(
             stream: panel.allChanges,
