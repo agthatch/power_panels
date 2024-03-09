@@ -29,7 +29,7 @@ class Palette {
   Color get inkFullOpacity => const Color(0xff352b42);
   Color get ink => const Color(0xee352b42);
   Color get accept => const Color(0xff15a44d);
-  Color get backgroundMain => Color.fromARGB(255, 255, 221, 215);
+  Color get backgroundMain => Colors.white70;
   Color get backgroundLevelSelection => const Color(0xffa2dcc7);
   Color get backgroundPlaySession => const Color(0xffffebb5);
   Color get background4 => const Color(0xffffffd1);

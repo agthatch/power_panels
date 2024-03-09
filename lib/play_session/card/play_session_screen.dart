@@ -99,7 +99,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
               // in the middle, and a back button at the bottom.
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Expanded(child: BoardWidget()),
                   // Padding(
                   //   padding: const EdgeInsets.all(8.0),

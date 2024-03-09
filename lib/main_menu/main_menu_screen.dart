@@ -28,7 +28,14 @@ class MainMenuScreen extends StatelessWidget {
         squarishMainArea: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 100.0),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  semanticLabel: 'Power Panic!',
+                ),
+              ),
               Text(
                 'Power Panic!',
                 textAlign: TextAlign.center,
@@ -55,31 +62,17 @@ class MainMenuScreen extends StatelessWidget {
           children: [
             WiggleButton(
               onPressed: () {
-                audioController.playSfx(SfxType.buttonTap);
                 GoRouter.of(context).go('/play');
               },
               child: const Text('Play'),
             ),
             _gap,
             WiggleButton(
-              onPressed: () => GoRouter.of(context).push('/settings'),
               child: const Text('Settings'),
             ),
             _gap,
-            Padding(
-              padding: const EdgeInsets.only(top: 32),
-              child: ValueListenableBuilder<bool>(
-                valueListenable: settingsController.audioOn,
-                builder: (context, audioOn, child) {
-                  return IconButton(
-                    onPressed: () => settingsController.toggleAudioOn(),
-                    icon: Icon(audioOn ? Icons.volume_up : Icons.volume_off),
-                  );
-                },
-              ),
-            ),
-            _gap,
-            const Text('Music by Mr Smith'),
+            const Text('Build Batteries:'),
+            const Text('Save the City!'),
             _gap,
           ],
         ),
