@@ -32,7 +32,7 @@ class MainMenuScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 100.0),
                 child: Image.asset(
-                  'assets/images/logo.png',
+                  'assets/images/logo_1000.png',
                   semanticLabel: 'Power Panic!',
                 ),
               ),

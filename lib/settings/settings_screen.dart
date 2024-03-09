@@ -58,17 +58,25 @@ class SettingsScreen extends StatelessWidget {
             //     onSelected: () => settings.toggleMusicOn(),
             //   ),
             // ),
-            _SettingsLine(
-              'Reset progress',
-              const Icon(Icons.delete),
-              onSelected: () {
-                context.read<PlayerProgress>().reset();
+            // _SettingsLine(
+            //   'Reset progress',
+            //   const Icon(Icons.delete),
+            //   onSelected: () {
+            //     context.read<PlayerProgress>().reset();
 
-                final messenger = ScaffoldMessenger.of(context);
-                messenger.showSnackBar(
-                  const SnackBar(
-                      content: Text('Player progress has been reset.')),
-                );
+            //     final messenger = ScaffoldMessenger.of(context);
+            //     messenger.showSnackBar(
+            //       const SnackBar(
+            //           content: Text('Player progress has been reset.')),
+            //     );
+            //   },
+            // ),
+
+            _SettingsLine(
+              'Return to Home Screen',
+              const Icon(Icons.home),
+              onSelected: () {
+                GoRouter.of(context).go('/');
               },
             ),
             _gap,
