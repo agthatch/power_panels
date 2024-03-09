@@ -100,16 +100,6 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: InkResponse(
-                      onTap: () => GoRouter.of(context).push('/settings'),
-                      child: Image.asset(
-                        'assets/images/settings.png',
-                        semanticLabel: 'Settings',
-                      ),
-                    ),
-                  ),
                   Expanded(child: BoardWidget()),
                   // Padding(
                   //   padding: const EdgeInsets.all(8.0),

@@ -42,22 +42,22 @@ class SettingsScreen extends StatelessWidget {
             const _NameChangeLine(
               'Name',
             ),
-            ValueListenableBuilder<bool>(
-              valueListenable: settings.soundsOn,
-              builder: (context, soundsOn, child) => _SettingsLine(
-                'Sound FX',
-                Icon(soundsOn ? Icons.graphic_eq : Icons.volume_off),
-                onSelected: () => settings.toggleSoundsOn(),
-              ),
-            ),
-            ValueListenableBuilder<bool>(
-              valueListenable: settings.musicOn,
-              builder: (context, musicOn, child) => _SettingsLine(
-                'Music',
-                Icon(musicOn ? Icons.music_note : Icons.music_off),
-                onSelected: () => settings.toggleMusicOn(),
-              ),
-            ),
+            // ValueListenableBuilder<bool>(
+            //   valueListenable: settings.soundsOn,
+            //   builder: (context, soundsOn, child) => _SettingsLine(
+            //     'Sound FX',
+            //     Icon(soundsOn ? Icons.graphic_eq : Icons.volume_off),
+            //     onSelected: () => settings.toggleSoundsOn(),
+            //   ),
+            // ),
+            // ValueListenableBuilder<bool>(
+            //   valueListenable: settings.musicOn,
+            //   builder: (context, musicOn, child) => _SettingsLine(
+            //     'Music',
+            //     Icon(musicOn ? Icons.music_note : Icons.music_off),
+            //     onSelected: () => settings.toggleMusicOn(),
+            //   ),
+            // ),
             _SettingsLine(
               'Reset progress',
               const Icon(Icons.delete),

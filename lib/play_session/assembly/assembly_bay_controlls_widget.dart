@@ -1,6 +1,7 @@
 import 'package:card/game_internals/rounds/actions/piece_staging.dart';
 import 'package:card/style/wiggle_button.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AssemblyBayControlsWidget extends StatelessWidget {
   final PieceStaging pieceStaging;
@@ -13,8 +14,26 @@ class AssemblyBayControlsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: _getButtons(pieceStaging));
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: _getButtons(pieceStaging),
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: InkResponse(
+            onTap: () => GoRouter.of(context).push('/settings'),
+            child: Image.asset(
+              'assets/images/settings.png',
+              semanticLabel: 'Settings',
+            ),
+          ),
+        )
+      ],
+    );
   }
 
   List<Widget> _getButtons(PieceStaging pieceStaging) {
