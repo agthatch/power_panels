@@ -23,19 +23,28 @@ class UpcyclerWidget extends StatelessWidget {
   }
 
   Widget _buildMiddleSection(List<PlayingPiece> items) {
-    return Card(
-      child: Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(04.0),
-          child: SizedBox(
-            height: 120,
-            child: Center(
-              child: _centerWidget(items),
-            ),
+    return Expanded(
+        child: Card(
+      child: Card(
+        color: Colors.white70,
+        child: SizedBox(
+          height: 120,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Positioned(
+                  bottom: 0,
+                  child: Text('Available Options',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ))),
+              _centerWidget(items),
+            ],
           ),
         ),
       ),
-    );
+    ));
   }
 
   Wrap _pieceOptions(List<PlayingPiece> items) {
@@ -69,9 +78,16 @@ class UpcyclerWidget extends StatelessWidget {
             child: SizedBox(
                 width: 120,
                 height: 120,
-                child: Center(
-                    child:
-                        PieceStackWidget(stack: controller.resultingPieces)))),
+                child: Stack(alignment: Alignment.center, children: [
+                  PieceStackWidget(stack: controller.resultingPieces),
+                  Positioned(
+                      bottom: 0,
+                      child: Text('Output',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ))),
+                ]))),
       ),
     );
   }

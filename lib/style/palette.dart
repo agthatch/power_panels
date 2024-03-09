@@ -42,7 +42,7 @@ class Palette {
   Color get pieceCorner => Color.fromRGBO(0, 255, 0, 1);
   Color get pieceSquare => Color.fromRGBO(81, 90, 90, 1);
   Color get pieceT => Color.fromRGBO(0, 0, 255, 1);
-  Color get pieceZ => Color.fromRGBO(208, 0, 255, 1);
-  Color get pieceL => Color.fromRGBO(255, 119, 0, 1);
+  Color get pieceZ => Color.fromRGBO(255, 87, 51, 1);
+  Color get pieceL => Color.fromRGBO(208, 0, 255, 1);
   Color get pieceLine4 => Color.fromRGBO(0, 204, 255, 1);
 }

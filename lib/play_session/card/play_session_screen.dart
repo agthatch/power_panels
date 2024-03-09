@@ -238,6 +238,7 @@ List<Widget> _blueprintWidgets(List<Blueprint?> nextBlueprints) {
 
 Row _paddedRow(Widget w) {
   return Row(
+    mainAxisSize: MainAxisSize.min,
     children: [Spacer(), w, Spacer()],
   );
 }
@@ -364,6 +365,7 @@ Widget createDrawerInternals(
     required Color headerColor,
     required List<Widget> content}) {
   return Column(
+    mainAxisSize: MainAxisSize.min,
     children: <Widget>[
       // Frozen header
       Container(

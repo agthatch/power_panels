@@ -45,10 +45,16 @@ class _UpcycleInboxState extends State<UpcycleInbox> {
           child: SizedBox(
             width: 120,
             height: 120,
-            child: Center(
-              child: PieceStackWidget(
-                  stack: widget.upcycleController.piecesToUpcycle),
-            ),
+            child: Stack(alignment: Alignment.center, children: [
+              PieceStackWidget(stack: widget.upcycleController.piecesToUpcycle),
+              Positioned(
+                  bottom: 0,
+                  child: Text('Input',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ))),
+            ]),
           ),
         );
       },
