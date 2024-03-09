@@ -26,7 +26,7 @@ class SolarPanelWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Daily Production: ${panel.generationValue}',
+                'Daily Production: ${panel.storageCapacity}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),

@@ -338,7 +338,7 @@ Widget createSolarFarmHeader(BoardState boardState) {
                   fontSize: 14,
                 )),
           ),
-          Text('${boardState.solarFarm.dailyGeneration()}',
+          Text('${boardState.solarFarm.dailyCapacity()}',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -408,7 +408,7 @@ BlueprintProvider _easyBlueprints() {
   provider.addBlueprint(BlueprintBuilder()
       .withXDim(4)
       .withYDim(5)
-      .withGenerationValue(3)
+      .withStorageCapacity(3)
       .withPrefitPiece(PlacedPieceBuilder()
           .withShape(Shape.L)
           .withRotation(Rotation.R90)
@@ -425,7 +425,7 @@ BlueprintProvider _easyBlueprints() {
   provider.addBlueprint(BlueprintBuilder()
       .withXDim(3)
       .withYDim(3)
-      .withGenerationValue(1)
+      .withStorageCapacity(1)
       .withPrefitPiece(PlacedPieceBuilder()
           .withShape(Shape.corner)
           .withRotation(Rotation.R0)
@@ -436,7 +436,7 @@ BlueprintProvider _easyBlueprints() {
   provider.addBlueprint(BlueprintBuilder()
       .withXDim(3)
       .withYDim(3)
-      .withGenerationValue(1)
+      .withStorageCapacity(1)
       .withPrefitPiece(PlacedPieceBuilder()
           .withShape(Shape.lineTwo)
           .withRotation(Rotation.R0)
@@ -447,7 +447,7 @@ BlueprintProvider _easyBlueprints() {
   provider.addBlueprint(BlueprintBuilder()
       .withXDim(3)
       .withYDim(3)
-      .withGenerationValue(1)
+      .withStorageCapacity(1)
       .withPrefitPiece(PlacedPieceBuilder()
           .withShape(Shape.single)
           .withRotation(Rotation.R0)
@@ -458,7 +458,7 @@ BlueprintProvider _easyBlueprints() {
   provider.addBlueprint(BlueprintBuilder()
       .withXDim(3)
       .withYDim(3)
-      .withGenerationValue(1)
+      .withStorageCapacity(1)
       .withPrefitPiece(PlacedPieceBuilder()
           .withShape(Shape.square)
           .withRotation(Rotation.R0)

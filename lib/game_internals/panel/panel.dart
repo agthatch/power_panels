@@ -13,7 +13,7 @@ import 'package:card/game_internals/xy_coordinate.dart';
 class Panel {
   final int dimX;
   final int dimY;
-  final int generationValue;
+  final int storageCapacity;
   late int nodeCount;
 
   bool puzzleComplete = false;
@@ -25,14 +25,14 @@ class Panel {
   bool? canAcceptHoveringPiece;
 
   Panel(
-      {required this.generationValue, required this.dimX, required this.dimY}) {
+      {required this.storageCapacity, required this.dimX, required this.dimY}) {
     nodes = List.generate(dimX, (i) => List.generate(dimY, (j) => PanelNode()));
     nodeCount = dimX * dimY;
   }
 
   static Panel fromBlueprint(Blueprint blueprint) {
     Panel res = Panel(
-        generationValue: blueprint.generationValue,
+        storageCapacity: blueprint.storageCapacity,
         dimX: blueprint.xDim,
         dimY: blueprint.yDim);
     for (PlacedPiece piece in blueprint.preFitPieces) {

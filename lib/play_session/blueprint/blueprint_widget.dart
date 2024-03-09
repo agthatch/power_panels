@@ -21,6 +21,7 @@ class _BlueprintWidgetState extends State<BlueprintWidget> {
 
     return Card(
       elevation: 10.0,
+      color: Color.fromARGB(255, 54, 73, 244).withOpacity(0.5),
       child: SizedBox(
         width: 200,
         height: 200,
@@ -31,23 +32,17 @@ class _BlueprintWidgetState extends State<BlueprintWidget> {
             _createTopSection(boardState),
             // Middle section with blue container
             Expanded(
-              child: Stack(
-                children: [
-                  FrameWidget(panel: Panel.fromBlueprint(widget.blueprint)),
-                  Container(
-                    color: Color.fromARGB(255, 54, 73, 244)
-                        .withOpacity(0.5), // semi-transparent red
-                  ),
-                ],
-              ),
+              child: Opacity(
+                  opacity: 0.5,
+                  child: FrameWidget(
+                      panel: Panel.fromBlueprint(widget.blueprint))),
             ),
             // Bottom section with text
             Container(
-              color: Colors.grey,
               alignment: Alignment.centerRight,
               padding: EdgeInsets.all(5.0),
               child: Text(
-                'Efficiency: ${widget.blueprint.generationValue}',
+                'Capacity: ${widget.blueprint.storageCapacity} GWh',
                 style: TextStyle(fontSize: 15.0),
               ),
             ),
@@ -59,9 +54,12 @@ class _BlueprintWidgetState extends State<BlueprintWidget> {
 
   Widget _createTopSection(BoardState boardState) {
     return Row(children: [
-      Text(
-        'Blueprint',
-        style: TextStyle(fontSize: 20.0),
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
+        child: Text(
+          'Blueprint',
+          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        ),
       ),
       Expanded(
         child: Align(
@@ -72,7 +70,7 @@ class _BlueprintWidgetState extends State<BlueprintWidget> {
                     boardState.purchaseBlueprint(widget.blueprint);
                   }
                 : null,
-            child: Text('Purchase'), // Button text
+            child: Text('Select'), // Button text
           ),
         ),
       ),

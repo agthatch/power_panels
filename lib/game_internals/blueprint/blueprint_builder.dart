@@ -4,14 +4,14 @@ import 'package:card/game_internals/piece/placed_piece.dart';
 class BlueprintBuilder {
   int xDim = 5;
   int yDim = 5;
-  int generationValue = 5;
+  int storageCapacity = 5;
   List<PlacedPiece> preFitPieces = [];
 
   Blueprint build() {
     return Blueprint(
         xDim: xDim,
         yDim: yDim,
-        generationValue: generationValue,
+        storageCapacity: storageCapacity,
         preFitPieces: preFitPieces);
   }
 
@@ -25,8 +25,8 @@ class BlueprintBuilder {
     return this;
   }
 
-  BlueprintBuilder withGenerationValue(int generationValue) {
-    this.generationValue = generationValue;
+  BlueprintBuilder withStorageCapacity(int storageCapacity) {
+    this.storageCapacity = storageCapacity;
     return this;
   }
 

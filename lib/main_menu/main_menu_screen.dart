@@ -26,17 +26,28 @@ class MainMenuScreen extends StatelessWidget {
       backgroundColor: palette.backgroundMain,
       body: ResponsiveScreen(
         squarishMainArea: Center(
-          child: Transform.rotate(
-            angle: -0.0,
-            child: const Text(
-              'Power Utopia!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Permanent Marker',
-                fontSize: 50,
-                height: 1,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              Text(
+                'Power Panic!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Permanent Marker',
+                  fontSize: 50,
+                  height: 1,
+                ),
               ),
-            ),
+              Text(
+                'Battery Builder',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Permanent Marker',
+                  fontSize: 40,
+                  height: 1,
+                ),
+              ),
+            ],
           ),
         ),
         rectangularMenuArea: Column(

@@ -21,10 +21,10 @@ class SolarFarm {
     required this.bayCount,
   });
 
-  get dailyGeneration => () {
+  get dailyCapacity => () {
         int res = 0;
         for (Panel panel in _activePanels) {
-          res += panel.generationValue;
+          res += panel.storageCapacity;
         }
         return res;
       };

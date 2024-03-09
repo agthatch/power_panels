@@ -52,7 +52,6 @@ class FrameWidget extends StatelessWidget {
     return Container(
       width: 200.0,
       height: 200.0,
-      color: const Color.fromARGB(255, 150, 158, 165),
       child: Center(
         child: StreamBuilder(
             stream: panel.allChanges,
