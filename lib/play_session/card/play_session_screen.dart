@@ -73,12 +73,13 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
           ),
           backgroundColor: palette.backgroundPlaySession,
           drawer: Drawer(
+            backgroundColor: Colors.blueAccent.shade400,
             child: StreamBuilder(
                 stream: _boardState.easyBlueprints.getChangeStream(),
                 builder: (context, child) {
                   return createDrawerInternals(
                       header: createBlueprintHeader(_boardState),
-                      headerColor: Colors.blue,
+                      headerColor: Colors.blueAccent,
                       content: _blueprintWidgets(
                           _boardState.easyBlueprints.getBlueprintsForRound()));
                 }),
@@ -89,11 +90,12 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                   builder: (context, child) {
                     return createDrawerInternals(
                         header: createSolarFarmHeader(_boardState),
-                        headerColor: Colors.green.shade400,
+                        headerColor: Color.fromARGB(255, 220, 175, 0),
                         content: _boardState.solarFarm.getWidgets());
                   })),
           body: Stack(
             children: [
+              // PlaySessionBackGround(),
               // This is the main layout of the play session screen,
               // with a settings button at top, the actual play area
               // in the middle, and a back button at the bottom.
@@ -309,7 +311,7 @@ Widget createSolarFarmHeader(BoardState boardState) {
       const Row(
         children: [
           Text(
-            'Solar Farm',
+            'Battery Warehouse',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,

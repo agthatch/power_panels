@@ -24,11 +24,15 @@ class AssemblyBayControlsWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.centerRight,
-          child: InkResponse(
-            onTap: () => GoRouter.of(context).push('/settings'),
-            child: Image.asset(
-              'assets/images/settings.png',
-              semanticLabel: 'Settings',
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: InkResponse(
+              onTap: () => GoRouter.of(context).push('/settings'),
+              child: Icon(
+                Icons.settings,
+                size: 40.0,
+                color: Colors.white60,
+              ),
             ),
           ),
         )

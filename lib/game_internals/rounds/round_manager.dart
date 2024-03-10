@@ -10,6 +10,7 @@ class RoundManager {
   final List<Round> _rounds = [];
   final BoardState _boardState;
   int _currentRoundNumber = 0;
+  bool _isDay = false;
 
   final StreamController<void> _playerChanges =
       StreamController<void>.broadcast();
@@ -21,6 +22,8 @@ class RoundManager {
   }
 
   get roundDisplayString => _currentRoundNumber + 1;
+
+  bool get isDay => _isDay;
 
   bool currentRoundComplete() {
     Round currentRound = _getCurrentRound();
@@ -46,6 +49,7 @@ class RoundManager {
   }
 
   void handleAction(Action action) {
+    _isDay = !_isDay;
     if (currentRoundCanAcceptActionType(action.actionType)) {
       _getCurrentRound().handleAction(action);
     }

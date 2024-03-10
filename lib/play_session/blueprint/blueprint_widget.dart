@@ -21,7 +21,7 @@ class _BlueprintWidgetState extends State<BlueprintWidget> {
 
     return Card(
       elevation: 10.0,
-      color: Color.fromARGB(255, 54, 73, 244).withOpacity(0.5),
+      color: Color.fromARGB(255, 54, 73, 244).withOpacity(1),
       child: SizedBox(
         width: 200,
         height: 200,
@@ -67,7 +67,12 @@ class _BlueprintWidgetState extends State<BlueprintWidget> {
                     boardState.purchaseBlueprint(widget.blueprint);
                   }
                 : null,
-            child: Text('Select'), // Button text
+            child: Text('Select',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.5),
+                  fontWeight: FontWeight.bold,
+                  // fontSize: 18,
+                )), // Button text
           ),
         ),
       ),
