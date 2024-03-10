@@ -107,15 +107,9 @@ class _DayNightBackgroundState extends State<DayNightBackground>
                 bottom: 0,
                 child: Opacity(
                     opacity: 1.0 - _animationValue.value,
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(widget.imageNight),
-                          fit: BoxFit
-                              .cover, // Enlarge the image to cover the entire container
-                        ),
-                      ),
+                    child: Image.asset(
+                      widget.imageNight,
+                      fit: BoxFit.cover,
                     )),
               ),
               // Other widgets can go here

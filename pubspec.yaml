@@ -1,5 +1,5 @@
 name: card
-description: A game built in Flutter.
+description: Power Panic! Battery Builder
 
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'
