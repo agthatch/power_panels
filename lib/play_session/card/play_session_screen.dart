@@ -14,6 +14,7 @@ import 'package:card/game_internals/piece/piece_data.dart';
 import 'package:card/game_internals/piece/placed_piece_builder.dart';
 import 'package:card/game_internals/rotation.dart';
 import 'package:card/game_internals/rounds/round_manager.dart';
+import 'package:card/game_internals/warehouse/battery_warehouse.dart';
 import 'package:card/play_session/assembly/empty_station_widget.dart';
 import 'package:card/play_session/blueprint/blueprint_widget.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,10 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
         ignoring: _duringCelebration,
         child: Scaffold(
           appBar: AppBar(
-            title: RoundInfoWidget(actionManager: _boardState.actionManager),
+            title: RoundInfoWidget(
+              actionManager: _boardState.actionManager,
+              warehouse: _boardState.warehouse,
+            ),
             leading: LeadingButton(),
             actions: const [
               TrailingWidget(),
@@ -87,12 +91,12 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
           ),
           endDrawer: Drawer(
               child: StreamBuilder(
-                  stream: _boardState.solarFarm.playerChanges,
+                  stream: _boardState.warehouse.playerChanges,
                   builder: (context, child) {
                     return createDrawerInternals(
                         header: createSolarFarmHeader(_boardState),
                         headerColor: Color.fromARGB(255, 220, 175, 0),
-                        content: _boardState.solarFarm.getWidgets());
+                        content: _boardState.warehouse.getWidgets());
                   })),
           body: Stack(
             children: [
@@ -178,18 +182,32 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
 class RoundInfoWidget extends StatelessWidget {
   const RoundInfoWidget({
     super.key,
-    required ActionManager actionManager,
-  }) : _actionManager = actionManager;
+    required this.actionManager,
+    required this.warehouse,
+  });
 
-  final ActionManager _actionManager;
+  final ActionManager actionManager;
+  final BatteryWarehouse warehouse;
 
   @override
   Widget build(BuildContext context) {
     return Center(
         child: StreamBuilder(
-            stream: _actionManager.getChangeStream(),
+            stream: actionManager.getChangeStream(),
             builder: (context, child) {
-              return Text(_actionManager.getShiftInfo());
+              return Center(
+                child: Row(
+                  children: [
+                    Spacer(),
+                    Text(actionManager.getShiftInfo()),
+                    SizedBox(
+                      width: 50,
+                    ),
+                    Text(warehouse.getCurrentInfo(actionManager.dayNumber)),
+                    Spacer(),
+                  ],
+                ),
+              );
             }));
   }
 }
@@ -333,7 +351,7 @@ Widget createSolarFarmHeader(BoardState boardState) {
                   fontSize: 14,
                 )),
           ),
-          Text('${boardState.solarFarm.dailyCapacity()}',
+          Text('${boardState.warehouse.dailyCapacity()}',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -353,7 +371,7 @@ Widget createSolarFarmHeader(BoardState boardState) {
                 )),
           ),
           Text(
-              '${boardState.solarFarm.openBayCount}/${boardState.solarFarm.bayCount}',
+              '${boardState.warehouse.openBayCount}/${boardState.warehouse.bayCount}',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,

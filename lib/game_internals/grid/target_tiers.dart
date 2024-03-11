@@ -9,7 +9,7 @@ class TargetTiers {
       required this.targetbyLowerBound});
 
   int getTargetForNight(int nightNumber) {
-    if (nightNumber > maxBound) {
+    if (nightNumber >= maxBound) {
       return maxValue;
     }
     int previousTarget = 0;

@@ -5,7 +5,7 @@ class ShiftTracker {
 
   ShiftTracker({this.dayActions = 3, this.nightActions = 3});
 
-  int get currentRoundNumber => isDay() ? _dayNumber * 2 : (_dayNumber * 2 + 1);
+  int get currentRoundNumber => isDay() ? dayNumber * 2 : (dayNumber * 2 + 1);
 
   get _shiftTypeString => isDay() ? 'Day' : 'Night';
 
@@ -19,9 +19,9 @@ class ShiftTracker {
     _currentActionCount++;
   }
 
-  int get _dayNumber => _currentActionCount ~/ _actionsPerDay;
+  int get dayNumber => _currentActionCount ~/ _actionsPerDay;
 
-  int get _displayDayNumber => 1 + _dayNumber;
+  int get _displayDayNumber => 1 + dayNumber;
 
   int get _actionsPerDay => dayActions + nightActions;
 

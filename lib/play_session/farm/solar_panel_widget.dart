@@ -1,16 +1,16 @@
 import 'package:card/game_internals/card/board_state.dart';
-import 'package:card/game_internals/panel/panel.dart';
+import 'package:card/game_internals/grid/battery.dart';
 import 'package:card/play_session/panel_widget.dart';
 import 'package:card/style/wiggle_button.dart';
 import 'package:flutter/material.dart';
 
 class ActiveBatteryWidget extends StatelessWidget {
-  final Panel panel;
+  final Battery battery;
   final BoardState boardState;
 
   const ActiveBatteryWidget({
     super.key,
-    required this.panel,
+    required this.battery,
     required this.boardState,
   });
 
@@ -26,7 +26,7 @@ class ActiveBatteryWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Daily Production: ${panel.storageCapacity}',
+                'Daily Production: ${battery.panel.storageCapacity}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -36,7 +36,7 @@ class ActiveBatteryWidget extends StatelessWidget {
               child: Container(
                 color: Colors.grey[200],
                 child: Center(
-                  child: FrameWidget(panel: panel),
+                  child: FrameWidget(panel: battery.panel),
                 ),
               ),
             ),
@@ -59,6 +59,6 @@ class ActiveBatteryWidget extends StatelessWidget {
   }
 
   void _onRecycledPressed() {
-    boardState.recycleSolarPanel(panel);
+    boardState.recycleSolarPanel(battery);
   }
 }

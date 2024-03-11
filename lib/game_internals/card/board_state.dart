@@ -4,6 +4,7 @@
 
 import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/blueprint/blueprint_provider.dart';
+import 'package:card/game_internals/grid/battery.dart';
 import 'package:card/game_internals/grid/target_tiers.dart';
 import 'package:card/game_internals/warehouse/battery_warehouse.dart';
 import 'package:card/game_internals/panel/panel.dart';
@@ -30,7 +31,7 @@ class BoardState {
   BlueprintProvider blueprints;
 
   /// We need active panels
-  late BatteryWarehouse solarFarm;
+  late BatteryWarehouse warehouse;
 
   /// We need active puzzles
   AssemblyBay assemblyBay = AssemblyBay(bayCount: 4);
@@ -53,8 +54,10 @@ class BoardState {
       {required this.onWin, required this.blueprints, required this.targets}) {
     player.addListener(_handlePlayerChange);
     pieceStaging = PieceStaging(boardState: this);
-    solarFarm = BatteryWarehouse(boardState: this, bayCount: 2);
-    actionManager = ActionManager(this, dayRounds: 3, nightRounds: 2);
+    warehouse =
+        BatteryWarehouse(boardState: this, bayCount: 6, targets: targets);
+    actionManager =
+        ActionManager(this, dayRounds: 3, nightRounds: 2, warehouse: warehouse);
     upcycleController = UpcycleController(boardState: this);
   }
 
@@ -94,17 +97,17 @@ class BoardState {
     pieceStaging.handleStagedPiece(stagedPiece);
   }
 
-  void recycleSolarPanel(Panel panel) {
-    if (solarFarm.removePanel(panel)) {
-      for (PlacedPiece piece in panel.placedPieces) {
+  void recycleSolarPanel(Battery battery) {
+    if (warehouse.removeBattery(battery)) {
+      for (PlacedPiece piece in battery.panel.placedPieces) {
         player.addPiece(piece.piece);
       }
-      actionManager.handleAction(RecycledPanelAction(panel: panel));
+      actionManager.handleAction(RecycledPanelAction(panel: battery.panel));
     }
   }
 
   void handleCompletedPuzzle(Panel panel) {
-    if (solarFarm.addPanel(panel)) {
+    if (warehouse.addPanel(panel)) {
       assemblyBay.removePuzzle(panel);
     }
   }

@@ -5,6 +5,7 @@ import 'package:card/game_internals/rounds/actions/action.dart';
 import 'package:card/game_internals/rounds/actions/action_type.dart';
 import 'package:card/game_internals/rounds/round.dart';
 import 'package:card/game_internals/rounds/shift_tracker.dart';
+import 'package:card/game_internals/warehouse/battery_warehouse.dart';
 
 class ActionManager {
   final int dayRounds;
@@ -12,6 +13,7 @@ class ActionManager {
   final List<Round> _rounds = [];
   final BoardState _boardState;
   late ShiftTracker _shiftTracker;
+  final BatteryWarehouse warehouse;
 
   late Round _currentRound;
 
@@ -21,13 +23,17 @@ class ActionManager {
   Stream<void> get playerChanges => _playerChanges.stream;
 
   ActionManager(this._boardState,
-      {required this.dayRounds, required this.nightRounds}) {
+      {required this.dayRounds,
+      required this.nightRounds,
+      required this.warehouse}) {
     _shiftTracker =
         ShiftTracker(dayActions: dayRounds, nightActions: nightRounds);
     updateCurrentRound();
   }
 
   bool get isDay => _shiftTracker.isDay();
+
+  int get dayNumber => _shiftTracker.dayNumber;
 
   bool currentRoundComplete() {
     return _currentRound.isComplete();
@@ -53,6 +59,15 @@ class ActionManager {
   void handleAction(Action action) {
     if (currentRoundCanAcceptActionType(action.actionType)) {
       _currentRound.handleAction(action);
+      if (_shiftTracker.isDay()) {
+        warehouse.incrementCharge(
+            dayNumber: _shiftTracker.dayNumber,
+            actionsPerDay: _shiftTracker.dayActions);
+      } else {
+        warehouse.useCharge(
+            dayNumber: _shiftTracker.dayNumber,
+            actionsPerNight: _shiftTracker.nightActions);
+      }
       _shiftTracker.advanceAction();
     }
 
