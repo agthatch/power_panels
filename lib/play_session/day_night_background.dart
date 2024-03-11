@@ -28,8 +28,8 @@ class _DayNightBackgroundState extends State<DayNightBackground>
     );
 
     _backgroundColorAnimation = ColorTween(
-      begin: Colors.black,
-      end: Colors.blue,
+      begin: Color.fromRGBO(1, 39, 140, 1.0),
+      end: Color.fromRGBO(0, 198, 252, 1.0),
     ).animate(_controller);
 
     _animationValue = Tween<double>(

@@ -6,7 +6,7 @@ import 'package:card/play_session/assembly/empty_station_widget.dart';
 import 'package:card/play_session/farm/solar_panel_widget.dart';
 import 'package:flutter/material.dart';
 
-class SolarFarm {
+class BatteryWarehouse {
   final int bayCount;
   final BoardState boardState;
   final List<Panel> _activePanels = [];
@@ -16,7 +16,7 @@ class SolarFarm {
 
   Stream<void> get playerChanges => _playerChanges.stream;
 
-  SolarFarm({
+  BatteryWarehouse({
     required this.boardState,
     required this.bayCount,
   });
@@ -49,10 +49,10 @@ class SolarFarm {
     return panelRemoved;
   }
 
-  List<SolarPanelWidget> _getPannels() {
-    List<SolarPanelWidget> res = [];
+  List<ActiveBatteryWidget> _getPannels() {
+    List<ActiveBatteryWidget> res = [];
     for (Panel panel in _activePanels) {
-      res.add(SolarPanelWidget(
+      res.add(ActiveBatteryWidget(
         panel: panel,
         boardState: boardState,
       ));

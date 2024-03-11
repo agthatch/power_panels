@@ -4,11 +4,11 @@ import 'package:card/play_session/panel_widget.dart';
 import 'package:card/style/wiggle_button.dart';
 import 'package:flutter/material.dart';
 
-class SolarPanelWidget extends StatelessWidget {
+class ActiveBatteryWidget extends StatelessWidget {
   final Panel panel;
   final BoardState boardState;
 
-  const SolarPanelWidget({
+  const ActiveBatteryWidget({
     super.key,
     required this.panel,
     required this.boardState,

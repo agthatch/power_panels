@@ -4,7 +4,7 @@
 
 import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/blueprint/blueprint_provider.dart';
-import 'package:card/game_internals/farm/solar_farm.dart';
+import 'package:card/game_internals/warehouse/battery_warehouse.dart';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/game_internals/assembly/assembly_bay.dart';
 import 'package:card/game_internals/piece/placed_piece.dart';
@@ -29,7 +29,7 @@ class BoardState {
   BlueprintProvider easyBlueprints;
 
   /// We need active panels
-  late SolarFarm solarFarm;
+  late BatteryWarehouse solarFarm;
 
   /// We need active puzzles
   AssemblyBay assemblyBay = AssemblyBay(bayCount: 4);
@@ -49,7 +49,7 @@ class BoardState {
   BoardState({required this.onWin, required this.easyBlueprints}) {
     player.addListener(_handlePlayerChange);
     pieceStaging = PieceStaging(boardState: this);
-    solarFarm = SolarFarm(boardState: this, bayCount: 2);
+    solarFarm = BatteryWarehouse(boardState: this, bayCount: 2);
     roundManager = RoundManager(this, actionsPerRound: 3);
     upcycleController = UpcycleController(boardState: this);
   }
