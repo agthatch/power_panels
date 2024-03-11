@@ -38,7 +38,7 @@ class _DayNightBackgroundState extends State<DayNightBackground>
     ).animate(_controller);
 
     // Start animation when isDay changes
-    if (widget.isDay) {
+    if (!widget.isDay) {
       _controller.reverse();
     } else {
       _controller.forward();
@@ -49,7 +49,7 @@ class _DayNightBackgroundState extends State<DayNightBackground>
   void didUpdateWidget(covariant DayNightBackground oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.isDay != widget.isDay) {
-      if (widget.isDay) {
+      if (!widget.isDay) {
         _controller.reverse();
       } else {
         _controller.forward();

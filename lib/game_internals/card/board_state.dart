@@ -4,6 +4,7 @@
 
 import 'package:card/game_internals/blueprint/blueprint.dart';
 import 'package:card/game_internals/blueprint/blueprint_provider.dart';
+import 'package:card/game_internals/grid/target_tiers.dart';
 import 'package:card/game_internals/warehouse/battery_warehouse.dart';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/game_internals/assembly/assembly_bay.dart';
@@ -23,10 +24,10 @@ class BoardState {
 
   /// *What do we need in the boardState?
   /// We need the round manager
-  late RoundManager roundManager;
+  late ActionManager actionManager;
 
   /// We need the blueprint piles
-  BlueprintProvider easyBlueprints;
+  BlueprintProvider blueprints;
 
   /// We need active panels
   late BatteryWarehouse solarFarm;
@@ -42,15 +43,18 @@ class BoardState {
 
   /// We need the toolbox (player hand, avaialble pieces)
   /// We also need the currently generated number
+  final TargetTiers targets;
+
   /// We need the target numbers
 
   final Player player = Player();
 
-  BoardState({required this.onWin, required this.easyBlueprints}) {
+  BoardState(
+      {required this.onWin, required this.blueprints, required this.targets}) {
     player.addListener(_handlePlayerChange);
     pieceStaging = PieceStaging(boardState: this);
     solarFarm = BatteryWarehouse(boardState: this, bayCount: 2);
-    roundManager = RoundManager(this, actionsPerRound: 3);
+    actionManager = ActionManager(this, dayRounds: 3, nightRounds: 2);
     upcycleController = UpcycleController(boardState: this);
   }
 
@@ -69,18 +73,18 @@ class BoardState {
   }
 
   bool canAddPuzzle() {
-    return assemblyBay.hasOpenBay() && !roundManager.currentRoundComplete();
+    return assemblyBay.hasOpenBay() && !actionManager.currentRoundComplete();
   }
 
   void purchaseBlueprint(Blueprint blueprint) {
-    if (roundManager
+    if (actionManager
         .currentRoundCanAcceptActionType(ActionType.boughtBlueprint)) {
       Panel? resultingPanel = assemblyBay.addPuzzle(blueprint);
 
       if (resultingPanel != null) {
-        easyBlueprints.removeBlueprint(blueprint);
+        blueprints.removeBlueprint(blueprint);
 
-        roundManager.handleAction(BoughtBlueprintAction(
+        actionManager.handleAction(BoughtBlueprintAction(
             originalBlueprint: blueprint, resultingPanel: resultingPanel));
       }
     }
@@ -95,7 +99,7 @@ class BoardState {
       for (PlacedPiece piece in panel.placedPieces) {
         player.addPiece(piece.piece);
       }
-      roundManager.handleAction(RecycledPanelAction(panel: panel));
+      actionManager.handleAction(RecycledPanelAction(panel: panel));
     }
   }
 
@@ -107,10 +111,10 @@ class BoardState {
 
   bool shouldBlockPieceForEfficientAction() {
     return pieceStaging.awaitingPlacePieceAction() &&
-        roundManager.currentRoundHasUsedEfficientAction();
+        actionManager.currentRoundHasUsedEfficientAction();
   }
 
-  void handleRoundIncremented() {
-    easyBlueprints.nextRound();
+  void handleShiftIncremented() {
+    blueprints.nextRound();
   }
 }

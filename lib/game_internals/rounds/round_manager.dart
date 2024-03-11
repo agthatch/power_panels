@@ -4,65 +4,64 @@ import 'package:card/game_internals/card/board_state.dart';
 import 'package:card/game_internals/rounds/actions/action.dart';
 import 'package:card/game_internals/rounds/actions/action_type.dart';
 import 'package:card/game_internals/rounds/round.dart';
+import 'package:card/game_internals/rounds/shift_tracker.dart';
 
-class RoundManager {
-  final int actionsPerRound;
+class ActionManager {
+  final int dayRounds;
+  final int nightRounds;
   final List<Round> _rounds = [];
   final BoardState _boardState;
-  int _currentRoundNumber = 0;
-  bool _isDay = false;
+  late ShiftTracker _shiftTracker;
+
+  late Round _currentRound;
 
   final StreamController<void> _playerChanges =
       StreamController<void>.broadcast();
 
   Stream<void> get playerChanges => _playerChanges.stream;
 
-  RoundManager(this._boardState, {required this.actionsPerRound}) {
-    _rounds.add(Round(roundNumber: 0, actionsPerRound: actionsPerRound));
+  ActionManager(this._boardState,
+      {required this.dayRounds, required this.nightRounds}) {
+    _shiftTracker =
+        ShiftTracker(dayActions: dayRounds, nightActions: nightRounds);
+    updateCurrentRound();
   }
 
-  get roundDisplayString => _currentRoundNumber + 1;
-
-  bool get isDay => _isDay;
+  bool get isDay => _shiftTracker.isDay();
 
   bool currentRoundComplete() {
-    Round currentRound = _getCurrentRound();
-    return currentRound.isComplete();
+    return _currentRound.isComplete();
   }
 
-  Round _getCurrentRound() {
-    return _getRound(_currentRoundNumber);
-  }
-
-  Round _getRound(int roundNumber) {
+  void updateCurrentRound() {
+    int roundNumber = _shiftTracker.currentRoundNumber;
     if (_rounds.length == roundNumber) {
-      Round newRound =
-          Round(roundNumber: roundNumber, actionsPerRound: actionsPerRound);
+      Round newRound = Round(
+          roundNumber: roundNumber,
+          actionsPerRound: _shiftTracker.actionLimitForCurrentShift);
       _rounds.add(newRound);
+      _incrementShift();
     }
-    return _rounds[roundNumber];
+    _currentRound = _rounds[roundNumber];
   }
 
   bool currentRoundCanAcceptActionType(ActionType type) {
-    Round currentRound = _getCurrentRound();
+    Round currentRound = _currentRound;
     return currentRound.canAcceptActionType(type);
   }
 
   void handleAction(Action action) {
-    _isDay = !_isDay;
     if (currentRoundCanAcceptActionType(action.actionType)) {
-      _getCurrentRound().handleAction(action);
+      _currentRound.handleAction(action);
+      _shiftTracker.advanceAction();
     }
 
-    if (currentRoundComplete()) {
-      _incrementRound();
-    }
-
+    updateCurrentRound();
     _playerChanges.add(null);
   }
 
-  String getRoundInfo() {
-    return 'Round: $roundDisplayString Actions: ${_getCurrentRound().getActionCount()}/$actionsPerRound';
+  String getShiftInfo() {
+    return _shiftTracker.getShiftInfoString();
   }
 
   Stream getChangeStream() {
@@ -70,11 +69,10 @@ class RoundManager {
   }
 
   bool currentRoundHasUsedEfficientAction() {
-    return _getCurrentRound().efficientActionHasBeenUsed;
+    return _currentRound.efficientActionHasBeenUsed;
   }
 
-  void _incrementRound() {
-    _currentRoundNumber++;
-    _boardState.handleRoundIncremented();
+  void _incrementShift() {
+    _boardState.handleShiftIncremented();
   }
 }

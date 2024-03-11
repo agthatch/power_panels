@@ -9,6 +9,7 @@ import 'package:card/game_internals/blueprint/blueprint_builder.dart';
 import 'package:card/game_internals/blueprint/blueprint_provider.dart';
 import 'package:card/game_internals/blueprint/prefab_blueprint_provider.dart';
 import 'package:card/game_internals/card/board_state.dart';
+import 'package:card/game_internals/grid/target_tiers.dart';
 import 'package:card/game_internals/piece/piece_data.dart';
 import 'package:card/game_internals/piece/placed_piece_builder.dart';
 import 'package:card/game_internals/rotation.dart';
@@ -65,7 +66,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
         ignoring: _duringCelebration,
         child: Scaffold(
           appBar: AppBar(
-            title: RoundInfoWidget(roundManager: _boardState.roundManager),
+            title: RoundInfoWidget(actionManager: _boardState.actionManager),
             leading: LeadingButton(),
             actions: const [
               TrailingWidget(),
@@ -75,13 +76,13 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
           drawer: Drawer(
             backgroundColor: Colors.blueAccent.shade400,
             child: StreamBuilder(
-                stream: _boardState.easyBlueprints.getChangeStream(),
+                stream: _boardState.blueprints.getChangeStream(),
                 builder: (context, child) {
                   return createDrawerInternals(
                       header: createBlueprintHeader(_boardState),
                       headerColor: Colors.blueAccent,
                       content: _blueprintWidgets(
-                          _boardState.easyBlueprints.getBlueprintsForRound()));
+                          _boardState.blueprints.getBlueprintsForRound()));
                 }),
           ),
           endDrawer: Drawer(
@@ -141,7 +142,8 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     _startOfPlay = DateTime.now();
     _boardState = BoardState(
       onWin: _playerWon,
-      easyBlueprints: _easyBlueprints(),
+      blueprints: _easyBlueprints(),
+      targets: _game1TargetTiers(),
     );
   }
 
@@ -176,18 +178,18 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
 class RoundInfoWidget extends StatelessWidget {
   const RoundInfoWidget({
     super.key,
-    required RoundManager roundManager,
-  }) : _roundManager = roundManager;
+    required ActionManager actionManager,
+  }) : _actionManager = actionManager;
 
-  final RoundManager _roundManager;
+  final ActionManager _actionManager;
 
   @override
   Widget build(BuildContext context) {
     return Center(
         child: StreamBuilder(
-            stream: _roundManager.getChangeStream(),
+            stream: _actionManager.getChangeStream(),
             builder: (context, child) {
-              return Text(_roundManager.getRoundInfo());
+              return Text(_actionManager.getShiftInfo());
             }));
   }
 }
@@ -273,7 +275,7 @@ Widget createBlueprintHeader(BoardState boardState) {
                   fontSize: 14,
                 )),
           ),
-          Text(boardState.easyBlueprints.getCurrentRoundData(),
+          Text(boardState.blueprints.getCurrentRoundData(),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -292,7 +294,7 @@ Widget createBlueprintHeader(BoardState boardState) {
                   fontSize: 14,
                 )),
           ),
-          Text('${boardState.easyBlueprints.getRemainingCount()}',
+          Text('${boardState.blueprints.getRemainingCount()}',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -463,4 +465,14 @@ BlueprintProvider _easyBlueprints() {
   provider.nextRound();
 
   return provider;
+}
+
+TargetTiers _game1TargetTiers() {
+  TargetTiersBuilder builder = TargetTiersBuilder();
+  builder.withTier(lowerBound: 0, target: 0);
+  builder.withTier(lowerBound: 3, target: 3);
+  builder.withTier(lowerBound: 6, target: 7);
+  builder.withTier(lowerBound: 9, target: 16);
+
+  return builder.build();
 }

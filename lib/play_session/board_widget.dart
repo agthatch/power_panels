@@ -23,9 +23,9 @@ class _BoardWidgetState extends State<BoardWidget> {
     return Stack(
       children: [
         StreamBuilder(
-            stream: boardState.roundManager.playerChanges,
+            stream: boardState.actionManager.playerChanges,
             builder: (context, child) {
-              return DayNightBackground(isDay: boardState.roundManager.isDay);
+              return DayNightBackground(isDay: boardState.actionManager.isDay);
             }),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,

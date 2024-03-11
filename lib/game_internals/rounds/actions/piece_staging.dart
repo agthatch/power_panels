@@ -52,7 +52,7 @@ class PieceStaging {
     StagedPiece staged = _stagedPieces[0];
     _placeStagedPiece(staged);
     _stagedPieces.clear();
-    boardState.roundManager.handleAction(placedActionFromStaged(staged));
+    boardState.actionManager.handleAction(placedActionFromStaged(staged));
     _playerChanges.add(null);
   }
 
@@ -75,7 +75,7 @@ class PieceStaging {
     }
 
     _stagedPieces.clear();
-    boardState.roundManager.handleAction(EfficientAction(actions: actions));
+    boardState.actionManager.handleAction(EfficientAction(actions: actions));
     _playerChanges.add(null);
   }
 

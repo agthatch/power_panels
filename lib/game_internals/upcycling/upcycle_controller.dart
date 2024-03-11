@@ -110,7 +110,7 @@ class UpcycleController {
         discardedPieces: piecesToUpcycle.pieces,
         newPieces: resultingPieces.pieces);
 
-    boardState.roundManager.handleAction(action);
+    boardState.actionManager.handleAction(action);
     for (PlayingPiece piece in res) {
       piece.isStaged = false;
       boardState.player.addPiece(piece);
