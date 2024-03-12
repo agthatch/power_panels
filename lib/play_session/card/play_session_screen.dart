@@ -100,23 +100,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                   })),
           body: Stack(
             children: [
-              // PlaySessionBackGround(),
-              // This is the main layout of the play session screen,
-              // with a settings button at top, the actual play area
-              // in the middle, and a back button at the bottom.
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Expanded(child: BoardWidget()),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: WiggleButton(
-                  //     onPressed: () => GoRouter.of(context).go('/'),
-                  //     child: const Text('Back'),
-                  //   ),
-                  // ),
-                ],
-              ),
+              Expanded(child: BoardWidget()),
               SizedBox.expand(
                 child: Visibility(
                   visible: _duringCelebration,
@@ -203,7 +187,12 @@ class RoundInfoWidget extends StatelessWidget {
                     SizedBox(
                       width: 50,
                     ),
-                    Text(warehouse.getCurrentInfo(actionManager.dayNumber)),
+                    StreamBuilder(
+                        stream: warehouse.playerChanges,
+                        builder: (context, snapshot) {
+                          return Text(warehouse
+                              .getCurrentInfo(actionManager.dayNumber));
+                        }),
                     Spacer(),
                   ],
                 ),
@@ -324,76 +313,80 @@ Widget createBlueprintHeader(BoardState boardState) {
 }
 
 Widget createSolarFarmHeader(BoardState boardState) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      // First row: Solar Farm
-      Text(
-        'Battery Warehouse',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-      ),
-      SizedBox(height: 8), // Add some space between rows
-      // Second row: Total Daily Production
-      Row(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(left: 16.0), // Indentation
-            child: Text('Charge: ',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                )),
-          ),
-          Text(boardState.warehouse.getChargeOverCapacity(),
+  return StreamBuilder(
+      stream: boardState.warehouse.playerChanges,
+      builder: (context, snapshot) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // First row: Solar Farm
+            Text(
+              'Battery Warehouse',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
-              ))
-        ],
-      ),
-      Row(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(left: 16.0), // Indentation
-            child: Text('Required: ',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                )),
-          ),
-          Text(
-              '${boardState.warehouse.getCurrentRequirement(boardState.actionManager.dayNumber)} GWh',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ))
-        ],
-      ),
+              ),
+            ),
+            SizedBox(height: 8), // Add some space between rows
+            // Second row: Total Daily Production
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 16.0), // Indentation
+                  child: Text('Charge: ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      )),
+                ),
+                Text(boardState.warehouse.getChargeOverCapacity(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ))
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 16.0), // Indentation
+                  child: Text('Required: ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      )),
+                ),
+                Text(
+                    '${boardState.warehouse.getCurrentRequirement(boardState.actionManager.dayNumber)} GWh',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ))
+              ],
+            ),
 
-      // Third row: Open bays
-      Row(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(left: 16.0), // Indentation
-            child: Text('Open bays: ',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                )),
-          ),
-          Text(
-              '${boardState.warehouse.openBayCount}/${boardState.warehouse.bayCount}',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              )),
-        ],
-      ),
-    ],
-  );
+            // Third row: Open bays
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 16.0), // Indentation
+                  child: Text('Open bays: ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      )),
+                ),
+                Text(
+                    '${boardState.warehouse.openBayCount}/${boardState.warehouse.bayCount}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    )),
+              ],
+            ),
+          ],
+        );
+      });
 }
 
 Widget createDrawerInternals(
@@ -461,16 +454,106 @@ BlueprintProvider _easyBlueprints() {
           .withLocation(x: 1, y: 1)
           .build()));
 
+  provider.addBlueprint(
+      BlueprintBuilder().withXDim(3).withYDim(3).withStorageCapacity(2));
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(5)
+      .withYDim(5)
+      .withStorageCapacity(5)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.lineTwo)
+          .withRotation(Rotation.R90)
+          .withMirrored(false)
+          .withLocation(x: 2, y: 3)
+          .build()));
+
   provider.addBlueprint(BlueprintBuilder()
       .withXDim(3)
       .withYDim(3)
       .withStorageCapacity(1)
       .withPrefitPiece(PlacedPieceBuilder()
-          .withShape(Shape.lineTwo)
+          .withShape(Shape.single)
+          .withRotation(Rotation.R0)
+          .withMirrored(false)
+          .withLocation(x: 2, y: 2)
+          .build()));
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(3)
+      .withYDim(3)
+      .withStorageCapacity(1)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.square)
           .withRotation(Rotation.R0)
           .withMirrored(false)
           .withLocation(x: 1, y: 1)
           .build()));
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(3)
+      .withYDim(5)
+      .withStorageCapacity(3)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.single)
+          .withRotation(Rotation.R0)
+          .withMirrored(false)
+          .withLocation(x: 2, y: 0)
+          .build())
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.lineTwo)
+          .withRotation(Rotation.R0)
+          .withMirrored(false)
+          .withLocation(x: 0, y: 2)
+          .build()));
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(4)
+      .withYDim(4)
+      .withStorageCapacity(2)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.corner)
+          .withRotation(Rotation.R90)
+          .withMirrored(false)
+          .withLocation(x: 0, y: 0)
+          .build())
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.square)
+          .withRotation(Rotation.R0)
+          .withMirrored(false)
+          .withLocation(x: 0, y: 2)
+          .build()));
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(4)
+      .withYDim(5)
+      .withStorageCapacity(3)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.L)
+          .withRotation(Rotation.R90)
+          .withMirrored(false)
+          .withLocation(x: 0, y: 0)
+          .build())
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.square)
+          .withRotation(Rotation.R0)
+          .withMirrored(false)
+          .withLocation(x: 2, y: 3)
+          .build()));
+
+  provider.addBlueprint(BlueprintBuilder()
+      .withXDim(3)
+      .withYDim(3)
+      .withStorageCapacity(1)
+      .withPrefitPiece(PlacedPieceBuilder()
+          .withShape(Shape.corner)
+          .withRotation(Rotation.R0)
+          .withMirrored(false)
+          .withLocation(x: 1, y: 1)
+          .build()));
+
+  provider.addBlueprint(
+      BlueprintBuilder().withXDim(3).withYDim(3).withStorageCapacity(2));
 
   provider.addBlueprint(BlueprintBuilder()
       .withXDim(3)
@@ -502,8 +585,8 @@ BlueprintProvider _easyBlueprints() {
 TargetTiers _game1TargetTiers() {
   TargetTiersBuilder builder = TargetTiersBuilder();
   builder.withTier(lowerBound: 0, target: 0);
-  builder.withTier(lowerBound: 3, target: 3);
-  builder.withTier(lowerBound: 6, target: 7);
+  builder.withTier(lowerBound: 2, target: 3);
+  builder.withTier(lowerBound: 6, target: 10);
   builder.withTier(lowerBound: 9, target: 16);
 
   return builder.build();

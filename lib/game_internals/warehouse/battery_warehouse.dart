@@ -87,6 +87,7 @@ class BatteryWarehouse {
     for (Battery battery in _activeBatteries) {
       battery.incrementChargeForFractionOfDay(fractionOfDay: actionsPerDay);
     }
+    _playerChanges.add(null);
   }
 
   void useCharge({required int dayNumber, required int actionsPerNight}) {
@@ -107,6 +108,7 @@ class BatteryWarehouse {
     if (chargeToUse > 0) {
       _failed = true;
     }
+    _playerChanges.add(null);
   }
 
   String getCurrentInfo(int dayNumber) {

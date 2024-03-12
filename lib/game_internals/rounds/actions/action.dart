@@ -51,7 +51,7 @@ class UpcycleAction extends Action {
   final List<PlayingPiece> newPieces;
 
   UpcycleAction(
-      {required super.actionType,
+      {super.actionType = ActionType.upcycledPieces,
       required this.discardedPieces,
       required this.newPieces});
 }

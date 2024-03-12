@@ -28,7 +28,7 @@ class ActiveBatteryWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Charge: ${battery.charge.toStringAsFixed(1)} / ${battery.panel.storageCapacity}',
+                'Charge: ${battery.charge.toStringAsFixed(1)} / ${battery.panel.storageCapacity.toDouble().toStringAsFixed(1)}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),

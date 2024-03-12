@@ -2,7 +2,7 @@ import 'package:card/game_internals/piece/playing_piece.dart';
 import 'package:flutter/foundation.dart';
 
 class Player extends ChangeNotifier {
-  static const startingPieceCount = 20;
+  static const startingPieceCount = 8;
   bool _expandHand = false;
 
   final List<PlayingPiece> hand = List.generate(
