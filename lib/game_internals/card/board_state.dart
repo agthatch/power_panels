@@ -14,7 +14,7 @@ import 'package:card/game_internals/rounds/actions/action.dart';
 import 'package:card/game_internals/rounds/actions/action_type.dart';
 import 'package:card/game_internals/rounds/actions/piece_staging.dart';
 import 'package:card/game_internals/rounds/actions/staged_piece.dart';
-import 'package:card/game_internals/rounds/round_manager.dart';
+import 'package:card/game_internals/rounds/action_manager.dart';
 import 'package:card/game_internals/upcycling/upcycle_controller.dart';
 import 'package:flutter/foundation.dart';
 
@@ -22,6 +22,7 @@ import 'player.dart';
 
 class BoardState {
   final VoidCallback onWin;
+  final VoidCallback onLoss;
 
   /// *What do we need in the boardState?
   /// We need the round manager
@@ -51,7 +52,10 @@ class BoardState {
   final Player player = Player();
 
   BoardState(
-      {required this.onWin, required this.blueprints, required this.targets}) {
+      {required this.onWin,
+      required this.onLoss,
+      required this.blueprints,
+      required this.targets}) {
     player.addListener(_handlePlayerChange);
     pieceStaging = PieceStaging(boardState: this);
     warehouse =
@@ -119,5 +123,13 @@ class BoardState {
 
   void handleShiftIncremented() {
     blueprints.nextRound();
+  }
+
+  void triggerWin() {
+    onWin();
+  }
+
+  void triggerFailure() {
+    onLoss();
   }
 }

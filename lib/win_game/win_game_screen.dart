@@ -41,8 +41,8 @@ class WinGameScreen extends StatelessWidget {
             gap,
             Center(
               child: Text(
-                'Score: ${score.score}\n'
-                'Time: ${score.formattedTime}',
+                'Total Capacity: ${score.score}\n'
+                'Day: ${score.day}',
                 style: const TextStyle(
                     fontFamily: 'Permanent Marker', fontSize: 20),
               ),

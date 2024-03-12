@@ -13,7 +13,7 @@ import 'package:card/game_internals/grid/target_tiers.dart';
 import 'package:card/game_internals/piece/piece_data.dart';
 import 'package:card/game_internals/piece/placed_piece_builder.dart';
 import 'package:card/game_internals/rotation.dart';
-import 'package:card/game_internals/rounds/round_manager.dart';
+import 'package:card/game_internals/rounds/action_manager.dart';
 import 'package:card/game_internals/warehouse/battery_warehouse.dart';
 import 'package:card/play_session/assembly/empty_station_widget.dart';
 import 'package:card/play_session/blueprint/blueprint_widget.dart';
@@ -22,8 +22,6 @@ import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
 import 'package:provider/provider.dart';
 
-import '../../audio/audio_controller.dart';
-import '../../audio/sounds.dart';
 import '../../game_internals/card/score.dart';
 import '../../style/confetti.dart';
 import '../../style/palette.dart';
@@ -100,7 +98,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                   })),
           body: Stack(
             children: [
-              Expanded(child: BoardWidget()),
+              Positioned.fill(child: BoardWidget()),
               SizedBox.expand(
                 child: Visibility(
                   visible: _duringCelebration,
@@ -130,6 +128,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     _startOfPlay = DateTime.now();
     _boardState = BoardState(
       onWin: _playerWon,
+      onLoss: _playerLost,
       blueprints: _easyBlueprints(),
       targets: _game1TargetTiers(),
     );
@@ -139,7 +138,28 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     _log.info('Player won');
 
     // TODO: replace with some meaningful score for the card game
-    final score = Score(1, 1, DateTime.now().difference(_startOfPlay));
+    final score = Score(_boardState.actionManager.dayNumber,
+        _boardState.warehouse.dailyCapacity());
+    // Let the player see the game just after winning for a bit.
+    await Future<void>.delayed(_preCelebrationDuration);
+    if (!mounted) return;
+
+    setState(() {
+      _duringCelebration = true;
+    });
+
+    /// Give the player some time to see the celebration animation.
+    await Future<void>.delayed(_celebrationDuration);
+    if (!mounted) return;
+
+    GoRouter.of(context).go('/play/won', extra: {'score': score});
+  }
+
+  Future<void> _playerLost() async {
+    _log.info('Player lost');
+
+    final score = Score(_boardState.actionManager.dayNumber,
+        _boardState.warehouse.dailyCapacity());
 
     // final playerProgress = context.read<PlayerProgress>();
     // playerProgress.setLevelReached(widget.level.number);
@@ -151,9 +171,6 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     setState(() {
       _duringCelebration = true;
     });
-
-    final audioController = context.read<AudioController>();
-    audioController.playSfx(SfxType.congrats);
 
     /// Give the player some time to see the celebration animation.
     await Future<void>.delayed(_celebrationDuration);
@@ -401,8 +418,7 @@ Widget createDrawerInternals(
         height: 150, // Height of the frozen header
         width: double.infinity,
         color: headerColor,
-        child: Expanded(
-            child: Padding(padding: EdgeInsets.all(16), child: header)),
+        child: Padding(padding: EdgeInsets.all(16), child: header),
       ),
       // Scrollable list of items
       Expanded(
@@ -585,9 +601,9 @@ BlueprintProvider _easyBlueprints() {
 TargetTiers _game1TargetTiers() {
   TargetTiersBuilder builder = TargetTiersBuilder();
   builder.withTier(lowerBound: 0, target: 0);
-  builder.withTier(lowerBound: 2, target: 3);
-  builder.withTier(lowerBound: 6, target: 10);
-  builder.withTier(lowerBound: 9, target: 16);
+  builder.withTier(lowerBound: 3, target: 3);
+  builder.withTier(lowerBound: 6, target: 9);
+  builder.withTier(lowerBound: 9, target: 15);
 
   return builder.build();
 }

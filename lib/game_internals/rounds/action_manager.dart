@@ -71,6 +71,13 @@ class ActionManager {
       _shiftTracker.advanceAction();
     }
 
+    ///Check for win/lose
+    if (warehouse.winConditionMet) {
+      _boardState.triggerWin();
+    } else if (warehouse.failed) {
+      _boardState.triggerFailure();
+    }
+
     updateCurrentRound();
     _playerChanges.add(null);
   }

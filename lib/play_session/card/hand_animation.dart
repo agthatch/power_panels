@@ -24,6 +24,14 @@ class HandAnimationWidget extends StatelessWidget {
                 height:
                     determineTrayHeight(), // Update height based on constraints
                 decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 0), // changes position of shadow
+                    ),
+                  ],
                   color: Colors.blueGrey, // Example color
                   borderRadius:
                       BorderRadius.circular(8), // Example border radius

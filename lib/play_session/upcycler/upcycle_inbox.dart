@@ -17,17 +17,18 @@ class _UpcycleInboxState extends State<UpcycleInbox> {
   @override
   Widget build(BuildContext context) {
     return DragTarget<PlayingPieceDragData>(
-      onAccept: (data) {
+      onAcceptWithDetails: (data) {
         setState(() {
-          widget.upcycleController.piecesToUpcycle.add(data.piece);
-          widget.upcycleController.boardState.player.removePiece(data.piece);
+          widget.upcycleController.piecesToUpcycle.add(data.data.piece);
+          widget.upcycleController.boardState.player
+              .removePiece(data.data.piece);
           isHovered = false;
         });
 
         // Handle the drop event
         // You can implement actions when a draggable item is dropped here
       },
-      onWillAccept: (data) {
+      onWillAcceptWithDetails: (data) {
         setState(() {
           isHovered = true;
         });

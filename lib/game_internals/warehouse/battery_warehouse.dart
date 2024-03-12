@@ -27,7 +27,10 @@ class BatteryWarehouse {
     required this.targets,
   });
 
-  get dailyCapacity => () {
+  bool get failed => _failed;
+  bool get winConditionMet => _win;
+
+  int Function() get dailyCapacity => () {
         int res = 0;
         for (Battery battery in _activeBatteries) {
           res += battery.panel.storageCapacity;
@@ -86,6 +89,10 @@ class BatteryWarehouse {
   void incrementCharge({required int dayNumber, required int actionsPerDay}) {
     for (Battery battery in _activeBatteries) {
       battery.incrementChargeForFractionOfDay(fractionOfDay: actionsPerDay);
+    }
+
+    if (_currentCharge() >= targets.maxValue) {
+      _win = true;
     }
     _playerChanges.add(null);
   }

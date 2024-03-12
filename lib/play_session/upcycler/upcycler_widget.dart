@@ -23,8 +23,7 @@ class UpcyclerWidget extends StatelessWidget {
   }
 
   Widget _buildMiddleSection(List<PlayingPiece> items) {
-    return Expanded(
-        child: Card(
+    return Card(
       child: Card(
         color: Colors.white70,
         child: SizedBox(
@@ -44,7 +43,7 @@ class UpcyclerWidget extends StatelessWidget {
           ),
         ),
       ),
-    ));
+    );
   }
 
   Wrap _pieceOptions(List<PlayingPiece> items) {
