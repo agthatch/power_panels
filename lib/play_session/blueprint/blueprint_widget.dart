@@ -22,28 +22,41 @@ class _BlueprintWidgetState extends State<BlueprintWidget> {
     return Card(
       elevation: 10.0,
       color: Color.fromARGB(255, 54, 73, 244).withOpacity(1),
-      child: SizedBox(
-        width: 200,
-        height: 200,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _createTopSection(boardState),
-            Expanded(
-              child: Opacity(
-                  opacity: 0.5,
-                  child: FrameWidget(
-                      panel: Panel.fromBlueprint(widget.blueprint))),
-            ),
-            Container(
-              alignment: Alignment.centerRight,
-              padding: EdgeInsets.all(5.0),
-              child: Text(
-                'Capacity: ${widget.blueprint.storageCapacity} GWh',
-                style: TextStyle(fontSize: 15.0),
-              ),
-            ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+            gradient: RadialGradient(
+          center: Alignment.center,
+          radius: 0.75,
+          colors: const [
+            Color.fromRGBO(59, 147, 183, 1),
+            Color.fromRGBO(27, 102, 159, 1)
           ],
+        )),
+        child: GridPaper(
+          divisions: 3,
+          interval: 200.0,
+          child: SizedBox(
+            width: 202,
+            height: 202,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _createTopSection(boardState),
+                Expanded(
+                  child:
+                      FrameWidget(panel: Panel.fromBlueprint(widget.blueprint)),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'Capacity: ${widget.blueprint.storageCapacity} GWh',
+                    style: TextStyle(fontSize: 15.0),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
