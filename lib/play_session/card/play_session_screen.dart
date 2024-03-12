@@ -328,16 +328,12 @@ Widget createSolarFarmHeader(BoardState boardState) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       // First row: Solar Farm
-      const Row(
-        children: [
-          Text(
-            'Battery Warehouse',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-        ],
+      Text(
+        'Battery Warehouse',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
       ),
       SizedBox(height: 8), // Add some space between rows
       // Second row: Total Daily Production
@@ -345,13 +341,31 @@ Widget createSolarFarmHeader(BoardState boardState) {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(left: 16.0), // Indentation
-            child: Text('Total Daily Production: ',
+            child: Text('Charge: ',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                 )),
           ),
-          Text('${boardState.warehouse.dailyCapacity()}',
+          Text(boardState.warehouse.getChargeOverCapacity(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ))
+        ],
+      ),
+      Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 16.0), // Indentation
+            child: Text('Required: ',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                )),
+          ),
+          Text(
+              '${boardState.warehouse.getCurrentRequirement(boardState.actionManager.dayNumber)} GWh',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -391,7 +405,7 @@ Widget createDrawerInternals(
     children: <Widget>[
       // Frozen header
       Container(
-        height: 120, // Height of the frozen header
+        height: 150, // Height of the frozen header
         width: double.infinity,
         color: headerColor,
         child: Expanded(

@@ -5,7 +5,7 @@ import 'package:card/game_internals/grid/battery.dart';
 import 'package:card/game_internals/grid/target_tiers.dart';
 import 'package:card/game_internals/panel/panel.dart';
 import 'package:card/play_session/assembly/empty_station_widget.dart';
-import 'package:card/play_session/farm/solar_panel_widget.dart';
+import 'package:card/play_session/farm/active_battery_widget.dart';
 import 'package:flutter/material.dart';
 
 class BatteryWarehouse {
@@ -55,7 +55,7 @@ class BatteryWarehouse {
     return panelRemoved;
   }
 
-  List<ActiveBatteryWidget> _getPannels() {
+  List<ActiveBatteryWidget> _getBatteries() {
     List<ActiveBatteryWidget> res = [];
     for (Battery battery in _activeBatteries) {
       res.add(ActiveBatteryWidget(
@@ -76,7 +76,7 @@ class BatteryWarehouse {
   }
 
   List<Widget> getWidgets() {
-    return [..._getPannels(), ..._getEmptyStations()];
+    return [..._getBatteries(), ..._getEmptyStations()];
   }
 
   bool hasOpenBay() {
@@ -96,10 +96,10 @@ class BatteryWarehouse {
     for (Battery battery in _activeBatteries) {
       double availableCharge = battery.charge;
       if (chargeToUse > availableCharge) {
-        battery.charge = 0;
+        battery.setCharge(0);
         chargeToUse -= availableCharge;
       } else {
-        battery.charge -= chargeToUse;
+        battery.useCharge(chargeToUse);
         chargeToUse = 0;
       }
     }
@@ -110,7 +110,15 @@ class BatteryWarehouse {
   }
 
   String getCurrentInfo(int dayNumber) {
-    return 'Current Charge = ${_currentCharge().toStringAsFixed(1)} GWh / ${targets.getTargetForNight(dayNumber)} required';
+    return 'Current Charge: ${_currentCharge().toStringAsFixed(1)} GWh / ${targets.getTargetForNight(dayNumber)} required';
+  }
+
+  String getChargeOverCapacity() {
+    return '${_currentCharge().toStringAsFixed(1)} GWh / ${dailyCapacity()}';
+  }
+
+  int getCurrentRequirement(int dayNumber) {
+    return targets.getTargetForNight(dayNumber);
   }
 
   double _currentCharge() {
