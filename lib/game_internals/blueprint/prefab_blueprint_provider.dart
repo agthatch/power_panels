@@ -66,4 +66,9 @@ class PrefabBlueprintProvider implements BlueprintProvider {
     blueprintsForRound.clear();
     blueprintsForRound.addAll(blueprints.sublist(0, endIndex));
   }
+
+  @override
+  List<Blueprint> getAll() {
+    return blueprints;
+  }
 }

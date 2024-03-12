@@ -84,7 +84,8 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                       header: createBlueprintHeader(_boardState),
                       headerColor: Colors.blueAccent,
                       content: _blueprintWidgets(
-                          _boardState.blueprints.getBlueprintsForRound()));
+                          _boardState.blueprints.getBlueprintsForRound(),
+                          _boardState));
                 }),
           ),
           endDrawer: Drawer(
@@ -138,8 +139,8 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     _log.info('Player won');
 
     // TODO: replace with some meaningful score for the card game
-    final score = Score(_boardState.actionManager.dayNumber,
-        _boardState.warehouse.dailyCapacity());
+    final score = Score(_boardState.actionManager.dayNumber + 1,
+        _boardState.warehouse.dailyCapacity(), _boardState.blueprints.getAll());
     // Let the player see the game just after winning for a bit.
     await Future<void>.delayed(_preCelebrationDuration);
     if (!mounted) return;
@@ -159,7 +160,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     _log.info('Player lost');
 
     final score = Score(_boardState.actionManager.dayNumber,
-        _boardState.warehouse.dailyCapacity());
+        _boardState.warehouse.dailyCapacity(), []);
 
     // final playerProgress = context.read<PlayerProgress>();
     // playerProgress.setLevelReached(widget.level.number);
@@ -256,10 +257,14 @@ class LeadingButton extends StatelessWidget {
   }
 }
 
-List<Widget> _blueprintWidgets(List<Blueprint?> nextBlueprints) {
+List<Widget> _blueprintWidgets(
+    List<Blueprint?> nextBlueprints, BoardState boardState) {
   return nextBlueprints
       .map((e) => e != null
-          ? BlueprintWidget(blueprint: e)
+          ? BlueprintWidget(
+              blueprint: e,
+              boardState: boardState,
+            )
           : EmptyStation(bayNumber: 0))
       .toList();
 }
@@ -599,6 +604,15 @@ BlueprintProvider _easyBlueprints() {
 }
 
 TargetTiers _game1TargetTiers() {
+  TargetTiersBuilder builder = TargetTiersBuilder();
+  builder.withTier(lowerBound: 0, target: 0);
+  builder.withTier(lowerBound: 3, target: 2);
+  builder.withTier(lowerBound: 7, target: 7);
+
+  return builder.build();
+}
+
+TargetTiers _game2TargetTiers() {
   TargetTiersBuilder builder = TargetTiersBuilder();
   builder.withTier(lowerBound: 0, target: 0);
   builder.withTier(lowerBound: 3, target: 3);

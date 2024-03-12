@@ -7,4 +7,6 @@ abstract class BlueprintProvider {
   void removeBlueprint(Blueprint removed);
   Stream<void> getChangeStream();
   String getCurrentRoundData();
+
+  List<Blueprint> getAll();
 }

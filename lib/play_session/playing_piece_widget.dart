@@ -37,28 +37,32 @@ class _PlayingPieceWidgetState extends State<PlayingPieceWidget> {
       return pieceWidget;
     }
 
-    final BoardState boardState = context.watch<BoardState>();
+    try {
+      final BoardState boardState = context.watch<BoardState>();
 
-    return Draggable(
-      feedback: Transform.rotate(
-        angle: 0.1,
+      return Draggable(
+        feedback: Transform.rotate(
+          angle: 0.1,
+          child: pieceWidget,
+        ),
+        data: PlayingPieceDragData(widget.piece, widget.player, boardState),
+        childWhenDragging: Opacity(
+          opacity: 0.5,
+          child: pieceWidget,
+        ),
+        onDragStarted: () {
+          final audioController = context.read<AudioController>();
+          audioController.playSfx(SfxType.huhsh);
+        },
+        onDragEnd: (details) {
+          final audioController = context.read<AudioController>();
+          audioController.playSfx(SfxType.wssh);
+        },
         child: pieceWidget,
-      ),
-      data: PlayingPieceDragData(widget.piece, widget.player, boardState),
-      childWhenDragging: Opacity(
-        opacity: 0.5,
-        child: pieceWidget,
-      ),
-      onDragStarted: () {
-        final audioController = context.read<AudioController>();
-        audioController.playSfx(SfxType.huhsh);
-      },
-      onDragEnd: (details) {
-        final audioController = context.read<AudioController>();
-        audioController.playSfx(SfxType.wssh);
-      },
-      child: pieceWidget,
-    );
+      );
+    } catch (e) {
+      return pieceWidget;
+    }
   }
 
   double determineSizedBoxHeight(PlayingPiece piece) {

@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:card/game_internals/blueprint/blueprint.dart';
+import 'package:card/play_session/blueprint/blueprint_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -32,9 +34,9 @@ class WinGameScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             gap,
-            const Center(
+            Center(
               child: Text(
-                'You won!',
+                score.win ? 'You won!' : 'You lost.',
                 style: TextStyle(fontFamily: 'Permanent Marker', fontSize: 50),
               ),
             ),
@@ -47,6 +49,7 @@ class WinGameScreen extends StatelessWidget {
                     fontFamily: 'Permanent Marker', fontSize: 20),
               ),
             ),
+            _showBlueprints(score.blueprints),
           ],
         ),
         rectangularMenuArea: WiggleButton(
@@ -54,6 +57,26 @@ class WinGameScreen extends StatelessWidget {
             GoRouter.of(context).go('/');
           },
           child: const Text('Continue'),
+        ),
+      ),
+    );
+  }
+
+  Widget _showBlueprints(List<Blueprint> blueprints) {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 0,
+          runSpacing: 0,
+          children: [
+            ...blueprints.map((blueprint) => Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [BlueprintWidget(blueprint: blueprint)],
+                  ),
+                )),
+          ],
         ),
       ),
     );
