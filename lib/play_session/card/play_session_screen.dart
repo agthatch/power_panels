@@ -94,7 +94,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                   stream: _boardState.warehouse.playerChanges,
                   builder: (context, child) {
                     return createDrawerInternals(
-                        header: createSolarFarmHeader(_boardState),
+                        header: createWarehouseHeader(_boardState),
                         headerColor: Color.fromARGB(255, 220, 175, 0),
                         content: _boardState.warehouse.getWidgets());
                   })),
@@ -373,7 +373,7 @@ Widget createBlueprintHeader(BoardState boardState) {
   );
 }
 
-Widget createSolarFarmHeader(BoardState boardState) {
+Widget createWarehouseHeader(BoardState boardState) {
   return StreamBuilder(
       stream: boardState.warehouse.playerChanges,
       builder: (context, snapshot) {
@@ -418,7 +418,7 @@ Widget createSolarFarmHeader(BoardState boardState) {
                       )),
                 ),
                 Text(
-                    '${boardState.warehouse.getCurrentRequirement(boardState.actionManager.dayNumber)} GWh',
+                    '${boardState.warehouse.getCurrentRequirement(boardState.actionManager.dayNumber).toStringAsFixed(1)} GWh',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
