@@ -17,6 +17,7 @@ import 'package:card/game_internals/rounds/action_manager.dart';
 import 'package:card/game_internals/warehouse/battery_warehouse.dart';
 import 'package:card/play_session/assembly/empty_station_widget.dart';
 import 'package:card/play_session/blueprint/blueprint_widget.dart';
+import 'package:card/play_session/day_night_background.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
@@ -139,7 +140,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     _log.info('Player won');
 
     // TODO: replace with some meaningful score for the card game
-    final score = Score(_boardState.actionManager.dayNumber + 1,
+    final score = Score(_boardState.actionManager.dayNumber,
         _boardState.warehouse.dailyCapacity(), _boardState.blueprints.getAll());
     // Let the player see the game just after winning for a bit.
     await Future<void>.delayed(_preCelebrationDuration);
@@ -188,6 +189,10 @@ class RoundInfoWidget extends StatelessWidget {
   final ActionManager actionManager;
   final BatteryWarehouse warehouse;
 
+  Widget get _spacer => SizedBox(
+        width: 20,
+      );
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -198,21 +203,58 @@ class RoundInfoWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     Spacer(),
-                    Text(actionManager.getShiftInfo()),
-                    SizedBox(
-                      width: 50,
-                    ),
+                    _getDayNightImage(actionManager.isDay),
+                    Text(actionManager.dayNumber.toString()),
+                    _spacer,
+                    Icon(Icons.task),
+                    Text(actionManager.getShiftTaskInfo()),
+                    _spacer,
                     StreamBuilder(
                         stream: warehouse.playerChanges,
                         builder: (context, snapshot) {
-                          return Text(warehouse
-                              .getCurrentInfo(actionManager.dayNumber));
+                          return Row(
+                            children: [
+                              _getChargeIndicator(warehouse.getChargePercentage(
+                                  actionManager.dayNumber)),
+                              Text(warehouse
+                                  .getCurrentInfo(actionManager.dayNumber)),
+                            ],
+                          );
                         }),
                     Spacer(),
                   ],
                 ),
               );
             }));
+  }
+
+  Widget _getDayNightImage(bool isDay) {
+    double size = 30;
+    if (isDay) {
+      return Image.asset(
+        DayNightBackground.sunImage,
+        width: size,
+        height: size,
+      );
+    } else {
+      return Image.asset(
+        DayNightBackground.moonImage,
+        width: size,
+        height: size,
+      );
+    }
+  }
+
+  Widget _getChargeIndicator(double chargePercentage) {
+    if (chargePercentage >= 100.0) {
+      return Icon(Icons.battery_charging_full);
+    } else if (chargePercentage < 10.0) {
+      return Icon(Icons.battery_0_bar);
+    } else if (chargePercentage < 50.0) {
+      return Icon(Icons.battery_2_bar);
+    } else {
+      return Icon(Icons.battery_4_bar);
+    }
   }
 }
 

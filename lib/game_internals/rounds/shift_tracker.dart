@@ -21,7 +21,7 @@ class ShiftTracker {
 
   int get dayNumber => _currentActionCount ~/ _actionsPerDay;
 
-  int get _displayDayNumber => 1 + dayNumber;
+  int get displayDayNumber => 1 + dayNumber;
 
   int get _actionsPerDay => dayActions + nightActions;
 
@@ -33,7 +33,7 @@ class ShiftTracker {
     return _getActionNumberForCurrentDay() < dayActions;
   }
 
-  String getShiftInfoString() {
-    return '$_shiftTypeString $_displayDayNumber - Completed Tasks: $_actionInShift/$actionLimitForCurrentShift';
+  String getShiftTaskInfoString() {
+    return '$_actionInShift/$actionLimitForCurrentShift';
   }
 }

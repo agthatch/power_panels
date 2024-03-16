@@ -33,7 +33,7 @@ class ActionManager {
 
   bool get isDay => _shiftTracker.isDay();
 
-  int get dayNumber => _shiftTracker.dayNumber;
+  int get dayNumber => _shiftTracker.displayDayNumber;
 
   bool currentRoundComplete() {
     return _currentRound.isComplete();
@@ -82,8 +82,8 @@ class ActionManager {
     _playerChanges.add(null);
   }
 
-  String getShiftInfo() {
-    return _shiftTracker.getShiftInfoString();
+  String getShiftTaskInfo() {
+    return _shiftTracker.getShiftTaskInfoString();
   }
 
   Stream getChangeStream() {

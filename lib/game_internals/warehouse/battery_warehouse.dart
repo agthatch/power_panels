@@ -119,7 +119,7 @@ class BatteryWarehouse {
   }
 
   String getCurrentInfo(int dayNumber) {
-    return 'Current Charge: ${_currentCharge().toStringAsFixed(1)} GWh / ${targets.getTargetForNight(dayNumber)} required';
+    return '${_currentCharge().toStringAsFixed(1)} GWh / ${targets.getTargetForNight(dayNumber).toStringAsFixed(1)} req';
   }
 
   String getChargeOverCapacity() {
@@ -138,5 +138,9 @@ class BatteryWarehouse {
     }
 
     return currentCharge;
+  }
+
+  double getChargePercentage(int dayNumber) {
+    return _currentCharge() / targets.getTargetForNight(dayNumber);
   }
 }

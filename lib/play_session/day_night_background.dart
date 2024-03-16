@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class DayNightBackground extends StatefulWidget {
   final bool isDay;
-  final String imageNight = 'assets/images/CityScape-night.png';
-  final String imageDay = 'assets/images/CityScape-day.png';
-  final String sunImage = 'assets/images/sun.png';
-  final String moonImage = 'assets/images/moon.png';
+  static const String imageNight = 'assets/images/CityScape-night.png';
+  static const String imageDay = 'assets/images/CityScape-day.png';
+  static const String sunImage = 'assets/images/sun.png';
+  static const String moonImage = 'assets/images/moon.png';
 
   const DayNightBackground({super.key, required this.isDay});
 
@@ -80,7 +80,7 @@ class _DayNightBackgroundState extends State<DayNightBackground>
                 top: 50 + screenHeight - (_animationValue.value) * screenHeight,
                 left: 50,
                 child: Image.asset(
-                  widget.sunImage,
+                  DayNightBackground.sunImage,
                   width: 100,
                   height: 100,
                 ),
@@ -90,7 +90,7 @@ class _DayNightBackgroundState extends State<DayNightBackground>
                 top: 50 + (_animationValue.value) * screenHeight,
                 right: 50,
                 child: Image.asset(
-                  widget.moonImage,
+                  DayNightBackground.moonImage,
                   width: 100,
                   height: 100,
                 ),
@@ -99,7 +99,7 @@ class _DayNightBackgroundState extends State<DayNightBackground>
               Positioned(
                 bottom: 0,
                 child: Image.asset(
-                  widget.imageDay,
+                  DayNightBackground.imageDay,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -108,7 +108,7 @@ class _DayNightBackgroundState extends State<DayNightBackground>
                 child: Opacity(
                     opacity: 1.0 - _animationValue.value,
                     child: Image.asset(
-                      widget.imageNight,
+                      DayNightBackground.imageNight,
                       fit: BoxFit.cover,
                     )),
               ),

@@ -74,9 +74,12 @@ class UpcyclerWidget extends StatelessWidget {
         padding: const EdgeInsets.all(0.0),
         child: Card(
             color: Colors.white70,
-            child: SizedBox(
-                width: 120,
-                height: 120,
+            child: ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxHeight: 120,
+                    minHeight: 120,
+                    maxWidth: 120,
+                    minWidth: 60),
                 child: Stack(alignment: Alignment.center, children: [
                   PieceStackWidget(stack: controller.resultingPieces),
                   Positioned(
@@ -99,15 +102,20 @@ class UpcyclerWidget extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(width: 60.0),
-            _buildInbox(),
+            SizedBox(width: 30.0),
+            Expanded(flex: 1, child: _buildInbox()),
             SizedBox(width: 8.0),
             Expanded(
-                flex: 2,
-                child: _buildMiddleSection(controller.potentialPieces)),
+              flex: 3,
+              child: _buildMiddleSection(controller.potentialPieces),
+            ),
             SizedBox(width: 8.0),
-            _buildOutbox(),
-            SizedBox(width: 60.0),
+            Expanded(
+                flex: 1,
+                child: ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: 60, maxWidth: 120),
+                    child: _buildOutbox())),
+            SizedBox(width: 30.0),
           ],
         );
       },
