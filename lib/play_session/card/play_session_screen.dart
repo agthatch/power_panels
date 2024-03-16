@@ -162,9 +162,6 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     final score = Score(_boardState.actionManager.dayNumber,
         _boardState.warehouse.dailyCapacity(), []);
 
-    // final playerProgress = context.read<PlayerProgress>();
-    // playerProgress.setLevelReached(widget.level.number);
-
     // Let the player see the game just after winning for a bit.
     await Future<void>.delayed(_preCelebrationDuration);
     if (!mounted) return;

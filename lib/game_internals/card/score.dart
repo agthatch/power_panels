@@ -10,7 +10,7 @@ class Score {
   factory Score(int day, int totalCapacity, List<Blueprint> blueprints) {
     var score = totalCapacity;
 
-    return Score._(score, day, blueprints, blueprints.isEmpty);
+    return Score._(score, day, blueprints, blueprints.isNotEmpty);
   }
 
   const Score._(this.score, this.day, this.blueprints, this.win);
