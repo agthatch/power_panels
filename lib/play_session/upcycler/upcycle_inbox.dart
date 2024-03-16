@@ -19,6 +19,7 @@ class _UpcycleInboxState extends State<UpcycleInbox> {
     return DragTarget<PlayingPieceDragData>(
       onAcceptWithDetails: (data) {
         setState(() {
+          data.data.piece.isStaged = true;
           widget.upcycleController.piecesToUpcycle.add(data.data.piece);
           widget.upcycleController.boardState.player
               .removePiece(data.data.piece);

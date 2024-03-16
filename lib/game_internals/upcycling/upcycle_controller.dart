@@ -16,6 +16,7 @@ class UpcycleController {
 
   UpcycleController({required this.boardState}) {
     piecesToUpcycle = PieceStack(removeLastPieceCallback: (PlayingPiece piece) {
+      piece.isStaged = false;
       boardState.player.addPiece(piece);
       resultingPieces.clear();
       _playerChanges.add(null);
